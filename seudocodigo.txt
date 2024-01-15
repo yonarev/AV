@@ -1,0 +1,18 @@
+[{
+    idArticulo,codigoArticulo,articulo,detalle,stockBodegaCentral,stockBodega,stockVitrina,stockCritico
+}]
+requiero que en esta pagina como browser de fotos se desplieguen los datos para cada foto que estan en local storage con key 
+"articulosVitrina" con estructura 
+            const articuloData = {
+                idArticulo,
+                codigoArticulo,
+                articulo,
+                detalle,
+                stockBodegaCentral,
+                stockBodega,
+                stockVitrina,
+                stockRepo,
+                stockCritico,
+                fileName,
+            };
+            el nombre del archivo es la referencia que esta en 'fileName' en local storage

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accesando la camara</title>
+</head>
+<body>
+    <video id="videoElement" autoplay="true"></video>
+    <script>
+        //promesa consulta permiso del usuario retorna datos de la camara
+        //o error de permiso denegado o no dispositivo
+        // let result = navigator.MediaDevices.getUserMedia({audio:false,video:true})
+        //si la promesa se resuelve
+        const video=document.getElementById("videoElement");
+        navigator.mediaDevices.getUserMedia({video:true})
+            .then(
+                (stream)=>{
+                    //alert(stream);
+                    video.srcObject=stream;
+                    console.log(stream)
+                }
+            )
+            .catch(
+                (error)=>{
+                    alert(error);
+                }
+            )
+    </script>
+    
+</body>
+</html>

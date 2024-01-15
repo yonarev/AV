@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galería de Fotos</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: rgb(24, 16, 16);
+        }
+
+        img {
+            padding-left: 5vw;
+            padding-right: 5vw;
+            max-width: 100vw;
+            width: 95vw;
+            height: auto;
+            margin: 5px;
+        }
+
+        .image-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+            color: white;
+        }
+
+        input {
+            margin-bottom: 10px;
+            font-size: 3vw;
+        }
+        label {
+            font-size: 3vw;
+
+        }
+
+        button {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const folderPath = "./fotos";
+
+            fetch(folderPath)
+                .then(response => response.text())
+                .then(html => {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, "text/html");
+                    const fileList = Array.from(doc.querySelectorAll("a")).map(a => a.href);
+
+                    const imageFiles = fileList.filter(file => {
+                        const extension = file.split(".").pop().toLowerCase();
+                        return ["jpg", "jpeg", "png", "gif"].includes(extension);
+                    });
+
+                    imageFiles.forEach(imageFile => {
+                        const imgElement = document.createElement("img");
+                        imgElement.src = imageFile;
+
+                        // Obtener el nombre del archivo (referencia) desde la ruta
+                        const fileName = imageFile.split("/").pop();
+                        
+                        // Obtener los datos del localStorage usando la clave "articulosVitrina"
+                        const articuloData = JSON.parse(localStorage.getItem("articulosVitrina"));
+
+                        // Buscar el objeto de datos asociado al archivo actual
+                        const imageData = articuloData.find(data => data.fileName === fileName);
+
+                        // Si se encontraron datos, crear un contenedor para la imagen y mostrar los datos debajo de la imagen
+                        if (imageData) {
+                            const imageContainer = document.createElement("div");
+                            imageContainer.classList.add("image-container");
+
+                            // Crear inputs y etiquetas para cada campo
+                            for (const key in imageData) {
+                                const label = document.createElement("label");
+                                label.textContent = key;
+                                const input = document.createElement("input");
+                                input.value = imageData[key];
+                                input.setAttribute("data-key", key);
+
+                                imageContainer.appendChild(label);
+                                imageContainer.appendChild(input);
+                            }
+
+                            const saveButton = document.createElement("button");
+                            saveButton.textContent = "Grabar";
+                            saveButton.addEventListener("click", function () {
+                                // Actualizar los datos en el localStorage al hacer clic en "Grabar"
+                                imageContainer.querySelectorAll("input").forEach(input => {
+                                    const key = input.getAttribute("data-key");
+                                    const value = input.value;
+                                    imageData[key] = value;
+                                });
+
+                                // Guardar los datos actualizados en el localStorage
+                                localStorage.setItem("articulosVitrina", JSON.stringify(articuloData));
+                            });
+
+                            imageContainer.appendChild(saveButton);
+
+                            document.body.appendChild(imgElement);
+                            document.body.appendChild(imageContainer);
+                        } else {
+                            // Si no se encontraron datos, solo mostrar la imagen
+                            document.body.appendChild(imgElement);
+                        }
+                    });
+
+                    console.log("Imágenes y datos cargados en la pantalla");
+                })
+                .catch(error => {
+                    console.error("Error al obtener los nombres de los archivos:", error);
+                });
+        });
+    </script>
+</body>
+</html>
