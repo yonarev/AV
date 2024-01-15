@@ -29,15 +29,6 @@
             color: white;
         }
 
-        input {
-            margin-bottom: 10px;
-            font-size: 3vw;
-        }
-        label {
-            font-size: 3vw;
-
-        }
-
         button {
             margin-bottom: 10px;
         }
@@ -82,9 +73,12 @@
                             for (const key in imageData) {
                                 const label = document.createElement("label");
                                 label.textContent = key;
+                                label.style.fontSize = "2vw"; // Tamaño de letra
+                                
                                 const input = document.createElement("input");
                                 input.value = imageData[key];
                                 input.setAttribute("data-key", key);
+                                input.style.fontSize = "2vw"; // Tamaño de letra
 
                                 imageContainer.appendChild(label);
                                 imageContainer.appendChild(input);
