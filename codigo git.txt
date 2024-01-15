@@ -10,5 +10,4 @@ git push -u origin main
 git add .
 git commit -m "segundo commit"
 git branch -M main
-git remote add origin https://github.com/yonarev/AV.git
 git push -u origin main
