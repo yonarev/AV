@@ -79,41 +79,34 @@
                         return new Promise(resolve => setTimeout(resolve, 500));
                     })
                     .then(function() {
-                        // Capturar el fotograma actual del video
-                        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+                        // Obtener la URL de la imagen en formato base64
+                        const dataURL = canvas.toDataURL('image/jpeg');
 
-                        // Convertir la imagen del canvas a formato binario (Blob)
-                        canvas.toBlob(function(blob) {
-                            // Crear un objeto FormData para enviar la imagen al servidor
-                            const formData = new FormData();
-                            formData.append('imagen', blob, archivo);
-                            formData.append('idArticulo', idArticulo);
-
-                            // Enviar la imagen al servidor utilizando AJAX (fetch)
-                            fetch('guardar_imagen.php', {
-                                method: 'POST',
-                                body: formData
-                            })
-                            .then(response => response.json())
-                            .then(data => {
-                                console.log(data);
+                        // Enviar la imagen al servidor utilizando AJAX
+                        const xhr = new XMLHttpRequest();
+                        xhr.onreadystatechange = function() {
+                            if (xhr.readyState === 4) {
+                                if (xhr.status === 200) {
+                                    // La respuesta del servidor puede ser manejada aquí si es necesario
+                                    console.log("Imagen guardada correctamente en el servidor.");
+                                } else {
+                                    console.error("Error al guardar la imagen en el servidor:", xhr.status, xhr.statusText);
+                                }
                                 // Habilitar el botón después de tomar la foto
                                 btnCaptureButton.disabled = false;
-                            })
-                            .catch(error => {
-                                console.error("Error al enviar la imagen al servidor:", error);
-                                btnCaptureButton.disabled = false;
-                            });
-                        }, 'image/jpeg', 1.0, 'image/jpeg');
+                            }
+                        };
+
+                        xhr.open("POST", "./guardar_imagen.php", true);
+                        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                        xhr.send("imagen=" + encodeURIComponent(dataURL));
                     })
                     .catch(function(error) {
                         console.error("Error al acceder a la cámara:", error);
                         btnCaptureButton.disabled = false;
                     });
-            }
-
-        
-            function genIdArt() {
+            }    
+        function genIdArt() {
             const currentDate = new Date();
             const hora = currentDate.getHours();
             const minutos = currentDate.getMinutes();

@@ -25,12 +25,17 @@
             border-radius: 1vw;
         }
     </style>
-    <script src="./libreria.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 </head>
 <body>
     <div class="camara">
         <div>
+            <label for="cameraSelect">Selecciona cámara:</label>
+            <select id="cameraSelect">
+                <option value="user">Frontal</option>
+                <option value="environment" selected>Trasera</option>
+            </select>
+            <br>
             <video id="videoElement" autoplay="true"></video>
         </div>
         <button id="btnCaptureButton" onclick="takePhoto()">2 Tomar foto</button>
@@ -45,10 +50,13 @@
         const canvas = document.getElementById("canvasElement");
         const context = canvas.getContext("2d");
         const idArticulo = genIdArt();
-        const fileName = `foto${idArticulo}.jpg`;
+        const archivo = `foto${idArticulo}.jpg`;
+        const ruta = "/fotos/";
+        const rutaYarchivo = ruta + archivo;
 
-        // Solicitar permisos para acceder a la cámara y establecer la máxima calidad del video
-        navigator.mediaDevices.getUserMedia({ video: { width: 1920, height: 1080, frameRate: 30 } })
+        let selectedCamera = "environment"; // Default to the rear camera
+
+        navigator.mediaDevices.getUserMedia({ video: { facingMode: selectedCamera, width: 1920, height: 1080, frameRate: 30 } })
             .then(function(stream) {
                 video.srcObject = stream;
             })
@@ -56,40 +64,31 @@
                 console.error("Error al acceder a la cámara:", error);
             });
 
+            function takePhoto() {
+                const btnCaptureButton = document.getElementById("btnCaptureButton");
+                btnCaptureButton.disabled = true;
 
-        function takePhoto() {
-            const btnCaptureButton = document.getElementById("btnCaptureButton");
-            // Deshabilita el botón mientras se toma la foto
-            btnCaptureButton.disabled = true;
-            // Solicita permisos para acceder a la cámara
-            navigator.mediaDevices.getUserMedia({ video: { width: 1920, height: 1080, frameRate: 30 } })
-                .then(function(stream) {
-                    video.srcObject = stream;
-                    video.play();
-                })
-                .then(function() {
-                    // Espera un momento para asegurarse de que el video esté listo
-                    return new Promise(resolve => setTimeout(resolve, 500));
-                })
-                .then(function() {
-                    // Dibuja la imagen en el canvas
-                    context.drawImage(video, 0, 0, canvas.width, canvas.height);
-                    // Convierte el canvas a un blob y guarda la foto en disco
-                    canvas.toBlob(function(blob) {
-                        saveAs(blob, fileName);
-                        // Habilita el botón después de tomar la foto
+                selectedCamera = document.getElementById("cameraSelect").value;
+
+                navigator.mediaDevices.getUserMedia({ video: { facingMode: selectedCamera, width: 1920, height: 1080, frameRate: 30 } })
+                    .then(function(stream) {
+                        video.srcObject = stream;
+                        video.play();
+                    })
+                    .then(function() {
+                        return new Promise(resolve => setTimeout(resolve, 500));
+                    })
+                    .then(function() {
+                        // Guarda la foto en la carpeta por omisión usando FileSaver.js
+                        saveAs(canvas.toDataURL('image/jpeg'), rutaYarchivo);
                         btnCaptureButton.disabled = false;
-                        // Luego de tomar la foto, pide los datos
-                    }, 'image/jpeg', 1.0, 'image/jpeg');
-                })
-                .catch(function(error) {
-                    console.error("Error al acceder a la cámara:", error);
-                    // Asegura que el botón se habilite en caso de error
-                    btnCaptureButton.disabled = false;
-                });
-        }
+                    })
+                    .catch(function(error) {
+                        console.error("Error al acceder a la cámara:", error);
+                        btnCaptureButton.disabled = false;
+                    });
+            }
 
-        // Función para generar un ID único
         function genIdArt() {
             const currentDate = new Date();
             const hora = currentDate.getHours();
@@ -108,7 +107,6 @@
             return id;
         }
 
-        // Función para grabar los datos localmente
         function grabaLocalArticulo() {
             const codigoArticulo = prompt("Ingrese Código del Artículo:");
             const articulo = prompt("Ingrese Nombre del Artículo:");
@@ -129,17 +127,14 @@
                 stockVitrina,
                 stockRepo,
                 stockCritico,
-                fileName,
+                archivo,
             };
 
-            // Obtén el array de artículos existente o crea uno nuevo
             const existingArticulos = JSON.parse(localStorage.getItem("articulosVitrina")) || [];
             existingArticulos.push(articuloData);
 
-            // Guarda el array actualizado en el localStorage
             localStorage.setItem("articulosVitrina", JSON.stringify(existingArticulos));
         }
-
     </script>
 </body>
 </html>
