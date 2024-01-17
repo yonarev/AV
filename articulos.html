@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artículos</title>
+    <style>
+        body {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            background-color: rgb(49, 23, 23);
+        }
+        .item {
+            margin: 10px;
+            padding: 10px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .item.campos {
+            background-color: rgb(49, 23, 23);
+            color: white;
+            margin: 0 auto;
+            align-items: center;
+            align-content: center;
+            justify-content: center;
+        }
+        img {
+            margin: 0 auto;
+            max-width: 100%;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        label {
+            text-align: center;
+            margin: 0 auto;
+            font-size: 20px;
+            margin-bottom: 5px;
+            display: block;
+        }
+        input {
+            text-align: center;
+
+            margin: 0 auto;
+            font-size: 30px;
+            padding: 5px;
+            margin-bottom: 10px;
+            box-sizing: border-box; /* Evita que el padding afecte al ancho */
+            width: auto; /* Ancho automático según el contenido */
+        }
+        button {
+            font-size: 16px;
+            padding: 8px;
+            cursor: pointer;
+        }
+        input.stock {
+            background-color: yellow;
+        }
+
+    </style>
+</head>
+<body>
+
+<script>
+    const articulos = JSON.parse(localStorage.getItem("articulosVitrina")) || [];
+
+    articulos.forEach(articulo => {
+        const div = document.createElement("div");
+        div.classList.add("item", "campos");
+
+        const img = document.createElement("img");
+        img.src = `./fotos/foto${articulo.idArticulo}.jpg`;
+        div.appendChild(img);
+
+        const datos = document.createElement("div");
+
+        crearElemento("label", "Id Artículo:", datos);
+        crearElemento("input", "", datos, articulo.idArticulo, true);
+        crearElemento("label", "Código del Artículo:", datos);
+        crearElemento("input", "", datos, articulo.codigoArticulo, false, `codigoArticulo${articulo.idArticulo}`);
+        crearElemento("label", "Nombre del Artículo:", datos);
+        crearElemento("input", "", datos, articulo.articulo, false, `articulo${articulo.idArticulo}`);
+        crearElemento("label", "Descripción del Artículo:", datos);
+        crearElemento("input", "", datos, articulo.detalle, false, `detalle${articulo.idArticulo}`);
+        crearElemento("label", "Stock Bodega Central:", datos);
+        crearElemento("input", "", datos, articulo.stockBodegaCentral, false, `stockBodegaCentral${articulo.idArticulo}`);
+        crearElemento("label", "Stock Bodega:", datos);
+        crearElemento("input", "", datos, articulo.stockBodega, false, `stockBodega${articulo.idArticulo}`);
+        crearElemento("label", "Stock Vitrina:", datos);
+        crearElemento("input", "", datos, articulo.stockVitrina, false, `stockVitrina${articulo.idArticulo}`);
+        crearElemento("label", "Stock Reposición:", datos);
+        crearElemento("input", "", datos, articulo.stockRepo, false, `stockRepo${articulo.idArticulo}`);
+        crearElemento("label", "Stock Crítico:", datos);
+        crearElemento("input", "", datos, articulo.stockCritico, false, `stockCritico${articulo.idArticulo}`);
+
+        const button = document.createElement("button");
+        button.textContent = "Actualizar";
+        button.addEventListener("click", () => actualizarDatos(articulo.idArticulo));
+
+        datos.appendChild(button);
+        div.appendChild(datos);
+        document.body.appendChild(div);
+    });
+
+    function crearElemento(tag, labelText, parent, value, disabled, id) {
+    const elemento = document.createElement(tag);
+    if (tag === "label") {
+        elemento.textContent = `${labelText}`;
+    } else if (tag === "input") {
+        elemento.type = "text";
+        elemento.value = value;
+        elemento.disabled = disabled;
+        if (id) {
+            elemento.id = id;
+        }
+        //ESTO ESTA MAL CORREJIR
+        if (labelText.trim() === "Stock Bodega Central:") {
+            elemento.classList.add('stock');
+            console.log('Clase "stock" agregada al input.');
+        }
+    }
+
+    parent.appendChild(elemento);
+}
+
+
+    // Función para actualizar datos
+    function actualizarDatos(idArticulo) {
+        const articuloActualizado = {
+            idArticulo: idArticulo,
+            codigoArticulo: document.getElementById(`codigoArticulo${idArticulo}`).value,
+            articulo: document.getElementById(`articulo${idArticulo}`).value,
+            detalle: document.getElementById(`detalle${idArticulo}`).value,
+            stockBodegaCentral: document.getElementById(`stockBodegaCentral${idArticulo}`).value,
+            stockBodega: document.getElementById(`stockBodega${idArticulo}`).value,
+            stockVitrina: document.getElementById(`stockVitrina${idArticulo}`).value,
+            stockRepo: document.getElementById(`stockRepo${idArticulo}`).value,
+            stockCritico: document.getElementById(`stockCritico${idArticulo}`).value,
+        };
+
+        // Actualizar el elemento en el array y en el localStorage
+        const index = articulos.findIndex(a => a.idArticulo === idArticulo);
+        if (index !== -1) {
+            articulos[index] = articuloActualizado;
+            localStorage.setItem("articulosVitrina", JSON.stringify(articulos));
+        }
+    }
+</script>
+</body>
+</html>

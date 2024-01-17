@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accediendo a la cámara y tomando fotos</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: row;
+            background-color: rgb(49, 23, 23);
+        }
+        .camara {
+            margin: 0 auto;
+            text-align: center; 
+            align-content: center;
+            justify-content: center;
+        } 
+        .camara video {
+            max-width: 100vw;
+            width: 100vw;
+        }
+        .camara button {
+            font-size: 3em;
+            border-radius: 1vw;
+        }
+    </style>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script> -->
+</head>
+<body>
+    <div class="camara">
+        <div>
+            <label for="cameraSelect">Selecciona cámara:</label>
+            <select id="cameraSelect">
+                <option value="user">Frontal</option>
+                <option value="environment" selected>Trasera</option>
+            </select>
+            <br>
+            <video id="videoElement" autoplay="true"></video>
+        </div>
+        <button id="btnCaptureButton" onclick="takePhoto()">2 Tomar foto</button>
+        <button id="btnInputData" onclick="grabaLocalArticulo()">1 Grabar datos</button>
+        <button id="btnBrowser" onclick="window.open('./browse3.html');">3 Ver datos</button>
+    </div>
+    <br>
+    <canvas id="canvasElement" style="display: none;"></canvas>
+
+    <script>
+        const video = document.getElementById("videoElement");
+        const canvas = document.getElementById("canvasElement");
+        const context = canvas.getContext("2d");
+        const idArticulo = genIdArt();
+        const archivo = `foto${idArticulo}.jpg`;
+        const ruta = "/fotos/";
+        const rutaYarchivo = ruta + archivo;
+        alert("archivo imagen: "+rutaYarchivo)
+
+        let selectedCamera = "environment"; // Default to the rear camera
+        navigator.mediaDevices.getUserMedia({ video: { facingMode: selectedCamera, width: 1920, height: 1080, frameRate: 30 } })
+            .then(function(stream) {
+                video.srcObject = stream;
+            })
+            .catch(function(error) {
+                console.error("Error al acceder a la cámara:", error);
+            });
+
+            function takePhoto() {
+                const btnCaptureButton = document.getElementById("btnCaptureButton");
+                btnCaptureButton.disabled = true;
+                selectedCamera = document.getElementById("cameraSelect").value;
+                navigator.mediaDevices.getUserMedia({ video: { facingMode: selectedCamera, width: 1920, height: 1080, frameRate: 30 } })
+                    .then(function(stream) {
+                        video.srcObject = stream;
+                        video.play();
+                    })
+                    .then(function() {
+                        return new Promise(resolve => setTimeout(resolve, 500));
+                    })
+                    .then(function() {
+                        // Capturar el fotograma actual del video
+                        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+                        // Convertir la imagen del canvas a formato binario (Blob)
+                        canvas.toBlob(function(blob) {
+                            // Crear un objeto FormData para enviar la imagen al servidor
+                            const formData = new FormData();
+                            formData.append('imagen', blob, archivo);
+                            formData.append('idArticulo', idArticulo);
+
+                            fetch('guardar_imagen.php', {
+                                method: 'POST',
+                                body: formData
+                            })
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error('Network response was not ok');
+                                }
+                                return response.json();
+                            })
+                            .then(data => {
+                                console.log(data);
+                                btnCaptureButton.disabled = false;
+                                // Recargar la página después de completar la acción
+                                location.reload();
+                            })
+                            .catch(error => {
+                                console.error("Error al enviar la imagen al servidor:", error);
+                                btnCaptureButton.disabled = false;
+                            });
+
+                        }, 'image/jpeg', 1.0, 'image/jpeg');
+                    })
+                    .catch(function(error) {
+                        console.error("Error al acceder a la cámara:", error);
+                        btnCaptureButton.disabled = false;
+                    });
+            }
+
+        
+            function genIdArt() {
+                const currentDate = new Date();
+                const hora = currentDate.getHours();
+                const minutos = currentDate.getMinutes();
+                const segundos = currentDate.getSeconds();
+                const hor = hora < 10 ? "0" + hora.toString() : hora.toString();
+                const min = minutos < 10 ? "0" + minutos.toString() : minutos.toString();
+                const seg = segundos < 10 ? "0" + segundos.toString() : segundos.toString();
+                const horaTrans = hor + min + seg;
+                const horaIng = hor + ":" + min + ":" + seg;
+                const anioHoy = currentDate.getFullYear();
+                const mesHoy = ("0" + (currentDate.getMonth() + 1)).slice(-2);
+                const diaDeHoy = ("0" + currentDate.getDate()).slice(-2);
+                const fechaIng = `${diaDeHoy}/${mesHoy}/${anioHoy}`;
+                const id = fechaIng.replace(/\//g, '') + horaIng.replace(/:/g, '');
+                return id;
+            }
+
+            function grabaDatosArticulo(){
+                    
+            }
+            function grabaLocalArticulo() {
+                const codigoArticulo = prompt("Ingrese Código del Artículo:");
+                const articulo = prompt("Ingrese Nombre del Artículo:");
+                const detalle = prompt("Ingrese Descripción del Artículo:");
+                const stockBodegaCentral = prompt("Ingrese Stock en Bodega Central:");
+                const stockBodega = prompt("Ingrese Stock en Bodega :");
+                const stockVitrina = prompt("Ingrese Stock en Vitrina:");
+                const stockRepo = prompt("Ingrese Stock Reposicion:");
+                const stockCritico = prompt("Ingrese Stock Critico:");
+
+                const articuloData = {
+                    idArticulo,
+                    codigoArticulo,
+                    articulo,
+                    detalle,
+                    stockBodegaCentral,
+                    stockBodega,
+                    stockVitrina,
+                    stockRepo,
+                    stockCritico,
+                    archivo,
+                };
+
+                const existingArticulos = JSON.parse(localStorage.getItem("articulosVitrina")) || [];
+                existingArticulos.push(articuloData);
+
+                localStorage.setItem("articulosVitrina", JSON.stringify(existingArticulos));
+            }
+    </script>
+</body>
+</html>
