@@ -8,22 +8,26 @@
         body {
             display: flex;
             flex-direction: column;
-            background-color: rgb(49, 23, 23);
+            background-color: rgb(64, 47, 47);
         }
         .camara {
             margin: 0 auto;
             text-align: center; 
             align-content: center;
             justify-content: center;
+            margin-bottom: 5px;
         } 
         .camara video {
             max-width: 100vw;
             width: 100vw;
+            margin-bottom: 5px;
         }
         .camara button {
-            font-size: 3em;
+            font-size:6vw;
             border-radius: 1vw;
+            cursor: pointer;
         }
+       
         form {
             display: flex;
             flex-direction: column;
@@ -33,10 +37,43 @@
         }
         form input {
             margin-bottom: 10px;
+            font-size: 6vw;
         }
         form button {
             margin-top: 10px;
             font-size: 1.5em;
+            cursor: pointer;
+            margin-bottom: 10px;
+            font: 13px;
+            border-radius: 7px;
+        }
+        form label {
+            font-size: 5vw;
+        }
+        p {
+            text-align: center;
+            color: white;
+        }
+        /* CONFIG ANCHO INPUTS */
+        #codigoArticulo{
+            width: 20vw;
+            background-color: rgb(237, 237, 173);
+        }
+        #articulo,#detalle{
+            width: 90vw;
+        }
+        #stockBodegaCentral,#stockBodega,#stockVitrina,#stockRepo,#stockCritico{
+            width: 13vw;
+        }
+        #stockBodegaCentral,#stockBodega{
+            background-color: rgb(225, 225, 130);
+        }
+        #stockRepo{
+            background-color: rgb(175, 175, 163);
+        }
+        #stockCritico{
+            color: white;
+            background-color: rgb(223, 26, 62);
         }
     </style>
 </head>
@@ -51,47 +88,63 @@
             <br>
             <video id="videoElement" autoplay="true"></video>
         </div>
-        <button id="btnCaptureButton" onclick="takePhoto()">2 Tomar foto</button>
-        <button id="btnInputData" onclick="grabaLocalArticulo()">1 Grabar datos</button>
-        <button id="btnBrowser" onclick="window.open('./articulos.html');">3 Ver datos</button>
+        <button id="btnFoto" onclick="takePhoto()">Tomar foto</button>
+        <button id="btnBrowser" onclick="window.open('./articulos.html');">Ver Articulos</button>
+        <p id="idArticulo">Id Articulo</p>
     </div>
-    <br>
     <canvas id="canvasElement" style="display: none;"></canvas>
-
     <form id="dataForm">
-        <label for="codigoArticulo">Código del Artículo:</label>
-        <input type="text" id="codigoArticulo">
-        <button type="button" onclick="confirmField('codigoArticulo')">Confirmar</button>
-
-        <label for="articulo">Nombre del Artículo:</label>
+        <div>
+            <div>
+                <label for="codigoArticulo">Código:</label>
+            </div>
+            <input type="text" id="codigoArticulo">
+            <button type="button" onclick="confirmField('articulo')">Confirmar</button>
+        </div>
+        <label for="articulo">Artículo:</label>
         <input type="text" id="articulo">
-        <button type="button" onclick="confirmField('articulo')">Confirmar</button>
-
-        <label for="detalle">Descripción del Artículo:</label>
-        <input type="text" id="detalle">
         <button type="button" onclick="confirmField('detalle')">Confirmar</button>
-
-        <label for="stockBodegaCentral">Stock en Bodega Central:</label>
-        <input type="text" id="stockBodegaCentral">
+        <label for="detalle">Descripción:</label>
+        <input type="text" id="detalle">
         <button type="button" onclick="confirmField('stockBodegaCentral')">Confirmar</button>
-
-        <label for="stockBodega">Stock en Bodega:</label>
-        <input type="text" id="stockBodega">
-        <button type="button" onclick="confirmField('stockBodega')">Confirmar</button>
-
-        <label for="stockVitrina">Stock en Vitrina:</label>
-        <input type="text" id="stockVitrina">
-        <button type="button" onclick="confirmField('stockVitrina')">Confirmar</button>
-
-        <label for="stockRepo">Stock Reposicion:</label>
-        <input type="text" id="stockRepo">
-        <button type="button" onclick="confirmField('stockRepo')">Confirmar</button>
-
-        <label for="stockCritico">Stock Crítico:</label>
-        <input type="text" id="stockCritico">
-        <button type="button" onclick="confirmField('stockCritico')">Confirmar</button>
-
-        <button type="button" onclick="grabaDatosArticulo(event)">Grabar</button>
+        <div>
+            <div>
+                <label for="stockBodegaCentral">Stock Bodega Central:</label>
+            </div>
+            <input type="text" id="stockBodegaCentral">
+            <button type="button" onclick="confirmField('stockBodega')">Confirmar</button>
+        </div>
+        <div>
+            <div>
+                <label for="stockBodega">Stock Bodega:</label>
+            </div>
+            <input type="text" id="stockBodega">
+            <button type="button" onclick="confirmField('stockVitrina')">Confirmar</button>
+        </div>
+        <div>
+            <div>
+                <label for="stockVitrina">Stock Vitrina:</label>
+            </div>
+            <input type="text" id="stockVitrina">
+            <button type="button" onclick="confirmField('stockRepo')">Confirmar</button>
+        </div>
+        <div>
+            <div>
+                <label for="stockRepo">Stock Reposicion:</label>
+            </div>
+            <input type="text" id="stockRepo">
+            <button type="button" onclick="confirmField('stockCritico')">Confirmar</button>
+        </div>
+        <div>
+            <div>
+                <label for="stockCritico">Stock Crítico:</label>
+            </div>
+            <input type="text" id="stockCritico">
+            <button type="button" onclick="confirmField('btnGraba')">Confirmar</button>
+        </div>
+        <button id="btnGraba" type="button" onclick="grabaDatosArticulo(event)">Grabar</button>
+        <br>
+        <br>
     </form>
 
     <script>
@@ -102,7 +155,12 @@
         const archivo = `foto${idArticulo}.jpg`;
         const ruta = "/fotos/";
         const rutaYarchivo = ruta + archivo;
-
+        //SETEA ID DEL ARCHIVO QUE ES EL ID DEL ARTICULO
+        document.getElementById('idArticulo').innerText="Id Articulo "+idArticulo
+        //SELECCIONA EL CAMPO CODIGO
+        document.getElementById('codigoArticulo').focus()
+        document.getElementById('codigoArticulo').select()
+        //ACTIVA LA CAMARA
         let selectedCamera = "environment"; // Default to the rear camera
         navigator.mediaDevices.getUserMedia({ video: { facingMode: selectedCamera, width: 1920, height: 1080, frameRate: 30 } })
             .then(function(stream) {
@@ -111,9 +169,10 @@
             .catch(function(error) {
                 console.error("Error al acceder a la cámara:", error);
             });
-            function takePhoto() {
-                const btnCaptureButton = document.getElementById("btnCaptureButton");
-                btnCaptureButton.disabled = true;
+        //TOMA LA FOTO
+        function takePhoto() {
+                const btnFoto = document.getElementById("btnFoto");
+                btnFoto.disabled = true;
                 selectedCamera = document.getElementById("cameraSelect").value;
                 navigator.mediaDevices.getUserMedia({ video: { facingMode: selectedCamera, width: 1920, height: 1080, frameRate: 30 } })
                     .then(function(stream) {
@@ -149,76 +208,31 @@
                                 return response.json();
                             })
                             .then(data => {
+                                document.getElementById('codigoArticulo').focus()
+                                document.getElementById('codigoArticulo').select()
                                 console.log(data);
-                                btnCaptureButton.disabled = false;
-                                location.reload();
+                                btnFoto.disabled = false;
                             })
                             .catch(error => {
                                 console.error("Error al enviar la imagen al servidor:", error);
-                                btnCaptureButton.disabled = false;
+                                btnFoto.disabled = false;
                             });
 
                         }, 'image/jpeg', 1.0, 'image/jpeg');
                     })
                     .catch(function(error) {
                         console.error("Error al acceder a la cámara:", error);
-                        btnCaptureButton.disabled = false;
+                        btnFoto.disabled = false;
                     });
             }
-
-        // function takePhoto() {
-        //     const btnCaptureButton = document.getElementById("btnCaptureButton");
-        //     btnCaptureButton.disabled = true;
-        //     selectedCamera = document.getElementById("cameraSelect").value;
-        //     navigator.mediaDevices.getUserMedia({ video: { facingMode: selectedCamera, width: 1920, height: 1080, frameRate: 30 } })
-        //         .then(function(stream) {
-        //             video.srcObject = stream;
-        //             video.play();
-        //         })
-        //         .then(function() {
-        //             return new Promise(resolve => setTimeout(resolve, 500));
-        //         })
-        //         .then(function() {
-        //             context.drawImage(video, 0, 0, canvas.width, canvas.height);
-        //             canvas.toBlob(function(blob) {
-        //                 const formData = new FormData();
-        //                 formData.append('imagen', blob, archivo);
-        //                 formData.append('idArticulo', idArticulo);
-
-        //                 fetch('guardar_imagen.php', {
-        //                     method: 'POST',
-        //                     body: formData
-        //                 })
-        //                 .then(response => {
-        //                     if (!response.ok) {
-        //                         throw new Error('Network response was not ok');
-        //                     }
-        //                     return response.json();
-        //                 })
-        //                 .then(data => {
-        //                     console.log(data);
-        //                     btnCaptureButton.disabled = false;
-        //                     location.reload();
-        //                 })
-        //                 .catch(error => {
-        //                     console.error("Error al enviar la imagen al servidor:", error);
-        //                     btnCaptureButton.disabled = false;
-        //                 });
-
-        //             }, 'image/jpeg', 1.0, 'image/jpeg');
-        //         })
-        //         .catch(function(error) {
-        //             console.error("Error al acceder a la cámara:", error);
-        //             btnCaptureButton.disabled = false;
-        //         });
-        // }
-
+        //CONFIRMA INPUT    
         function confirmField(fieldId) {
-            const inputValue = document.getElementById(fieldId).value;
-            // Puedes hacer alguna validación adicional aquí si es necesario
-            console.log(`Campo ${fieldId} confirmado: ${inputValue}`);
+           document.getElementById(fieldId).focus();
+           document.getElementById(fieldId).select();
         }
 
+
+        //GRABA EN LOCAL STORAGE
         function grabaDatosArticulo(event) {
             event.preventDefault()
             const codigoArticulo = document.getElementById("codigoArticulo").value;
@@ -252,12 +266,13 @@
                     alert("La foto no existe en la ruta './fotos/'.");
                     console.log("La foto no existe en la ruta './fotos/'.");
                 } else {
-                    document.getElemenÄtById("dataForm").reset();
+                    // document.getElementById("dataForm").reset();
+                    location.reload();
                 }
             });
            
         }
-
+        //GENERA ID UNICO DEL ARTICULO
         function genIdArt() {
             const currentDate = new Date();
             const hora = currentDate.getHours();
@@ -275,7 +290,7 @@
             const id = fechaIng.replace(/\//g, '') + horaIng.replace(/:/g, '');
             return id;
         }
-
+        //VERIFICA SI EXISTE ARCHIVO FOTO
         function verificarExistenciaFoto(archivo) {
             return fetch(`verificar_foto.php?archivo=${archivo}`)
                 .then(response => response.json())
@@ -288,11 +303,6 @@
                 });
         }
 
-        function confirmField(fieldId) {
-            const inputValue = document.getElementById(fieldId).value;
-            // Puedes hacer alguna validación adicional aquí si es necesario
-            console.log(`Campo ${fieldId} confirmado: ${inputValue}`);
-        }
     </script>
 </body>
 </html>
