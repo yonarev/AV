@@ -169,10 +169,20 @@
             // document.getElementById(fieldId).select();
             resumen()
         }
-        //GRABA EN LOCAL STORAGE
+        //GRABA NUEVO ARTICULO
         function grabaDatosArticulo(event) {
-            event.preventDefault()
+            event.preventDefault();
             const codigoArticulo = document.getElementById("codigoArticulo").value;
+
+            // Verifica si el código de artículo ya existe en el localStorage
+            const existingArticulos = JSON.parse(localStorage.getItem("articulosVitrina")) || [];
+            const codigoExistente = existingArticulos.some(item => item.codigoArticulo === codigoArticulo);
+
+            if (codigoExistente) {
+                alert("El código de artículo ya existe. Ingresa un código único.");
+                return;
+            }
+
             const articulo = document.getElementById("articulo").value;
             const detalle = document.getElementById("detalle").value;
             const stockBodegaCentral = document.getElementById("stockBodegaCentral").value;
@@ -192,22 +202,20 @@
                 stockCritico,
                 archivo,
             };
-            const existingArticulos = JSON.parse(localStorage.getItem("articulosVitrina")) || [];
+
             existingArticulos.push(articuloData);
             localStorage.setItem("articulosVitrina", JSON.stringify(existingArticulos));
+
             alert("Datos grabados en local storage");
-            //valida que el archivo de la foto exista
             verificarExistenciaFoto(archivo)
-            .then(existe => {
-                if (!existe) {
-                    alert("La foto no existe en la ruta './fotos/'.");
-                    console.log("La foto no existe en la ruta './fotos/'.");
-                } else {
-                    // document.getElementById("dataForm").reset();
-                    location.reload();
-                }
-            });
-           
+                .then(existe => {
+                    if (!existe) {
+                        alert("La foto no existe en la ruta './fotos/'.");
+                        console.log("La foto no existe en la ruta './fotos/'.");
+                    } else {
+                        location.reload();
+                    }
+                });
         }
         //GENERA ID UNICO DEL ARTICULO
         function genIdArt() {
@@ -239,44 +247,37 @@
                     return false;
                 });
         }
+        //DA RESUMEN
         function resumen() {
             let sBc = parseFloat(document.getElementById('stockBodegaCentral').value) || 0;
             let sBl = parseFloat(document.getElementById('stockBodega').value) || 0;
             let sR = parseFloat(document.getElementById('stockRepo').value) || 0;
             let sV = parseFloat(document.getElementById('stockVitrina').value) || 0;
             let sC = parseFloat(document.getElementById('stockCritico').value) || 0;
-
             let accion = "Nada que Hacer aun";
             // Restablecer la clase a su valor predeterminado
             let mensajeCritico = document.getElementById('mensajeCritico');
             mensajeCritico.classList.remove('texto-rojo');
-
             if (sC >= sV) {
                 accion = "Reponer vitrina";
                 mensajeCritico.classList.add('texto-rojo');
             }
-
             if (sC >= sV && sR === 0 && sBl >= sC) {
                 accion = "Abastecer respaldo reposición y reponer vitrina";
                 mensajeCritico.classList.add('texto-rojo');
             }
-
             if (sC >= sV && sR === 0 && sBl === 0) {
                 accion = "Pedir a bodega Central abastecer reposición y reponer vitrina";
                 mensajeCritico.classList.add('texto-rojo');
             }
-
             if (sC >= sV && sR === 0 && sBl === 0 && sBc === 0) {
                 accion = "Ya no hay stock y es lo que queda del producto";
             }
-
             mensajeCritico.innerText = accion;
-
             // Totales
             let sT = sBc + sBl + sR + sV;
             document.getElementById('sT').innerText = 'Stock Total=' + sT;
         }
-
     </script>
 </body>
 </html>

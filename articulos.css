@@ -1,0 +1,116 @@
+            body {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-around;
+                background-color: rgb(84, 56, 56);
+            }
+            .item {
+                margin: 10px;
+                padding: 10px;
+                background-color: #fff;
+                border-radius: 8px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            }
+            .campos{
+                /* display: flex;
+                justify-content: center;
+                align-content: center; */
+                text-align: center;
+                background-color: rgb(49, 23, 23);
+                color: rgb(208, 188, 188);
+                
+            }
+            .item campos input {
+                justify-content: center;
+            }
+            img {
+                margin: 0 auto;
+                max-width: 100%;
+                border-radius: 8px;
+                margin-bottom: 10px;
+            }
+            label {
+                text-align: center;
+                margin: 0 auto;
+                font-size: 20px;
+                margin-bottom: 5px;
+                display: block;
+            }
+            input {
+            
+                font-size: 6vw;
+                margin-bottom: 10px;
+                box-sizing: border-box; /* Evita que el padding afecte al ancho */
+            }
+            button {
+                font-size: 16px;
+                padding: 8px;
+                cursor: pointer;
+            }
+            #eliminarLocalStorage{
+                width: auto;
+            }
+
+            .codigo{
+                width: 25vw;
+            }
+            .stockBc  {
+                width: 20vw;
+                background-color: yellow;
+                margin: 0 auto;
+                
+            }
+            .stockR  {
+                background-color: rgb(133, 133, 126);
+                width: 20vw;
+            }
+            .stockB {
+                background-color: rgb(212, 212, 117);
+                width: 20vw;
+            }
+            .stockV {
+                width: 20vw;
+            }
+            .stockC{
+                background-color: red;
+                color: white;
+                width: 20vw;
+
+            }
+            .botones{
+                margin: auto;
+            }
+            .botones button{
+                width: 32vw;
+                flex-wrap: wrap;
+                flex-direction: column;
+                border-radius: 6px;
+                font-size: 6vw;
+                text-align: center;
+            }
+            .btnElimina{
+                color: rgb(255, 255, 255);
+                background-color: rgb(192, 54, 54);
+            }
+            .btnEdita{
+                text-align: center;
+                color: rgb(255, 255, 255);
+                background-color: rgb(74, 176, 27);
+            }
+            .resumen{
+                display:flex;
+                flex-direction: row;
+                margin: 0 auto;
+                text-align: center;
+            }
+            #mensajeCritico p{
+                font-family: arial;
+                font-size: 5vw;
+                color: white;
+            }
+            .texto-rojo {
+                color: red;
+                font-family: arial;
+                font-size: 5vw;
+                background-color: black;
+            }

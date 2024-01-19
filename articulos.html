@@ -4,175 +4,109 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Artículos</title>
-        <style>
-            body {
-                display: flex;
-                flex-wrap: wrap;
-                justify-content: space-around;
-                background-color: rgb(84, 56, 56);
-            }
-            .item {
-                margin: 10px;
-                padding: 10px;
-                background-color: #fff;
-                border-radius: 8px;
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            }
-            .campos{
-                /* display: flex;
-                justify-content: center;
-                align-content: center; */
-                text-align: center;
-                background-color: rgb(49, 23, 23);
-                color: rgb(208, 188, 188);
-                
-            }
-            .item campos input {
-                justify-content: center;
-            }
-            img {
-                margin: 0 auto;
-                max-width: 100%;
-                border-radius: 8px;
-                margin-bottom: 10px;
-            }
-            label {
-                text-align: center;
-                margin: 0 auto;
-                font-size: 20px;
-                margin-bottom: 5px;
-                display: block;
-            }
-            input {
-            
-                font-size: 6vw;
-                margin-bottom: 10px;
-                box-sizing: border-box; /* Evita que el padding afecte al ancho */
-            }
-            button {
-                font-size: 16px;
-                padding: 8px;
-                cursor: pointer;
-            }
-            #eliminarLocalStorage{
-                width: auto;
-            }
-
-            .codigo{
-                width: 25vw;
-            }
-            .stockBc  {
-                width: 20vw;
-                background-color: yellow;
-                margin: 0 auto;
-                
-            }
-            .stockR  {
-                background-color: rgb(133, 133, 126);
-                width: 20vw;
-            }
-            .stockB {
-                background-color: rgb(212, 212, 117);
-                width: 20vw;
-            }
-            .stockV {
-                width: 20vw;
-            }
-            .stockC{
-                background-color: red;
-                color: white;
-                width: 20vw;
-
-            }
-            .botones{
-                margin: auto;
-            }
-            .botones button{
-                width: 32vw;
-                flex-wrap: wrap;
-                flex-direction: column;
-                border-radius: 6px;
-                font-size: 6vw;
-                text-align: center;
-            }
-            .btnElimina{
-                color: rgb(255, 255, 255);
-                background-color: rgb(192, 54, 54);
-            }
-            .btnEdita{
-                text-align: center;
-                color: rgb(255, 255, 255);
-                background-color: rgb(74, 176, 27);
-            }
-
-        </style>
+        <link rel="stylesheet" href="./articulos.css">
     </head>
     <body>
         <div>
             <button id="eliminarLocalStorage">Eliminar Local Storage</button>
         </div>
         <script>
+            //carga la pagina desplefgando articulos
             const articulos = JSON.parse(localStorage.getItem("articulosVitrina")) || [];
-
             articulos.forEach(articulo => {
                 const div = document.createElement("div");
                 div.classList.add("item", "campos");
-
                 const img = document.createElement("img");
                 img.src = `./fotos/foto${articulo.idArticulo}.jpg`;
                 div.appendChild(img);
-
                 const datos = document.createElement("div");
-
                 crearElemento("label", "Id Artículo:", datos);
                 crearElemento("input", "", datos, articulo.idArticulo, true);
                 crearElemento("label", "Código del Artículo:", datos);
-                crearElemento("input", "", datos, articulo.codigoArticulo, false, `codigoArticulo${articulo.idArticulo}`,'codigo');
+                crearElemento("input", "", datos, articulo.codigoArticulo, false, `codigoArticulo${articulo.idArticulo}`, 'codigo');
                 crearElemento("label", "Nombre del Artículo:", datos);
-                crearElemento("input", "", datos, articulo.articulo, false, `articulo${articulo.idArticulo}`,'idArticulo');
+                crearElemento("input", "", datos, articulo.articulo, false, `articulo${articulo.idArticulo}`, 'idArticulo');
                 crearElemento("label", "Descripción del Artículo:", datos);
-                crearElemento("input", "", datos, articulo.detalle, false, `detalle${articulo.idArticulo}`,'descripcion');
+                crearElemento("input", "", datos, articulo.detalle, false, `detalle${articulo.idArticulo}`, 'descripcion');
                 crearElemento("label", "Stock Bodega Central:", datos);
-                crearElemento("input", "", datos, articulo.stockBodegaCentral, false, `stockBodegaCentral${articulo.idArticulo}`,'stockBc');
+                crearElemento("input", "", datos, articulo.stockBodegaCentral, false, `stockBodegaCentral${articulo.idArticulo}`, 'stockBc');
                 crearElemento("label", "Stock Bodega:", datos);
-                crearElemento("input", "", datos, articulo.stockBodega, false, `stockBodega${articulo.idArticulo}`,'stockB');
+                crearElemento("input", "", datos, articulo.stockBodega, false, `stockBodega${articulo.idArticulo}`, 'stockB');
                 crearElemento("label", "Stock Vitrina:", datos);
-                crearElemento("input", "", datos, articulo.stockVitrina, false, `stockVitrina${articulo.idArticulo}`,'stockV');
+                crearElemento("input", "", datos, articulo.stockVitrina, false, `stockVitrina${articulo.idArticulo}`, 'stockV');
                 crearElemento("label", "Stock Reposición:", datos);
-                crearElemento("input", "", datos, articulo.stockRepo, false, `stockRepo${articulo.idArticulo}`,'stockR');
+                crearElemento("input", "", datos, articulo.stockRepo, false, `stockRepo${articulo.idArticulo}`, 'stockR');
                 crearElemento("label", "Stock Crítico:", datos);
-                crearElemento("input", "", datos, articulo.stockCritico, false, `stockCritico${articulo.idArticulo}`,'stockC');
+                crearElemento("input", "", datos, articulo.stockCritico, false, `stockCritico${articulo.idArticulo}`, 'stockC');
 
-                const buttonsContainer = document.createElement("div"); 
-                buttonsContainer.classList.add("botones");// Nuevo div para contener los botones
-
-                const button = document.createElement("button");
-                button.textContent = "Actualizar";
-                button.classList.add("btnEdita");// Nuevo div para contener los botones
-
-                button.addEventListener("click", () => actualizarDatos(articulo.idArticulo));
-
-                buttonsContainer.appendChild(button);
-
+                // Nuevo div para contener los botones
+                const buttonsContainer = document.createElement("div");
+                buttonsContainer.classList.add("botones");
+                // Botón "Actualizar"
+                const buttonActualizar = document.createElement("button");
+                buttonActualizar.textContent = "Actualizar";
+                buttonActualizar.classList.add("btnEdita");
+                buttonActualizar.addEventListener("click", () => actualizarDatos(articulo.idArticulo));
+                buttonsContainer.appendChild(buttonActualizar);
                 // Agrega un salto de línea después del botón "Actualizar"
                 buttonsContainer.appendChild(document.createElement("br"));
-
-                // Agrega un nuevo botón para eliminar
+                // Botón "Eliminar"
                 const eliminarButton = document.createElement("button");
                 eliminarButton.textContent = "Eliminar";
-                eliminarButton.classList.add("btnElimina");// Nuevo div para contener los botones
-
+                eliminarButton.classList.add("btnElimina");
                 eliminarButton.addEventListener("click", () => eliminarArticulo(articulo.idArticulo));
-
                 buttonsContainer.appendChild(eliminarButton);
-
+                // Agrega un salto de línea después del botón "Eliminar"
+                buttonsContainer.appendChild(document.createElement("br"));
+                // Botón "Recalculo"
+                const recalculoButton = document.createElement("button");
+                recalculoButton.textContent = "Recalculo";
+                recalculoButton.id = `btnRecalculo${articulo.idArticulo}`;
+                recalculoButton.type = "button";
+                recalculoButton.classList.add("btnRecalculo");
+                recalculoButton.addEventListener("click", () => recalculoDatos(articulo.idArticulo));
+                buttonsContainer.appendChild(recalculoButton);
                 // Agrega el nuevo div con los botones al div principal
                 datos.appendChild(buttonsContainer);
 
                 div.appendChild(datos);
+                // Crear el bloque de resumen dinámicamente
+                const resumenDiv = document.createElement("div");
+                resumenDiv.classList.add("resumen");
+                const sBc = document.createElement("p");
+                sBc.id = `sBc${articulo.idArticulo}`;
+                resumenDiv.appendChild(sBc);
+                const sBl = document.createElement("p");
+                sBl.id = `sBl${articulo.idArticulo}`;
+                resumenDiv.appendChild(sBl);
+                const sV = document.createElement("p");
+                sV.id = `sV${articulo.idArticulo}`;
+                resumenDiv.appendChild(sV);
+                const sR = document.createElement("p");
+                sR.id = `sR${articulo.idArticulo}`;
+                resumenDiv.appendChild(sR);
+                const sT = document.createElement("p");
+                sT.id = `sT${articulo.idArticulo}`;
+                resumenDiv.appendChild(sT);
+                const sC = document.createElement("p");
+                sC.id = `sC${articulo.idArticulo}`;
+                resumenDiv.appendChild(sC);
+                // Agregar el bloque de resumen al artículo
+                div.appendChild(resumenDiv);
+                // Crear el bloque de mensaje crítico dinámicamente
+                const mensajeCriticoP = document.createElement("p");
+                mensajeCriticoP.id = `mensajeCritico${articulo.idArticulo}`;
+                mensajeCriticoP.classList.add("resumen");
+                // Agregar el bloque de mensaje crítico al artículo
+                div.appendChild(mensajeCriticoP);
+                // Agregar un salto de línea después del bloque de mensaje crítico
+                div.appendChild(document.createElement("br"));
                 document.body.appendChild(div);
+                // Llamar a la función de resumen con el idArticulo
+                generarResumen(articulo.idArticulo);
+                
             });
-
+            //crea elementos dinamicos en pantalla
             function crearElemento(tag, labelText, parent, value, disabled, id, clase) {
                     const elemento = document.createElement(tag);
                     if (tag === "label") {
@@ -188,11 +122,8 @@
                             elemento.classList.add(clase);
                         }
                     }
-
                     parent.appendChild(elemento);
                 }
-
-
             // Función para actualizar datos
             function actualizarDatos(idArticulo) {
                 const articuloActualizado = {
@@ -214,7 +145,9 @@
                     localStorage.setItem("articulosVitrina", JSON.stringify(articulos));
                     alert('articulo actualizado')
                 }
+                recalculoDatos(idArticulo)
             }
+            //elimina articulo de local storage
             function eliminarArticulo(idArticulo) {
                 let confirma=confirm("?seguro de eliminar el articulo con id " + idArticulo)
                 if(!confirma){
@@ -229,12 +162,86 @@
                     document.getElementById(`articulo${idArticulo}`).parentNode.parentNode.remove();
                 }
             }
-
+            //boton elimina articulo
             document.getElementById('eliminarLocalStorage').addEventListener('click', function() {
                 // Eliminar la clave 'articulosVitrina' del almacenamiento local
                 localStorage.removeItem('articulosVitrina');
                 alert('Clave "articulosVitrina" eliminada del almacenamiento local.');
             });
+            function recalculoDatos(idArticulo) {
+                let sBc = parseFloat(document.getElementById(`stockBodegaCentral${idArticulo}`).value) || 0;
+                let sBl = parseFloat(document.getElementById(`stockBodega${idArticulo}`).value) || 0;
+                let sR = parseFloat(document.getElementById(`stockRepo${idArticulo}`).value) || 0;
+                let sV = parseFloat(document.getElementById(`stockVitrina${idArticulo}`).value) || 0;
+                let sC = parseFloat(document.getElementById(`stockCritico${idArticulo}`).value) || 0;
+                let accion = "Nada que Hacer aún";
+
+                // Restablecer la clase a su valor predeterminado
+                let mensajeCritico = document.getElementById(`mensajeCritico${idArticulo}`);
+                mensajeCritico.classList.remove('texto-rojo');
+
+                if (sC >= sV) {
+                    accion = "Reponer vitrina";
+                    mensajeCritico.classList.add('texto-rojo');
+                }
+
+                if (sC >= sV && sR === 0 && sBl >= sC) {
+                    accion = "Abastecer respaldo reposición y reponer vitrina";
+                    mensajeCritico.classList.add('texto-rojo');
+                }
+
+                if (sC >= sV && sR === 0 && sBl === 0) {
+                    accion = "Pedir a bodega Central abastecer reposición y reponer vitrina";
+                    mensajeCritico.classList.add('texto-rojo');
+                }
+
+                if (sC >= sV && sR === 0 && sBl === 0 && sBc === 0) {
+                    accion = "Ya no hay stock y es lo que queda del producto";
+                }
+
+                mensajeCritico.innerText = accion;
+
+                // Totales
+                let sT = sBc + sBl + sR + sV;
+                document.getElementById(`sT${idArticulo}`).innerText = 'Stock Total=' + sT;
+            }
+            //GENERA RESUMEN
+            function generarResumen(idArticulo) {
+                const stockBc = parseFloat(document.getElementById(`stockBodegaCentral${idArticulo}`).value) || 0;
+                const stockBl = parseFloat(document.getElementById(`stockBodega${idArticulo}`).value) || 0;
+                const stockR = parseFloat(document.getElementById(`stockRepo${idArticulo}`).value) || 0;
+                const stockV = parseFloat(document.getElementById(`stockVitrina${idArticulo}`).value) || 0;
+                const stockC = parseFloat(document.getElementById(`stockCritico${idArticulo}`).value) || 0;
+                
+                // Restablecer la clase a su valor predeterminado
+                const mensajeCritico = document.getElementById(`mensajeCritico${idArticulo}`);
+                mensajeCritico.classList.remove('texto-rojo');
+
+                let accion = "Nada que Hacer aún";
+
+                if (stockC >= stockV) {
+                    accion = "Reponer vitrina";
+                    mensajeCritico.classList.add('texto-rojo');
+                }
+
+                if (stockC >= stockV && stockR === 0 && stockBl >= stockC) {
+                    accion = "Abastecer respaldo reposición y reponer vitrina";
+                    mensajeCritico.classList.add('texto-rojo');
+                }
+
+                if (stockC >= stockV && stockR === 0 && stockBl === 0) {
+                    accion = "Pedir a bodega Central abastecer reposición y reponer vitrina";
+                    mensajeCritico.classList.add('texto-rojo');
+                }
+
+                if (stockC >= stockV && stockR === 0 && stockBl === 0 && stockBc === 0) {
+                    accion = "Ya no hay stock y es lo que queda del producto";
+                }
+                mensajeCritico.innerText = accion;
+                // Totales
+                const stockTotal = stockBc + stockBl + stockR + stockV;
+                document.getElementById(`sT${idArticulo}`).innerText = `Stock Total: ${stockTotal}`;
+            }
         </script>
     </body>
 </html>
