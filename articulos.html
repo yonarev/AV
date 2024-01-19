@@ -1,242 +1,240 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Artículos</title>
-    <style>
-        body {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-around;
-            background-color: rgb(84, 56, 56);
-        }
-        .item {
-            margin: 10px;
-            padding: 10px;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-        .campos{
-            /* display: flex;
-            justify-content: center;
-            align-content: center; */
-            text-align: center;
-            background-color: rgb(49, 23, 23);
-            color: rgb(208, 188, 188);
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Artículos</title>
+        <style>
+            body {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-around;
+                background-color: rgb(84, 56, 56);
+            }
+            .item {
+                margin: 10px;
+                padding: 10px;
+                background-color: #fff;
+                border-radius: 8px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            }
+            .campos{
+                /* display: flex;
+                justify-content: center;
+                align-content: center; */
+                text-align: center;
+                background-color: rgb(49, 23, 23);
+                color: rgb(208, 188, 188);
+                
+            }
+            .item campos input {
+                justify-content: center;
+            }
+            img {
+                margin: 0 auto;
+                max-width: 100%;
+                border-radius: 8px;
+                margin-bottom: 10px;
+            }
+            label {
+                text-align: center;
+                margin: 0 auto;
+                font-size: 20px;
+                margin-bottom: 5px;
+                display: block;
+            }
+            input {
             
-        }
-        .item campos input {
-            justify-content: center;
-        }
-        img {
-            margin: 0 auto;
-            max-width: 100%;
-            border-radius: 8px;
-            margin-bottom: 10px;
-        }
-        label {
-            text-align: center;
-            margin: 0 auto;
-            font-size: 20px;
-            margin-bottom: 5px;
-            display: block;
-        }
-        input {
-           
-            font-size: 6vw;
-            margin-bottom: 10px;
-            box-sizing: border-box; /* Evita que el padding afecte al ancho */
-        }
-        button {
-            font-size: 16px;
-            padding: 8px;
-            cursor: pointer;
-        }
-        #eliminarLocalStorage{
-            width: auto;
-        }
+                font-size: 6vw;
+                margin-bottom: 10px;
+                box-sizing: border-box; /* Evita que el padding afecte al ancho */
+            }
+            button {
+                font-size: 16px;
+                padding: 8px;
+                cursor: pointer;
+            }
+            #eliminarLocalStorage{
+                width: auto;
+            }
 
-        .codigo{
-            width: 25vw;
-        }
-        .stockBc  {
-            width: 20vw;
-            background-color: yellow;
-            margin: 0 auto;
-            
-        }
-        .stockR  {
-            background-color: rgb(133, 133, 126);
-            width: 20vw;
-        }
-        .stockB {
-            background-color: rgb(212, 212, 117);
-            width: 20vw;
-        }
-        .stockV {
-            width: 20vw;
-        }
-        .stockC{
-            background-color: red;
-            color: white;
-            width: 20vw;
+            .codigo{
+                width: 25vw;
+            }
+            .stockBc  {
+                width: 20vw;
+                background-color: yellow;
+                margin: 0 auto;
+                
+            }
+            .stockR  {
+                background-color: rgb(133, 133, 126);
+                width: 20vw;
+            }
+            .stockB {
+                background-color: rgb(212, 212, 117);
+                width: 20vw;
+            }
+            .stockV {
+                width: 20vw;
+            }
+            .stockC{
+                background-color: red;
+                color: white;
+                width: 20vw;
 
-        }
-        .botones{
-            margin: auto;
-        }
-        .botones button{
-            width: 32vw;
-            flex-wrap: wrap;
-            flex-direction: column;
-            border-radius: 6px;
-            font-size: 6vw;
-            text-align: center;
-        }
-        .btnElimina{
-            color: rgb(255, 255, 255);
-            background-color: rgb(192, 54, 54);
-        }
-        .btnEdita{
-            text-align: center;
-            color: rgb(255, 255, 255);
-            background-color: rgb(74, 176, 27);
-        }
+            }
+            .botones{
+                margin: auto;
+            }
+            .botones button{
+                width: 32vw;
+                flex-wrap: wrap;
+                flex-direction: column;
+                border-radius: 6px;
+                font-size: 6vw;
+                text-align: center;
+            }
+            .btnElimina{
+                color: rgb(255, 255, 255);
+                background-color: rgb(192, 54, 54);
+            }
+            .btnEdita{
+                text-align: center;
+                color: rgb(255, 255, 255);
+                background-color: rgb(74, 176, 27);
+            }
 
-    </style>
-</head>
-<body>
-    <div>
-        <button id="eliminarLocalStorage">Eliminar Local Storage</button>
-    </div>
-    
+        </style>
+    </head>
+    <body>
+        <div>
+            <button id="eliminarLocalStorage">Eliminar Local Storage</button>
+        </div>
+        <script>
+            const articulos = JSON.parse(localStorage.getItem("articulosVitrina")) || [];
 
-<script>
-    const articulos = JSON.parse(localStorage.getItem("articulosVitrina")) || [];
+            articulos.forEach(articulo => {
+                const div = document.createElement("div");
+                div.classList.add("item", "campos");
 
-    articulos.forEach(articulo => {
-        const div = document.createElement("div");
-        div.classList.add("item", "campos");
+                const img = document.createElement("img");
+                img.src = `./fotos/foto${articulo.idArticulo}.jpg`;
+                div.appendChild(img);
 
-        const img = document.createElement("img");
-        img.src = `./fotos/foto${articulo.idArticulo}.jpg`;
-        div.appendChild(img);
+                const datos = document.createElement("div");
 
-        const datos = document.createElement("div");
+                crearElemento("label", "Id Artículo:", datos);
+                crearElemento("input", "", datos, articulo.idArticulo, true);
+                crearElemento("label", "Código del Artículo:", datos);
+                crearElemento("input", "", datos, articulo.codigoArticulo, false, `codigoArticulo${articulo.idArticulo}`,'codigo');
+                crearElemento("label", "Nombre del Artículo:", datos);
+                crearElemento("input", "", datos, articulo.articulo, false, `articulo${articulo.idArticulo}`,'idArticulo');
+                crearElemento("label", "Descripción del Artículo:", datos);
+                crearElemento("input", "", datos, articulo.detalle, false, `detalle${articulo.idArticulo}`,'descripcion');
+                crearElemento("label", "Stock Bodega Central:", datos);
+                crearElemento("input", "", datos, articulo.stockBodegaCentral, false, `stockBodegaCentral${articulo.idArticulo}`,'stockBc');
+                crearElemento("label", "Stock Bodega:", datos);
+                crearElemento("input", "", datos, articulo.stockBodega, false, `stockBodega${articulo.idArticulo}`,'stockB');
+                crearElemento("label", "Stock Vitrina:", datos);
+                crearElemento("input", "", datos, articulo.stockVitrina, false, `stockVitrina${articulo.idArticulo}`,'stockV');
+                crearElemento("label", "Stock Reposición:", datos);
+                crearElemento("input", "", datos, articulo.stockRepo, false, `stockRepo${articulo.idArticulo}`,'stockR');
+                crearElemento("label", "Stock Crítico:", datos);
+                crearElemento("input", "", datos, articulo.stockCritico, false, `stockCritico${articulo.idArticulo}`,'stockC');
 
-        crearElemento("label", "Id Artículo:", datos);
-        crearElemento("input", "", datos, articulo.idArticulo, true);
-        crearElemento("label", "Código del Artículo:", datos);
-        crearElemento("input", "", datos, articulo.codigoArticulo, false, `codigoArticulo${articulo.idArticulo}`,'codigo');
-        crearElemento("label", "Nombre del Artículo:", datos);
-        crearElemento("input", "", datos, articulo.articulo, false, `articulo${articulo.idArticulo}`,'idArticulo');
-        crearElemento("label", "Descripción del Artículo:", datos);
-        crearElemento("input", "", datos, articulo.detalle, false, `detalle${articulo.idArticulo}`,'descripcion');
-        crearElemento("label", "Stock Bodega Central:", datos);
-        crearElemento("input", "", datos, articulo.stockBodegaCentral, false, `stockBodegaCentral${articulo.idArticulo}`,'stockBc');
-        crearElemento("label", "Stock Bodega:", datos);
-        crearElemento("input", "", datos, articulo.stockBodega, false, `stockBodega${articulo.idArticulo}`,'stockB');
-        crearElemento("label", "Stock Vitrina:", datos);
-        crearElemento("input", "", datos, articulo.stockVitrina, false, `stockVitrina${articulo.idArticulo}`,'stockV');
-        crearElemento("label", "Stock Reposición:", datos);
-        crearElemento("input", "", datos, articulo.stockRepo, false, `stockRepo${articulo.idArticulo}`,'stockR');
-        crearElemento("label", "Stock Crítico:", datos);
-        crearElemento("input", "", datos, articulo.stockCritico, false, `stockCritico${articulo.idArticulo}`,'stockC');
+                const buttonsContainer = document.createElement("div"); 
+                buttonsContainer.classList.add("botones");// Nuevo div para contener los botones
 
-        const buttonsContainer = document.createElement("div"); 
-        buttonsContainer.classList.add("botones");// Nuevo div para contener los botones
+                const button = document.createElement("button");
+                button.textContent = "Actualizar";
+                button.classList.add("btnEdita");// Nuevo div para contener los botones
 
-        const button = document.createElement("button");
-        button.textContent = "Actualizar";
-        button.classList.add("btnEdita");// Nuevo div para contener los botones
+                button.addEventListener("click", () => actualizarDatos(articulo.idArticulo));
 
-        button.addEventListener("click", () => actualizarDatos(articulo.idArticulo));
+                buttonsContainer.appendChild(button);
 
-        buttonsContainer.appendChild(button);
+                // Agrega un salto de línea después del botón "Actualizar"
+                buttonsContainer.appendChild(document.createElement("br"));
 
-        // Agrega un salto de línea después del botón "Actualizar"
-        buttonsContainer.appendChild(document.createElement("br"));
+                // Agrega un nuevo botón para eliminar
+                const eliminarButton = document.createElement("button");
+                eliminarButton.textContent = "Eliminar";
+                eliminarButton.classList.add("btnElimina");// Nuevo div para contener los botones
 
-        // Agrega un nuevo botón para eliminar
-        const eliminarButton = document.createElement("button");
-        eliminarButton.textContent = "Eliminar";
-        eliminarButton.classList.add("btnElimina");// Nuevo div para contener los botones
+                eliminarButton.addEventListener("click", () => eliminarArticulo(articulo.idArticulo));
 
-        eliminarButton.addEventListener("click", () => eliminarArticulo(articulo.idArticulo));
+                buttonsContainer.appendChild(eliminarButton);
 
-        buttonsContainer.appendChild(eliminarButton);
+                // Agrega el nuevo div con los botones al div principal
+                datos.appendChild(buttonsContainer);
 
-        // Agrega el nuevo div con los botones al div principal
-        datos.appendChild(buttonsContainer);
+                div.appendChild(datos);
+                document.body.appendChild(div);
+            });
 
-        div.appendChild(datos);
-        document.body.appendChild(div);
-    });
+            function crearElemento(tag, labelText, parent, value, disabled, id, clase) {
+                    const elemento = document.createElement(tag);
+                    if (tag === "label") {
+                        elemento.textContent = `${labelText}`;
+                    } else if (tag === "input") {
+                        elemento.type = "text";
+                        elemento.value = value;
+                        elemento.disabled = disabled;
+                        if (id) {
+                            elemento.id = id;
+                        }
+                        if (clase) {
+                            elemento.classList.add(clase);
+                        }
+                    }
 
-    function crearElemento(tag, labelText, parent, value, disabled, id, clase) {
-            const elemento = document.createElement(tag);
-            if (tag === "label") {
-                elemento.textContent = `${labelText}`;
-            } else if (tag === "input") {
-                elemento.type = "text";
-                elemento.value = value;
-                elemento.disabled = disabled;
-                if (id) {
-                    elemento.id = id;
+                    parent.appendChild(elemento);
                 }
-                if (clase) {
-                    elemento.classList.add(clase);
+
+
+            // Función para actualizar datos
+            function actualizarDatos(idArticulo) {
+                const articuloActualizado = {
+                    idArticulo: idArticulo,
+                    codigoArticulo: document.getElementById(`codigoArticulo${idArticulo}`).value,
+                    articulo: document.getElementById(`articulo${idArticulo}`).value,
+                    detalle: document.getElementById(`detalle${idArticulo}`).value,
+                    stockBodegaCentral: document.getElementById(`stockBodegaCentral${idArticulo}`).value,
+                    stockBodega: document.getElementById(`stockBodega${idArticulo}`).value,
+                    stockVitrina: document.getElementById(`stockVitrina${idArticulo}`).value,
+                    stockRepo: document.getElementById(`stockRepo${idArticulo}`).value,
+                    stockCritico: document.getElementById(`stockCritico${idArticulo}`).value,
+                };
+
+                // Actualizar el elemento en el array y en el localStorage
+                const index = articulos.findIndex(a => a.idArticulo === idArticulo);
+                if (index !== -1) {
+                    articulos[index] = articuloActualizado;
+                    localStorage.setItem("articulosVitrina", JSON.stringify(articulos));
+                    alert('articulo actualizado')
+                }
+            }
+            function eliminarArticulo(idArticulo) {
+                let confirma=confirm("?seguro de eliminar el articulo con id " + idArticulo)
+                if(!confirma){
+                    return
+                }
+                // Eliminar el elemento del array y del localStorage
+                const index = articulos.findIndex(a => a.idArticulo === idArticulo);
+                if (index !== -1) {
+                    articulos.splice(index, 1);
+                    localStorage.setItem("articulosVitrina", JSON.stringify(articulos));
+                    // Remueve el div correspondiente al artículo eliminado
+                    document.getElementById(`articulo${idArticulo}`).parentNode.parentNode.remove();
                 }
             }
 
-            parent.appendChild(elemento);
-        }
-
-
-    // Función para actualizar datos
-    function actualizarDatos(idArticulo) {
-        const articuloActualizado = {
-            idArticulo: idArticulo,
-            codigoArticulo: document.getElementById(`codigoArticulo${idArticulo}`).value,
-            articulo: document.getElementById(`articulo${idArticulo}`).value,
-            detalle: document.getElementById(`detalle${idArticulo}`).value,
-            stockBodegaCentral: document.getElementById(`stockBodegaCentral${idArticulo}`).value,
-            stockBodega: document.getElementById(`stockBodega${idArticulo}`).value,
-            stockVitrina: document.getElementById(`stockVitrina${idArticulo}`).value,
-            stockRepo: document.getElementById(`stockRepo${idArticulo}`).value,
-            stockCritico: document.getElementById(`stockCritico${idArticulo}`).value,
-        };
-
-        // Actualizar el elemento en el array y en el localStorage
-        const index = articulos.findIndex(a => a.idArticulo === idArticulo);
-        if (index !== -1) {
-            articulos[index] = articuloActualizado;
-            localStorage.setItem("articulosVitrina", JSON.stringify(articulos));
-            alert('articulo actualizado')
-        }
-    }
-    function eliminarArticulo(idArticulo) {
-        let confirma=confirm("?seguro de eliminar el articulo con id " + idArticulo)
-        if(!confirma){
-            return
-        }
-        // Eliminar el elemento del array y del localStorage
-        const index = articulos.findIndex(a => a.idArticulo === idArticulo);
-        if (index !== -1) {
-            articulos.splice(index, 1);
-            localStorage.setItem("articulosVitrina", JSON.stringify(articulos));
-            // Remueve el div correspondiente al artículo eliminado
-            document.getElementById(`articulo${idArticulo}`).parentNode.parentNode.remove();
-        }
-    }
-
-    document.getElementById('eliminarLocalStorage').addEventListener('click', function() {
-        // Eliminar la clave 'articulosVitrina' del almacenamiento local
-        localStorage.removeItem('articulosVitrina');
-        alert('Clave "articulosVitrina" eliminada del almacenamiento local.');
-    });
-</script>
-</body>
+            document.getElementById('eliminarLocalStorage').addEventListener('click', function() {
+                // Eliminar la clave 'articulosVitrina' del almacenamiento local
+                localStorage.removeItem('articulosVitrina');
+                alert('Clave "articulosVitrina" eliminada del almacenamiento local.');
+            });
+        </script>
+    </body>
 </html>

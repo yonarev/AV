@@ -8,6 +8,6 @@ git remote add origin https://github.com/yonarev/AV.git
 git push -u origin main
 -----
 git add .
-git commit -m "18 enero pm commit"
+git commit -m "17 enero pm commit"
 git branch -M main
 git push -u origin main

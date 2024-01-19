@@ -1,0 +1,47 @@
+[{
+    idArticulo,codigoArticulo,articulo,detalle,stockBodegaCentral,stockBodega,stockVitrina,stockCritico
+}]
+requiero que en esta pagina como browser de fotos se desplieguen los datos para cada foto que estan en local storage con key 
+"articulosVitrina" con estructura 
+            const articuloData = {
+                idArticulo,
+                codigoArticulo,
+                articulo,
+                detalle,
+                stockBodegaCentral,
+                stockBodega,
+                stockVitrina,
+                stockRepo,
+                stockCritico,
+                fileName,
+            };
+            el nombre del archivo es la referencia que esta en 'fileName' en local storage
+            ---
+            CREA UN FORNULARIO EN LA PAGINA PARA LLENAR LOS DATOS EN LOAL STORAGE 
+            CON KEY 'articulos' con la siguiente estructura json 
+            [{
+                idArticulo,
+                codigoArticulo,
+                articulo,
+                detalle,
+                stockBodegaCentral,
+                stockBodega,
+                stockVitrina,
+                stockRepo,
+                stockCritico,
+                archivo,
+            }]
+            al lado de cada input debe haber un boton para confirmar el ingreso de cada campo 
+            y debe haber al fiinal del formulario el boton grabar que grabe en local storage 
+            teniendo en cuenta que siempre el idArticulo debe ser unico y no debe repetirse 
+
+los archivos estan en la ruta './fotos' y necesito que despliegues como un browser con todas las fotos acompanadas de 
+sus datos de local storage que le corresponden a cada una pues el 'idArticulo' es parte del nonbre del archivo 
+que es unico. para esto deme el codigo en un solo archivo html llamado articulos.html .
+---------
+necesito que con php confirmes si ya se guardo el archivo como foto (o que exista en la ruta './fotos/') 
+pues de no estar el archivo necesito 
+que me avises para incorporarlo en el codigo.
+esto incorporalo en esta pagina
+
+            

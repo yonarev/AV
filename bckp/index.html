@@ -4,7 +4,78 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Accediendo a la cámara y tomando fotos</title>
-    <link rel="stylesheet" href="./index.css">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            background-color: rgb(64, 47, 47);
+        }
+        .camara {
+            margin: 0 auto;
+            text-align: center; 
+            align-content: center;
+            justify-content: center;
+            margin-bottom: 5px;
+        } 
+        .camara video {
+            max-width: 100vw;
+            width: 100vw;
+            margin-bottom: 5px;
+        }
+        .camara button {
+            font-size:6vw;
+            border-radius: 1vw;
+            cursor: pointer;
+        }
+       
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+            color: white;
+        }
+        form input {
+            margin-bottom: 10px;
+            font-size: 6vw;
+        }
+        form button {
+            margin-top: 10px;
+            font-size: 1.5em;
+            cursor: pointer;
+            margin-bottom: 10px;
+            font: 13px;
+            border-radius: 7px;
+        }
+        form label {
+            font-size: 5vw;
+        }
+        p {
+            text-align: center;
+            color: white;
+        }
+        /* CONFIG ANCHO INPUTS */
+        #codigoArticulo{
+            width: 20vw;
+            background-color: rgb(237, 237, 173);
+        }
+        #articulo,#detalle{
+            width: 90vw;
+        }
+        #stockBodegaCentral,#stockBodega,#stockVitrina,#stockRepo,#stockCritico{
+            width: 13vw;
+        }
+        #stockBodegaCentral,#stockBodega{
+            background-color: rgb(225, 225, 130);
+        }
+        #stockRepo{
+            background-color: rgb(175, 175, 163);
+        }
+        #stockCritico{
+            color: white;
+            background-color: rgb(223, 26, 62);
+        }
+    </style>
 </head>
 <body>
     <div class="camara">
@@ -72,19 +143,10 @@
             <button type="button" onclick="confirmField('btnGraba')">Confirmar</button>
         </div>
         <button id="btnGraba" type="button" onclick="grabaDatosArticulo(event)">Grabar</button>
+        <br>
+        <br>
     </form>
-    <div class="resumen">
-            <p id="sBc"></p>
-            <p id="sBl"></p>
-            <p id="sV"></p>
-            <p id="sR"></p>
-            <p id="sT"></p>
-            <p id="sC"></p>
-    </div>
-    <div>
-        <p id="mensajeCritico" class="resumen"> </p>
-    </div>
-    <br>
+
     <script>
         const video = document.getElementById("videoElement");
         const canvas = document.getElementById("canvasElement");
@@ -165,10 +227,11 @@
             }
         //CONFIRMA INPUT    
         function confirmField(fieldId) {
-            document.getElementById(fieldId).focus();
-            // document.getElementById(fieldId).select();
-            resumen()
+           document.getElementById(fieldId).focus();
+           document.getElementById(fieldId).select();
         }
+
+
         //GRABA EN LOCAL STORAGE
         function grabaDatosArticulo(event) {
             event.preventDefault()
@@ -238,43 +301,6 @@
                     console.error("Error al verificar la existencia de la foto:", error);
                     return false;
                 });
-        }
-        function resumen() {
-            let sBc = parseFloat(document.getElementById('stockBodegaCentral').value) || 0;
-            let sBl = parseFloat(document.getElementById('stockBodega').value) || 0;
-            let sR = parseFloat(document.getElementById('stockRepo').value) || 0;
-            let sV = parseFloat(document.getElementById('stockVitrina').value) || 0;
-            let sC = parseFloat(document.getElementById('stockCritico').value) || 0;
-
-            let accion = "Nada que Hacer aun";
-            // Restablecer la clase a su valor predeterminado
-            let mensajeCritico = document.getElementById('mensajeCritico');
-            mensajeCritico.classList.remove('texto-rojo');
-
-            if (sC >= sV) {
-                accion = "Reponer vitrina";
-                mensajeCritico.classList.add('texto-rojo');
-            }
-
-            if (sC >= sV && sR === 0 && sBl >= sC) {
-                accion = "Abastecer respaldo reposición y reponer vitrina";
-                mensajeCritico.classList.add('texto-rojo');
-            }
-
-            if (sC >= sV && sR === 0 && sBl === 0) {
-                accion = "Pedir a bodega Central abastecer reposición y reponer vitrina";
-                mensajeCritico.classList.add('texto-rojo');
-            }
-
-            if (sC >= sV && sR === 0 && sBl === 0 && sBc === 0) {
-                accion = "Ya no hay stock y es lo que queda del producto";
-            }
-
-            mensajeCritico.innerText = accion;
-
-            // Totales
-            let sT = sBc + sBl + sR + sV;
-            document.getElementById('sT').innerText = 'Stock Total=' + sT;
         }
 
     </script>
