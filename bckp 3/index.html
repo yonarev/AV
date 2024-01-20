@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accediendo a la cámara y tomando fotos</title>
+    <link rel="stylesheet" href="./index.css">
+</head>
+<body>
+    <div class="camara">
+        <div>
+            <label for="cameraSelect">Selecciona cámara:</label>
+            <select id="cameraSelect">
+                <option value="user">Frontal</option>
+                <option value="environment" selected>Trasera</option>
+            </select>
+            <br>
+            <video id="videoElement" autoplay="true"></video>
+        </div>
+        <button id="btnFoto" onclick="takePhoto()">Tomar foto</button>
+        <button id="btnBrowser" onclick="window.open('./articulos.html');">Ver Articulos</button>
+        <button onclick="window.open('./localStorage.html')">Admin Base Local</button>
+        <p id="idArticulo">Id Articulo</p>
+    </div>
+    <canvas id="canvasElement" style="display: none;"></canvas>
+    <form id="dataForm">
+        <div>
+            <div>
+                <label for="codigoArticulo">Código:</label>
+            </div>
+            <input type="text" id="codigoArticulo">
+            <button type="button" onclick="confirmField('articulo')">Confirmar</button>
+        </div>
+        <label for="articulo">Artículo:</label>
+        <input type="text" id="articulo">
+        <button type="button" onclick="confirmField('detalle')">Confirmar</button>
+        <label for="detalle">Descripción:</label>
+        <input type="text" id="detalle">
+        <button type="button" onclick="confirmField('stockBodegaCentral')">Confirmar</button>
+        <div>
+            <div>
+                <label for="stockBodegaCentral">Stock Bodega Central:</label>
+            </div>
+            <input type="text" id="stockBodegaCentral">
+            <button type="button" onclick="confirmField('stockBodega')">Confirmar</button>
+        </div>
+        <div>
+            <div>
+                <label for="stockBodega">Stock Bodega:</label>
+            </div>
+            <input type="text" id="stockBodega">
+            <button type="button" onclick="confirmField('stockVitrina')">Confirmar</button>
+        </div>
+        <div>
+            <div>
+                <label for="stockVitrina">Stock Vitrina:</label>
+            </div>
+            <input type="text" id="stockVitrina">
+            <button type="button" onclick="confirmField('stockRepo')">Confirmar</button>
+        </div>
+        <div>
+            <div>
+                <label for="stockRepo">Stock Reposicion:</label>
+            </div>
+            <input type="text" id="stockRepo">
+            <button type="button" onclick="confirmField('stockCritico')">Confirmar</button>
+        </div>
+        <div>
+            <div>
+                <label for="stockCritico">Stock Crítico:</label>
+            </div>
+            <input type="text" id="stockCritico">
+            <button type="button" onclick="confirmField('btnGraba')">Confirmar</button>
+        </div>
+        <button id="btnGraba" type="button" onclick="grabaDatosArticulo(event)">Grabar</button>
+    </form>
+    <div class="resumen">
+            <p id="sBc"></p>
+            <p id="sBl"></p>
+            <p id="sV"></p>
+            <p id="sR"></p>
+            <p id="sT"></p>
+            <p id="sC"></p>
+    </div>
+    <div>
+        <p id="mensajeCritico" class="resumen"> </p>
+    </div>
+    <br>
+    <script>
+        const video = document.getElementById("videoElement");
+        const canvas = document.getElementById("canvasElement");
+        const context = canvas.getContext("2d");
+        const idArticulo = genIdArt();
+        const archivo = `foto${idArticulo}.jpg`;
+        const ruta = "/fotos/";
+        const rutaYarchivo = ruta + archivo;
+        //SETEA ID DEL ARCHIVO QUE ES EL ID DEL ARTICULO
+        document.getElementById('idArticulo').innerText="Id Articulo "+idArticulo
+        //SELECCIONA EL CAMPO CODIGO
+        document.getElementById('codigoArticulo').focus()
+        document.getElementById('codigoArticulo').select()
+        //ACTIVA LA CAMARA
+        let selectedCamera = "environment"; // Default to the rear camera
+        navigator.mediaDevices.getUserMedia({ video: { facingMode: selectedCamera, width: 1920, height: 1080, frameRate: 30 } })
+            .then(function(stream) {
+                video.srcObject = stream;
+            })
+            .catch(function(error) {
+                console.error("Error al acceder a la cámara:", error);
+            });
+        //TOMA LA FOTO
+        function takePhoto() {
+                const btnFoto = document.getElementById("btnFoto");
+                btnFoto.disabled = true;
+                selectedCamera = document.getElementById("cameraSelect").value;
+                navigator.mediaDevices.getUserMedia({ video: { facingMode: selectedCamera, width: 1920, height: 1080, frameRate: 30 } })
+                    .then(function(stream) {
+                        video.srcObject = stream;
+                        video.play();
+                    })
+                    .then(function() {
+                        return new Promise(resolve => setTimeout(resolve, 500));
+                    })
+                    .then(function() {
+                        // Ajustar el canvas para asegurar una orientación vertical
+                        const aspectRatio = video.videoWidth / video.videoHeight;
+                        canvas.width = 1080; // Puedes ajustar este valor según tus necesidades
+                        canvas.height = 1920; // Puedes ajustar este valor según tus necesidades
+
+                        // Dibujar el fotograma actual del video
+                        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+                        
+                        // Convertir la imagen del canvas a formato binario (Blob)
+                        canvas.toBlob(function(blob) {
+                            const formData = new FormData();
+                            formData.append('imagen', blob, archivo);
+                            formData.append('idArticulo', idArticulo);
+
+                            fetch('guardar_imagen.php', {
+                                method: 'POST',
+                                body: formData
+                            })
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error('Network response was not ok');
+                                }
+                                return response.json();
+                            })
+                            .then(data => {
+                                document.getElementById('codigoArticulo').focus()
+                                document.getElementById('codigoArticulo').select()
+                                console.log(data);
+                                btnFoto.disabled = false;
+                            })
+                            .catch(error => {
+                                console.error("Error al enviar la imagen al servidor:", error);
+                                btnFoto.disabled = false;
+                            });
+
+                        }, 'image/jpeg', 1.0, 'image/jpeg');
+                    })
+                    .catch(function(error) {
+                        console.error("Error al acceder a la cámara:", error);
+                        btnFoto.disabled = false;
+                    });
+            }
+        //CONFIRMA INPUT    
+        function confirmField(fieldId) {
+            document.getElementById(fieldId).focus();
+            // document.getElementById(fieldId).select();
+            resumen()
+        }
+        //GRABA NUEVO ARTICULO
+        function grabaDatosArticulo(event) {
+            event.preventDefault();
+            const codigoArticulo = document.getElementById("codigoArticulo").value;
+
+            // Verifica si el código de artículo ya existe en el localStorage
+            const existingArticulos = JSON.parse(localStorage.getItem("articulosVitrina")) || [];
+            const codigoExistente = existingArticulos.some(item => item.codigoArticulo === codigoArticulo);
+
+            if (codigoExistente) {
+                alert("El código de artículo ya existe. Ingresa un código único.");
+                return;
+            }
+
+            const articulo = document.getElementById("articulo").value;
+            const detalle = document.getElementById("detalle").value;
+            const stockBodegaCentral = document.getElementById("stockBodegaCentral").value;
+            const stockBodega = document.getElementById("stockBodega").value;
+            const stockVitrina = document.getElementById("stockVitrina").value;
+            const stockRepo = document.getElementById("stockRepo").value;
+            const stockCritico = document.getElementById("stockCritico").value;
+            const articuloData = {
+                idArticulo,
+                codigoArticulo,
+                articulo,
+                detalle,
+                stockBodegaCentral,
+                stockBodega,
+                stockVitrina,
+                stockRepo,
+                stockCritico,
+                archivo,
+            };
+
+            existingArticulos.push(articuloData);
+            localStorage.setItem("articulosVitrina", JSON.stringify(existingArticulos));
+
+            alert("Datos grabados en local storage");
+            verificarExistenciaFoto(archivo)
+                .then(existe => {
+                    if (!existe) {
+                        alert("La foto no existe en la ruta './fotos/'.");
+                        console.log("La foto no existe en la ruta './fotos/'.");
+                    } else {
+                        location.reload();
+                    }
+                });
+        }
+        //GENERA ID UNICO DEL ARTICULO
+        function genIdArt() {
+            const currentDate = new Date();
+            const hora = currentDate.getHours();
+            const minutos = currentDate.getMinutes();
+            const segundos = currentDate.getSeconds();
+            const hor = hora < 10 ? "0" + hora.toString() : hora.toString();
+            const min = minutos < 10 ? "0" + minutos.toString() : minutos.toString();
+            const seg = segundos < 10 ? "0" + segundos.toString() : segundos.toString();
+            const horaTrans = hor + min + seg;
+            const horaIng = hor + ":" + min + ":" + seg;
+            const anioHoy = currentDate.getFullYear();
+            const mesHoy = ("0" + (currentDate.getMonth() + 1)).slice(-2);
+            const diaDeHoy = ("0" + currentDate.getDate()).slice(-2);
+            const fechaIng = `${diaDeHoy}/${mesHoy}/${anioHoy}`;
+            const id = fechaIng.replace(/\//g, '') + horaIng.replace(/:/g, '');
+            return id;
+        }
+        //VERIFICA SI EXISTE ARCHIVO FOTO
+        function verificarExistenciaFoto(archivo) {
+            return fetch(`verificar_foto.php?archivo=${archivo}`)
+                .then(response => response.json())
+                .then(data => {
+                    return data.existe;
+                })
+                .catch(error => {
+                    console.error("Error al verificar la existencia de la foto:", error);
+                    return false;
+                });
+        }
+        //DA RESUMEN
+        function resumen() {
+            let sBc = parseFloat(document.getElementById('stockBodegaCentral').value) || 0;
+            let sBl = parseFloat(document.getElementById('stockBodega').value) || 0;
+            let sR = parseFloat(document.getElementById('stockRepo').value) || 0;
+            let sV = parseFloat(document.getElementById('stockVitrina').value) || 0;
+            let sC = parseFloat(document.getElementById('stockCritico').value) || 0;
+            let accion = "Nada que Hacer aun";
+            // Restablecer la clase a su valor predeterminado
+            let mensajeCritico = document.getElementById('mensajeCritico');
+            mensajeCritico.classList.remove('texto-rojo');
+            if (sC >= sV) {
+                accion = "Reponer vitrina";
+                mensajeCritico.classList.add('texto-rojo');
+            }
+            if (sC >= sV && sR === 0 && sBl >= sC) {
+                accion = "Abastecer respaldo reposición y reponer vitrina";
+                mensajeCritico.classList.add('texto-rojo');
+            }
+            if (sC >= sV && sR === 0 && sBl === 0) {
+                accion = "Pedir a bodega Central abastecer reposición y reponer vitrina";
+                mensajeCritico.classList.add('texto-rojo');
+            }
+            if (sC >= sV && sR === 0 && sBl === 0 && sBc === 0) {
+                accion = "Ya no hay stock y es lo que queda del producto";
+            }
+            mensajeCritico.innerText = accion;
+            // Totales
+            let sT = sBc + sBl + sR + sV;
+            document.getElementById('sT').innerText = 'Stock Total=' + sT;
+        }
+    </script>
+</body>
+</html>
