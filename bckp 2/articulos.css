@@ -114,22 +114,3 @@
                 font-size: 5vw;
                 background-color: black;
             }
-            input[type="file"] {
-                font-size: 2vw;
-                display: block;
-                width: auto;
-                height: auto;
-                border: 1px solid #ccc;
-                background-color: #eee;
-                padding: 10px;
-                margin-bottom: 10px;
-            }
-            .botonesLocal{
-                display: flex;
-                flex-direction: column;
-                margin: 0 auto;
-            }
-            .botonesLocal button input {
-                width: 15vw;
-               border-radius: 17px; 
-            }

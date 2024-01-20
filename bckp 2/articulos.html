@@ -7,7 +7,9 @@
         <link rel="stylesheet" href="./articulos.css">
     </head>
     <body>
-        
+        <div>
+            <button id="eliminarLocalStorage">Eliminar Local Storage</button>
+        </div>
         <script>
             //carga la pagina desplefgando articulos
             const articulos = JSON.parse(localStorage.getItem("articulosVitrina")) || [];
@@ -158,7 +160,12 @@
                     document.getElementById(`articulo${idArticulo}`).parentNode.parentNode.remove();
                 }
             }
-            
+            //boton elimina articulo
+            document.getElementById('eliminarLocalStorage').addEventListener('click', function() {
+                // Eliminar la clave 'articulosVitrina' del almacenamiento local
+                localStorage.removeItem('articulosVitrina');
+                alert('Clave "articulosVitrina" eliminada del almacenamiento local.');
+            });
             function recalculoDatos(idArticulo) {
                 let sBc = parseFloat(document.getElementById(`stockBodegaCentral${idArticulo}`).value) || 0;
                 let sBl = parseFloat(document.getElementById(`stockBodega${idArticulo}`).value) || 0;
@@ -220,7 +227,6 @@
                 const stockTotal = stockBc + stockBl + stockR + stockV;
                 document.getElementById(`sT${idArticulo}`).innerText = `Stock Total: ${stockTotal}`;
             }
-            
-       </script>
+        </script>
     </body>
 </html>

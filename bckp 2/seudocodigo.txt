@@ -43,15 +43,5 @@ necesito que con php confirmes si ya se guardo el archivo como foto (o que exist
 pues de no estar el archivo necesito 
 que me avises para incorporarlo en el codigo.
 esto incorporalo en esta pagina
--------
-codigo en un solo archivo html que con un boton 
-            <button id="guardaLocalStorage">descargar Local Storage</button>
-grabe en un archivo en disco duro llamado 'baseArticulosVitrina.json'
-en fornato json a partir de los datos en local storage el key "articulosVitrina"
------
-codigo en un solo archivo html que con un boton 
-<button id="cargarLocalStorage">Cargar Local Storage</button>
-lea de disco duro un archivo json con blob y carge el key "articulosVitrina"
-con los datos json del archivo
 
             
