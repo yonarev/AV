@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Local storage de AV</title>
+    <link rel="stylesheet" href="./articulos.css">
+</head>
+<body>
+    <div class="botonesLocal">
+        <button id="eliminarLocalStorage">Eliminar Local Storage</button>
+        <button id="guardaLocalStorage" onclick="guardaLocalStorage()">Grabar Local Storage</button>
+        <button onclick="cargarLocalStorage()">Cargar Local Storage</button>
+        <input type="file" id="fileInput" accept=".json">
+    </div>
+    <script>
+        function guardaLocalStorage(){
+                // Obtener datos del Local Storage
+                var datosLocalStorage = localStorage.getItem('articulosVitrina');
+
+                // Verificar si hay datos en el Local Storage
+                if (datosLocalStorage) {
+                    // Convertir la cadena JSON a objeto JavaScript
+                    var articulos = JSON.parse(datosLocalStorage);
+
+                    // Crear un objeto Blob con los datos en formato JSON
+                    var blob = new Blob([JSON.stringify(articulos)], { type: 'application/json' });
+
+                    // Crear un enlace para descargar el archivo
+                    var a = document.createElement('a');
+                    a.href = URL.createObjectURL(blob);
+                    a.download = 'baseArticulosVitrina.json';
+
+                    // Agregar el enlace al documento y simular un clic
+                    document.body.appendChild(a);
+                    a.click();
+
+                    // Eliminar el enlace del documento
+                    document.body.removeChild(a);
+                } else {
+                    alert('No hay datos en Local Storage');
+                }
+            } 
+        function cargarLocalStorage() {
+            var fileInput = document.getElementById('fileInput');
+            if (fileInput.files.length > 0) {
+                var file = fileInput.files[0];
+                var reader = new FileReader();
+                reader.readAsText(file);
+                reader.onload = function(event) {
+                var jsonData = event.target.result;
+                try {
+                    var parsedData = JSON.parse(jsonData);
+                    localStorage.setItem('articulosVitrina', JSON.stringify(parsedData));
+                    alert('Datos cargados en Local Storage exitosamente.');
+                } catch (error) {
+                    alert('Error al parsear el archivo JSON.');
+                }
+                };
+            } else {
+                alert('Por favor, selecciona un archivo JSON.');
+            }
+        }
+        //boton elimina articulo
+        document.getElementById('eliminarLocalStorage').addEventListener('click', function() {
+                // Eliminar la clave 'articulosVitrina' del almacenamiento local
+                localStorage.removeItem('articulosVitrina');
+                alert('Clave "articulosVitrina" eliminada del almacenamiento local.');
+        });
+    </script>
+</body>
+</html>
