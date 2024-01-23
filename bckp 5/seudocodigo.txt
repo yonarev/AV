@@ -1,0 +1,295 @@
+[{
+    idArticulo,codigoArticulo,articulo,detalle,stockBodegaCentral,stockBodega,stockVitrina,stockCritico
+}]
+requiero que en esta pagina como browser de fotos se desplieguen los datos para cada foto que estan en local storage con key 
+"articulosVitrina" con estructura 
+            const articuloData = {
+                idArticulo,
+                codigoArticulo,
+                articulo,
+                detalle,
+                stockBodegaCentral,
+                stockBodega,
+                stockVitrina,
+                stockRepo,
+                stockCritico,
+                fileName,
+            };
+            el nombre del archivo es la referencia que esta en 'fileName' en local storage
+            ---
+            CREA UN FORNULARIO EN LA PAGINA PARA LLENAR LOS DATOS EN LOAL STORAGE 
+            CON KEY 'articulos' con la siguiente estructura json 
+            [{
+                idArticulo,
+                codigoArticulo,
+                articulo,
+                detalle,
+                stockBodegaCentral,
+                stockBodega,
+                stockVitrina,
+                stockRepo,
+                stockCritico,
+                archivo,
+            }]
+            al lado de cada input debe haber un boton para confirmar el ingreso de cada campo 
+            y debe haber al fiinal del formulario el boton grabar que grabe en local storage 
+            teniendo en cuenta que siempre el idArticulo debe ser unico y no debe repetirse 
+
+los archivos estan en la ruta './fotos' y necesito que despliegues como un browser con todas las fotos acompanadas de 
+sus datos de local storage que le corresponden a cada una pues el 'idArticulo' es parte del nonbre del archivo 
+que es unico. para esto deme el codigo en un solo archivo html llamado articulos.html .
+---------
+necesito que con php confirmes si ya se guardo el archivo como foto (o que exista en la ruta './fotos/') 
+pues de no estar el archivo necesito 
+que me avises para incorporarlo en el codigo.
+esto incorporalo en esta pagina
+-------
+codigo en un solo archivo html que con un boton 
+            <button id="guardaLocalStorage">descargar Local Storage</button>
+grabe en un archivo en disco duro llamado 'baseArticulosVitrina.json'
+en fornato json a partir de los datos en local storage el key "articulosVitrina"
+-----
+codigo en un solo archivo html que con un boton 
+<button id="cargarLocalStorage">Cargar Local Storage</button>
+lea de disco duro un archivo json con blob y carge el key "articulosVitrina"
+con los datos json del archivo
+----
+agregar dinamicamente 3 botones 
+'reposicion vitrina'
+'reposicion stock vitrina' 
+'solicitud reposicion Bodega' 
+'reposicion bodega local'
+a cada articulo y que cada boton este asociado 
+a una fucion especifica respectivamente 
+repoVitrina(idArticulo)
+repoStockVitrtina(idArticulo) 
+repoStockBodegaLocal(idArticulo)
+solicitudRepoBodega(idArticulo)
+luego veremos que hace cada funcion
+estos botones deben ir en una section 
+abajo. Todo esto en en esta pagina 
+---- 
+la funcion repoVitrina(idArticulo) 
+    const stockBc = parseFloat(document.getElementById(`stockBodegaCentral${idArticulo}`).value) || 0;
+    const stockBl = parseFloat(document.getElementById(`stockBodega${idArticulo}`).value) || 0;
+    const stockR = parseFloat(document.getElementById(`stockRepo${idArticulo}`).value) || 0;
+    const stockV = parseFloat(document.getElementById(`stockVitrina${idArticulo}`).value) || 0;
+    const stockC = parseFloat(document.getElementById(`stockCritico${idArticulo}`).value) || 0;
+primero se valida si stockR=0
+    si es 0 entonces alert 'no es posible reponer vitrina, solicite articulos
+    a bodega' 
+
+se consulta por la cantidad a reponer del articulo
+    se valida si la cantidad a reponer  'reposicion' que sea <= stockR
+    si cumple esta validacion se actualiza stockV 
+        stockV=stockV+reposicion
+    si no cumple se repone lo que se puede indicando al usuario 
+        con un confirm  "La cantidad maxima a reponer es stockR
+            si acepta el confirm
+                stockV=stockV +stockR
+                stockR=0
+            si cancela el confirm no se hace nada  
+en el formulario de ese articulo se ingresan en los inputs correspondientes 
+se resta del stock de reposicion 'stockR y se suma al stock de vitrina 'stockV'  
+----
+la funcion repoStockVitrtina(idArticulo)
+    const stockBl = parseFloat(document.getElementById(`stockBodega${idArticulo}`).value) || 0;
+    const stockR = parseFloat(document.getElementById(`stockRepo${idArticulo}`).value) || 0;
+    primero se debe validar que el stockBl de ese articulo no sea 0
+        si stockBl=0 entonces indicar con alert ' No es posible esta transaccion'
+            y no hacer nada
+        de lo contrario 
+            se debe solicitar la cantidad de articulos que se va a reponer con un prompt 
+            en el prompt por omision se debe poner la cantidad que hay en bodega osea stockBl
+            = nuevoStockRepo
+            que diga 'Cuantos articulos va a dejar como stock de reposicion en Vitrina?'
+            validar que esa cantidad sea menor o igual al de stock de bodega de ese articulo 
+                    stockBl<=nuevoStockRepo
+                si es posible entonces 
+                    actualizar en el formulario 
+                        stockR= stockR+ nuevoStockRepo
+                        stockBl=stockBl- nuevoStockRepo    
+                si no cumple indicar que no es posible y no hacer nada 
+---   
+la funcion solicitudRepoBodega(idArticulo)
+    const stockBc = parseFloat(document.getElementById(`stockBodegaCentral${idArticulo}`).value) || 0;
+    const stockBl = parseFloat(document.getElementById(`stockBodega${idArticulo}`).value) || 0;
+    const stockR = parseFloat(document.getElementById(`stockRepo${idArticulo}`).value) || 0;
+    const stockV = parseFloat(document.getElementById(`stockVitrina${idArticulo}`).value) || 0;
+    const stockC = parseFloat(document.getElementById(`stockCritico${idArticulo}`).value) || 0;
+    debe validar 
+        que el stock de reposicion sea menor o igual al stock critico
+            stocR<=stockC
+        y que el stock de bodega sea cero 
+            stockBl=0    
+        si se cumplen ambas condiciones  
+            dar una alerta que indique "! Debe comenzar a solicitar a bodega central el articulo !" 
+        de lo contrario no hacer nada
+---    
+la funcion repoStockBodegaLocal(idArticulo) 
+    const stockBc = parseFloat(document.getElementById(`stockBodegaCentral${idArticulo}`).value) || 0;
+    const stockBl = parseFloat(document.getElementById(`stockBodega${idArticulo}`).value) || 0;
+    debe consultar con un prompt la cantidad de articulos que esta ingresando a Bodega
+    'nuevoStockBodega', con el mensaje ' ingrese la cantidad de articulos que esta ingresando a la bodega Local '  
+        esa cantidadad 'nuevoStockBodega' debe restarse del stock de bodega central  
+            stockBc=stockBc-nuevoStockBodega
+        y debe ahora sumarse a la bodega local 
+            stockBl=stockBl+ nuevoStockBodega  
+    estos valores deben actualizarse en el formulario del articulo           
+---
+    necesito una funcion llamada agregaArticuloPedido(idArticulo)
+    que en local storage con key llamado 'solicitudPedidoBodega'
+    con la estructura [{idArticulo,codArticulo,Articulo,stockBc}] la idea es que 
+    al invocar la funcion se vaya llenado local storage 
+    tambien debe validar que no se repita el codigoArticulo en 
+    esta lista de pedidosi
+----
+dame el codigo sql para crear una tabla llamada 'articulosV' con la siguiente estructura
+                idArticulo entero unico y llave
+                codigoArticulo entero unico 
+                articulo varchar 50
+                detalle varchar 100
+                stockBodegaCentral entero
+                stockBodega entero
+                stockVitrina entero
+                stockRepo entero
+                stockCritico entero
+                archivo varchar 100
+
+                CREATE TABLE articulosV (
+    idArticulo VARCHAR(50) PRIMARY KEY,
+    codigoArticulo INT UNIQUE,
+    articulo VARCHAR(50),
+    detalle VARCHAR(100),
+    stockBodegaCentral INT,
+    stockBodega INT,
+    stockVitrina INT,
+    stockRepo INT,
+    stockCritico INT,
+    archivo VARCHAR(100)
+);
+----
+necesito reajustar el codigo con js y llamando a un archivo php llamado 'nuevo_articulo' con conexion pdo establecida 
+con archivo php llamado './conexion.php' ya creado. La idea es grabar nuevos articulos pero que no se repita el indice 
+dando un mensaje de alerta 
+----
+NECESITO modificar este codigo js de manera que presente 
+los datos en pantalla pues lo esta haciendo a partir 
+de los datos en local storage 
+y necesito accesar con pho una tabla llamada 'articulosV' 
+que tiene los mismos campos   i
+    dArticulo INT PRIMARY KEY,
+    codigoArticulo INT UNIQUE,
+    articulo VARCHAR(50),
+    detalle VARCHAR(100),
+    stockBodegaCentral INT,
+    stockBodega INT,
+    stockVitrina INT,
+    stockRepo INT,
+    stockCritico INT,
+    archivo VARCHAR(100) 
+el archivo php debe llamarse actualiza_articulos.php  
+y tiene una conexion establecida con pdo con un archivo 
+llamado conexion.php. Adjuto html y js   
+----
+codigo en sql para generar una tabla llamada 'usuariosAv' 
+con la siguiente estructura
+idUsuario varchar(50) primaria 
+usuario varchar(4) unica 
+psw varchar(4)
+tipo varchar(10)()
+
+CREATE TABLE usuariosav (
+    idUsuario VARCHAR(50) PRIMARY KEY,
+    usuario VARCHAR(4) UNIQUE,
+    nombre varchar(50) UNIQUE,
+    psw VARCHAR(4),
+    tipo VARCHAR(10),
+    detalle TEXT
+);
+codigo en un solo archivo html de un crud para administrar 
+la tabla sql de usuarios llamada 'usuariosAv' con la estructura 
+    idUsuario VARCHAR(50) PRIMARY KEY,
+    usuario VARCHAR(4) UNIQUE,
+    nombre varchar(50) UNIQUE,
+    psw VARCHAR(4),
+    tipo VARCHAR(10)
+debe hacerse con una tabla html creada dinamicamente 
+y que tenga en cada columna un campo 
+y 2 columnas adicionales con dos botones 
+'Eliminar' y 'Editar' 
+debe haber tambien un formulario para ingresar y editar usuarios 
+con un los campos indicado y un boton 'grabar' que grabe si es nuevo 
+o que actualice si se hizo click en el boton editar de la fila registro de la tabla 
+que pondra los datos en el formulario.
+el boton eliminar de cada fila de la tabla debe tener una funcion llamada eliminaUsuario() 
+el boton grabar llama a una funcion llamada grabarUsuario()
+el boton editar de cada fila de la tabla llama a la funcion editar()
+luego veremos las funciones     
+----
+la funcion grabarUsuario() si no es edicion y es nuevo 
+graba los datos en una tabla sql llamada 'usuariosav' 
+con la estructura 
+    idUsuario VARCHAR(50) PRIMARY KEY,
+    nombre varchar(50)
+    usuario VARCHAR(4) UNIQUE,
+    psw VARCHAR(4),
+    tipo VARCHAR(10) 
+y debe hacerlo con un archivo php llamado 
+'nuevo_usuario.php' con una conexion ya establecida 
+con PDO con un archivo llamado 'conexion.php'  
+y debe grabar el registro en la tabla 
+asegurando que no se repita 'idUsuario' 'nombre' y 'usuario'   
+---
+codigo en un solo archivo html que con una funcion js 
+llamada grabaJsonAsql() 
+que permita buscar un archivo json en disco duro con la estructura
+de una lista de objetos 
+                [{idArticulo,
+                codigoArticulo,
+                articulo,
+                detalle,
+                stockBodegaCentral,
+                stockBodega,
+                stockVitrina,
+                stockRepo,
+                stockCritico,
+                fileName,}]
+que grabe todos los registros en una tabla sql 
+llamada  'articulosV'  con los campos
+    idArticulo VARCHAR(50) PRIMARY KEY,
+    codigoArticulo INT UNIQUE,
+    articulo VARCHAR(50),
+    detalle VARCHAR(100),
+    stockBodegaCentral INT,
+    stockBodega INT,
+    stockVitrina INT,
+    stockRepo INT,
+    stockCritico INT,
+    archivo VARCHAR(100) 
+    debe hacerlo con un archivo php 
+    llamado graba_json_sql.php 
+    con una conexion PDO establecida por medio de un archivo 
+    llamado 'conexion.php'
+----
+necesito la funcion eliminarArticulo(idArticulo) 
+que con esta funcion llama a un archivo php llamado elimina_articulo.php 
+el cual con una conexion PDO establecida elimina el registro de la tabla sql 
+llamada 'articulosV'
+---
+codigo en un solo archivo html que carge la pagina con un modal 
+que solicite el nombre y la psw para poder accesar.
+para accesar debe consultar a una tabla sql llamada 'usuariosav'
+con un archivo php llamado acceso.php con conexion establecida 
+con PDO y debe consultar en la tabla con la siguiente estructura 
+    idUsuario VARCHAR(50) PRIMARY KEY,
+    nombre varchar(50)
+    usuario VARCHAR(4) UNIQUE,
+    psw VARCHAR(4),
+    tipo VARCHAR(10)
+
+    debe validar que el 'usuario' coincida con la clave 'psw' y de ser 
+    asi debe retornar un json con todo el registro de ese usuario pues 
+    son datos necesario para el acceso a los datos que tendra el sistema
+               
+ 

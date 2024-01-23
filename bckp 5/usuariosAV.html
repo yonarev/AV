@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Usuarios AV</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Usuarios AV</h2>
+
+<form id="usuarioForm">
+    <label for="idUsuario">ID Usuario:</label>
+    <input type="text" id="idUsuario" name="idUsuario" readonly="true">
+    <div>
+        <div>
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" name="nombre" required>
+        </div>
+        <div>
+            <label for="usuario">Usuario:</label>
+            <input type="text" id="usuario" name="usuario" required>
+        </div>
+        <div>
+            <label for="psw">Psw:</label>
+            <input type="password" id="psw" name="psw" required>
+        </div>
+        <div>
+            <label for="tipo">Tipo:</label>
+            <input type="text" id="tipo" name="tipo" required>
+        </div>
+        <div>
+             <label for="detalle">Detalle:</label>
+             <div>
+                 <textarea id="detalle" name="detalle" rows="4" cols="50" required></textarea>
+             </div>
+        </div>    
+    </div>
+
+    <button type="button" onclick="grabarUsuario()">Grabar</button>
+</form>
+
+<table id="usuariosTable">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Usuario</th>
+            <th>Psw</th>
+            <th>Tipo</th>
+            <th>Detalle</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Filas de la tabla se agregarán dinámicamente aquí -->
+    </tbody>
+</table>
+
+<script>
+   
+    let grabar = 'nuevo';
+
+    // Función para editar un usuario
+    function editar(usuario) {
+        document.getElementById('idUsuario').value = usuario.idUsuario;
+        document.getElementById('nombre').value = usuario.nombre;
+        document.getElementById('usuario').value = usuario.usuario;
+        document.getElementById('psw').value = usuario.psw;
+        document.getElementById('tipo').value = usuario.tipo;
+        document.getElementById('detalle').value = usuario.detalle;
+        grabar = 'editar';
+    }
+
+    function grabarUsuarioNuevo() {
+        grabar = 'nuevo';
+        let idUsu=genIdUsu()
+        // Obtener valores del formulario
+        document.getElementById('idUsuario').value=idUsu
+        const nombre = document.getElementById('nombre').value;
+        const usuario = document.getElementById('usuario').value;
+        const psw = document.getElementById('psw').value;
+        const tipo = document.getElementById('tipo').value;
+        const detalle = document.getElementById('detalle').value;
+
+        // Crear objeto con datos del formulario
+        const userData = {
+            idUsuario: idUsu,
+            nombre: nombre,
+            usuario: usuario,
+            psw: psw,
+            tipo: tipo,
+            detalle: detalle
+        };
+
+        // Realizar la llamada al archivo PHP
+        fetch('./nuevo_usuario.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(userData),
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert(data.message); // Mostrar mensaje de alerta
+
+            if (data.status === 'success') {
+                // Limpiar campos del formulario
+                document.getElementById('idUsuario').value = '';
+                document.getElementById('nombre').value = '';
+                document.getElementById('usuario').value = '';
+                document.getElementById('psw').value = '';
+                document.getElementById('tipo').value = '';
+                document.getElementById('detalle').value = '';
+
+                // Actualizar la tabla con los nuevos datos
+                cargarTabla(data.usuarios);
+                // Cambiar la variable global a 'nuevo' después de grabar
+                grabar = 'nuevo';
+            }
+        })
+        .catch(error => console.error('Error al realizar la llamada:', error));
+    }
+
+    function actualizarUsuario() {
+        // Obtener valores del formulario
+        const idUsuario = document.getElementById('idUsuario').value;
+        const nombre = document.getElementById('nombre').value;
+        const usuario = document.getElementById('usuario').value;
+        const psw = document.getElementById('psw').value;
+        const tipo = document.getElementById('tipo').value;
+        const detalle = document.getElementById('detalle').value;
+
+        // Crear objeto con datos del formulario
+        const userData = {
+            idUsuario: idUsuario,
+            nombre: nombre,
+            usuario: usuario,
+            psw: psw,
+            tipo: tipo,
+            detalle: detalle
+        };
+
+        // Determinar si es una inserción o una actualización
+        const url = idUsuario ? './actualizar_usuario.php' : './nuevo_usuario.php';
+
+        // Realizar la llamada al archivo PHP
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(userData),
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert(data.message); // Mostrar mensaje de alerta
+
+            if (data.status === 'success') {
+                // Limpiar campos del formulario
+                document.getElementById('idUsuario').value = '';
+                document.getElementById('nombre').value = '';
+                document.getElementById('usuario').value = '';
+                document.getElementById('psw').value = '';
+                document.getElementById('tipo').value = '';
+                document.getElementById('detalle').value = '';
+                grabar = 'nuevo';
+                // Actualizar la tabla con los nuevos datos
+                presentaUsuarios(); // Usa la función que obtiene y presenta los usuarios
+            }
+        })
+        .catch(error => console.error('Error al realizar la llamada:', error));
+    }
+
+    function grabarUsuario() {
+    // Obtener el valor del campo idUsuario
+    const idUsuario = document.getElementById('idUsuario').value;
+
+    // Verificar el valor de la variable global grabar
+    if (grabar === 'editar') {
+        // Si es editar y hay un idUsuario, llamar a la función actualizarUsuario
+        actualizarUsuario();
+        grabar = 'nuevo';
+    } else {
+        // Si no es editar o no hay idUsuario, llamar a la función grabarUsuarioNuevo
+        grabarUsuarioNuevo();
+        grabar = 'nuevo';
+    }
+}
+    function eliminaUsuario(idUsuario) {
+        // Confirmar con el usuario antes de eliminar
+        if (confirm("¿Estás seguro de que deseas eliminar este usuario?")) {
+            // Realizar la llamada al archivo PHP para eliminar el usuario
+            fetch('./eliminar_usuario.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ 'idUsuario': idUsuario }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message); // Mostrar mensaje de alerta
+
+                if (data.status === 'success') {
+                    // Actualizar la tabla con los usuarios restantes
+                    presentaUsuarios();
+                }
+            })
+            .catch(error => console.error('Error al realizar la llamada:', error));
+        }
+    }
+    // Función para cargar la tabla con datos actualizados
+    
+    function cargarTabla(usuarios) {
+        const tableBody = document.querySelector('#usuariosTable tbody');
+        tableBody.innerHTML = '';
+
+        usuarios.forEach(usuario => {
+            const row = tableBody.insertRow();
+
+            for (const prop in usuario) {
+                const cell = row.insertCell();
+                cell.textContent = usuario[prop];
+            }
+
+            const deleteButton = document.createElement('button');
+            deleteButton.textContent = 'Eliminar';
+            deleteButton.addEventListener('click', () => eliminaUsuario(usuario.idUsuario));
+            row.appendChild(deleteButton);
+
+            const editButton = document.createElement('button');
+            editButton.textContent = 'Editar';
+            editButton.addEventListener('click', () => editar(usuario));
+            row.appendChild(editButton);
+        });
+    }
+
+    function presentaUsuarios() {
+        // Realizar la llamada al archivo PHP que obtiene los datos de la tabla
+        fetch('./obtener_usuarios.php', {
+            method: 'GET',
+        })
+        .then(response => response.json())
+        .then(data => {
+            cargarTabla(data.usuarios);
+        })
+        .catch(error => console.error('Error al obtener usuarios:', error));
+    }
+    
+    function genIdUsu() {
+            const currentDate = new Date();
+            const hora = currentDate.getHours();
+            const minutos = currentDate.getMinutes();
+            const segundos = currentDate.getSeconds();
+            const hor = hora < 10 ? "0" + hora.toString() : hora.toString();
+            const min = minutos < 10 ? "0" + minutos.toString() : minutos.toString();
+            const seg = segundos < 10 ? "0" + segundos.toString() : segundos.toString();
+            const horaTrans = hor + min + seg;
+            const horaIng = hor + ":" + min + ":" + seg;
+            const anioHoy = currentDate.getFullYear();
+            const mesHoy = ("0" + (currentDate.getMonth() + 1)).slice(-2);
+            const diaDeHoy = ("0" + currentDate.getDate()).slice(-2);
+            const fechaIng = `${diaDeHoy}/${mesHoy}/${anioHoy}`;
+            const id = fechaIng.replace(/\//g, '') + horaIng.replace(/:/g, '');
+            return id;
+    }
+
+    presentaUsuarios()
+</script>
+
+</body>
+</html>

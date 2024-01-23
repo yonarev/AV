@@ -485,4 +485,40 @@ function actualizarDatos(idArticulo) {
 
     // recalculoDatos(idArticulo);
 }
+function eliminarArticulo(idArticulo) {
+    // Pregunta al usuario si realmente desea eliminar el artículo
+    if (confirm("¿Estás seguro de que deseas eliminar este artículo? con id " +idArticulo)) {
+        // Realizar la llamada al archivo PHP para eliminar el artículo
+        fetch('./elimina_articulo.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: 'idArticulo=' + idArticulo,
+        })
+        .then(response => {
+            // Verifica si la respuesta tiene un código de estado exitoso (2xx)
+            if (!response.ok) {
+                throw new Error(`Error en la solicitud: ${response.statusText}`);
+            }
+            // Devuelve la respuesta como texto
+            return response.text();
+        })
+        .then(data => {
+            alert(data); // Mostrar mensaje de alerta
+            // Recargar la página después de la eliminación
+            location.reload();
+
+            // Puedes realizar otras acciones después de la eliminación si es necesario
+        })
+        .catch(error => console.error('Error al realizar la llamada:', error));
+    }
+}
+
+
+
+
+
+
+
 

@@ -1,0 +1,13 @@
+echo "# AV" >> README.md
+git init
+git add README.md
+git add .
+git commit -m "primer commit"
+git branch -M main
+git remote add origin https://github.com/yonarev/AV.git
+git push -u origin main
+-----
+git add .
+git commit -m "21 enero am commit"
+git branch -M main
+git push -u origin main

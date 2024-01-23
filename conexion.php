@@ -10,6 +10,7 @@
 // $password = "Libertonim0$";
 // $dbname = "id20940221_q";
 //EN GHOST LOCAL
+// <?php
 
 $servername = "localhost";
 $username = "root";

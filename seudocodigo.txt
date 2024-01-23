@@ -157,7 +157,7 @@ dame el codigo sql para crear una tabla llamada 'articulosV' con la siguiente es
                 archivo varchar 100
 
                 CREATE TABLE articulosV (
-    idArticulo INT PRIMARY KEY,
+    idArticulo VARCHAR(50) PRIMARY KEY,
     codigoArticulo INT UNIQUE,
     articulo VARCHAR(50),
     detalle VARCHAR(100),
@@ -177,7 +177,8 @@ NECESITO modificar este codigo js de manera que presente
 los datos en pantalla pues lo esta haciendo a partir 
 de los datos en local storage 
 y necesito accesar con pho una tabla llamada 'articulosV' 
-que tiene los mismos campos   idArticulo INT PRIMARY KEY,
+que tiene los mismos campos   i
+    dArticulo INT PRIMARY KEY,
     codigoArticulo INT UNIQUE,
     articulo VARCHAR(50),
     detalle VARCHAR(100),
@@ -189,6 +190,121 @@ que tiene los mismos campos   idArticulo INT PRIMARY KEY,
     archivo VARCHAR(100) 
 el archivo php debe llamarse actualiza_articulos.php  
 y tiene una conexion establecida con pdo con un archivo 
-llamado conexion.php. Adjuto html y js     
+llamado conexion.php. Adjuto html y js   
+----
+codigo en sql para generar una tabla llamada 'usuariosAv' 
+con la siguiente estructura
+idUsuario varchar(50) primaria 
+usuario varchar(4) unica 
+psw varchar(4)
+tipo varchar(10)()
 
+CREATE TABLE usuariosav (
+    idUsuario VARCHAR(50) PRIMARY KEY,
+    usuario VARCHAR(4) UNIQUE,
+    nombre varchar(50) UNIQUE,
+    psw VARCHAR(4),
+    tipo VARCHAR(10),
+    detalle TEXT
+);
+codigo en un solo archivo html de un crud para administrar 
+la tabla sql de usuarios llamada 'usuariosAv' con la estructura 
+    idUsuario VARCHAR(50) PRIMARY KEY,
+    usuario VARCHAR(4) UNIQUE,
+    nombre varchar(50) UNIQUE,
+    psw VARCHAR(4),
+    tipo VARCHAR(10)
+debe hacerse con una tabla html creada dinamicamente 
+y que tenga en cada columna un campo 
+y 2 columnas adicionales con dos botones 
+'Eliminar' y 'Editar' 
+debe haber tambien un formulario para ingresar y editar usuarios 
+con un los campos indicado y un boton 'grabar' que grabe si es nuevo 
+o que actualice si se hizo click en el boton editar de la fila registro de la tabla 
+que pondra los datos en el formulario.
+el boton eliminar de cada fila de la tabla debe tener una funcion llamada eliminaUsuario() 
+el boton grabar llama a una funcion llamada grabarUsuario()
+el boton editar de cada fila de la tabla llama a la funcion editar()
+luego veremos las funciones     
+----
+la funcion grabarUsuario() si no es edicion y es nuevo 
+graba los datos en una tabla sql llamada 'usuariosav' 
+con la estructura 
+    idUsuario VARCHAR(50) PRIMARY KEY,
+    nombre varchar(50)
+    usuario VARCHAR(4) UNIQUE,
+    psw VARCHAR(4),
+    tipo VARCHAR(10) 
+y debe hacerlo con un archivo php llamado 
+'nuevo_usuario.php' con una conexion ya establecida 
+con PDO con un archivo llamado 'conexion.php'  
+y debe grabar el registro en la tabla 
+asegurando que no se repita 'idUsuario' 'nombre' y 'usuario'   
+---
+codigo en un solo archivo html que con una funcion js 
+llamada grabaJsonAsql() 
+que permita buscar un archivo json en disco duro con la estructura
+de una lista de objetos 
+                [{idArticulo,
+                codigoArticulo,
+                articulo,
+                detalle,
+                stockBodegaCentral,
+                stockBodega,
+                stockVitrina,
+                stockRepo,
+                stockCritico,
+                fileName,}]
+que grabe todos los registros en una tabla sql 
+llamada  'articulosV'  con los campos
+    idArticulo VARCHAR(50) PRIMARY KEY,
+    codigoArticulo INT UNIQUE,
+    articulo VARCHAR(50),
+    detalle VARCHAR(100),
+    stockBodegaCentral INT,
+    stockBodega INT,
+    stockVitrina INT,
+    stockRepo INT,
+    stockCritico INT,
+    archivo VARCHAR(100) 
+    debe hacerlo con un archivo php 
+    llamado graba_json_sql.php 
+    con una conexion PDO establecida por medio de un archivo 
+    llamado 'conexion.php'
+----
+necesito la funcion eliminarArticulo(idArticulo) 
+que con esta funcion llama a un archivo php llamado elimina_articulo.php 
+el cual con una conexion PDO establecida elimina el registro de la tabla sql 
+llamada 'articulosV'
+---
+codigo en un solo archivo html que carge la pagina con un modal 
+que solicite el nombre y la psw para poder accesar.
+para accesar debe consultar a una tabla sql llamada 'usuariosav'
+con un archivo php llamado acceso.php con conexion establecida 
+con PDO y debe consultar en la tabla con la siguiente estructura 
+    idUsuario VARCHAR(50) PRIMARY KEY,
+    nombre varchar(50)
+    usuario VARCHAR(4) UNIQUE,
+    psw VARCHAR(4),
+    tipo VARCHAR(10)
+
+    debe validar que el 'usuario' coincida con la clave 'psw' y de ser 
+    asi debe retornar un json con todo el registro de ese usuario pues 
+    son datos necesario para el acceso a los datos que tendra el sistema
+--- usuario en las trans  
+codigo sql que crea una tabla llamada 'articulosApp'
+     con la siguiente estructura
+                idUsuario VARCHAR(50)
+                idArticulo,
+                codigoArticulo,
+                articulo,
+                detalle,
+                stockBodegaCentral,
+                stockBodega,
+                stockVitrina,
+                stockRepo,
+                stockCritico,
+                fileName,
+            };
+               
  
