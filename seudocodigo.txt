@@ -339,3 +339,115 @@ codigo en js en una funcion llamada datosUsuarioActivo() que recupere
 los datos en una tabla llamada usuariosav y que retorne estos datos 
 en formato jso con un archivo php llamado datos-usuario-activo.php 
 con una conexion pdo establecida con un archivo llamado conexion.php
+-- tabla transacciones
+codigo sql para generar un a tabla llamada 'trasaarticulosv'
+con la sigte estructura
+idTrans varchar(30) primario
+fecha varchar(10)
+hora varchar(10)
+idUsuario varchar(30)
+idArticulo VARCHAR(50)
+codigoArticulo INT,
+articulo VARCHAR(50),
+detalle VARCHAR(100),
+stockBodegaCentral INT,
+stockBodega INT,
+stockVitrina INT,
+stockRepo INT,
+stockCritico INT,
+archivo VARCHAR(100),
+transaccion text 
+
+
+CREATE TABLE trasaarticulosv (
+    idTrans VARCHAR(30) PRIMARY KEY,
+    fecha VARCHAR(10),
+    hora VARCHAR(10),
+    idUsuario VARCHAR(30),
+    idArticulo VARCHAR(50),
+    codigoArticulo INT,
+    articulo VARCHAR(50),
+    detalle VARCHAR(100),
+    stockBodegaCentral INT,
+    stockBodega INT,
+    stockVitrina INT,
+    stockRepo INT,
+    stockCritico INT,
+    archivo VARCHAR(100),
+    transaccion TEXT
+);
+
+-- codigo transacciones 
+codigo de una funcion llamada transaccion(data)
+donde data es un json con la sigte estructura 
+data={
+    idUsuario,
+    idArticulo,
+    codigoArticulo,
+    articulo,
+    detalle,
+    stockBodegaCentral,
+    stockBodega, 
+    stockVitrina,
+    stockRepo,
+    stockCritico, 
+    archivo, 
+    transaccion
+}
+
+a este data hay que agregarle los campos
+ idTrans,
+    fecha,
+    hora,
+    donde idTrans la concatenacion de la fecha y hora 
+    y la fecha es la fecha actual 
+    la hora es la hora actual
+
+    por lo tanto data quedaria como 
+    dataTrans ={
+        idTrans,
+        fecha,
+        hora,
+        idUsuario,
+        idArticulo,
+        codigoArticulo,
+        articulo,
+        detalle,
+        stockBodegaCentral,
+        stockBodega, 
+        stockVitrina,
+        stockRepo,
+        stockCritico, 
+        archivo, 
+        transaccion
+    }
+    luego este registro hay que grabarlo en una tabla 
+    llamada 'trasaarticulosv'
+    con js fetch con un archivo php llamado 
+    'graba-transa-articulo.php' con una conexion PDO ya establecida 
+    como conexion. el codigo js le envia dataTrans en formato json a archivo php
+-- presentar transacciones 
+codigo en un solo archivo html que presente en una tabla 
+todos los registros de una tabla sql llamada 'trasaarticulosv' con la siguiente estructura 
+ idTrans,
+        fecha,
+        hora,
+        idUsuario,
+        idArticulo,
+        codigoArticulo,
+        articulo,
+        detalle,
+        stockBodegaCentral,
+        stockBodega, 
+        stockVitrina,
+        stockRepo,
+        stockCritico, 
+        archivo, 
+        transaccion
+
+        debe leer los datos con fetch y con un archivo 
+        php llamado 'presenta-transacciones.php' 
+        con una conexion PDO estabelcida atravez de un archivo 
+        llamado conexion.php ..el manejo de los datos debe ser en formato json 
+        tanto en js como en php
+

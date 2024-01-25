@@ -478,8 +478,6 @@ function actualizarDatos(idArticulo) {
         stockCritico: document.getElementById(`stockCritico${idArticulo}`).value,
         idUsuario: idUsuario
     };
-    debugger
-
     // Realizar la solicitud al servidor
     fetch('./actualiza_articulos.php', {
         method: 'POST',
@@ -492,6 +490,7 @@ function actualizarDatos(idArticulo) {
     .then(data => {
         // Manejar la respuesta del servidor (puede ser un mensaje de éxito o error)
         if (data.success) {
+            transaccion(articuloActualizado)
             alert('Artículo actualizado en la base de datos');
         } else {
             alert('Error al actualizar el artículo en la base de datos');
@@ -595,6 +594,91 @@ function presentaNombreUsuario(idUsuario) {
     })
     .catch(error => console.error('Error:', error));
 }
+
+function genIdTrans() {
+    const currentDate = new Date();
+    const hora = currentDate.getHours();
+    const minutos = currentDate.getMinutes();
+    const segundos = currentDate.getSeconds();
+    const hor = hora < 10 ? "0" + hora.toString() : hora.toString();
+    const min = minutos < 10 ? "0" + minutos.toString() : minutos.toString();
+    const seg = segundos < 10 ? "0" + segundos.toString() : segundos.toString();
+    const horaTrans = hor + min + seg;
+    const horaIng = hor + ":" + min + ":" + seg;
+    const anioHoy = currentDate.getFullYear();
+    const mesHoy = ("0" + (currentDate.getMonth() + 1)).slice(-2);
+    const diaDeHoy = ("0" + currentDate.getDate()).slice(-2);
+    const fechaIng = `${diaDeHoy}/${mesHoy}/${anioHoy}`;
+    const id = fechaIng.replace(/\//g, '') + horaIng.replace(/:/g, '');
+    return id;
+}
+function horaAhora() {
+    let currentTime = new Date();
+    let hora = currentTime.getHours();
+    let minutos = currentTime.getMinutes();
+    let segundos = currentTime.getSeconds();
+    // Convierte a string
+    let hor = hora < 10 ? "0" + hora.toString() : hora.toString();
+    let min = minutos < 10 ? "0" + minutos.toString() : minutos.toString();
+    let seg = segundos < 10 ? "0" + segundos.toString() : segundos.toString();
+    // Hora actual
+    let horaTrans = hor + min + seg;
+    var horaIng = hor + ":" + min + ":" + seg; // Entrega hora global horaIng
+    // console.log("horaTrans: " + horaTrans);
+    // console.log("hora Ingreso: " + horaIng); //*
+    return horaIng;
+}
+function fechaAhora() {
+    const date = new Date();
+    const anioHoy = date.getFullYear();
+    const mesHoy = ("0" + (date.getMonth() + 1)).slice(-2); // Agrega un 0 delante del mes si es menor que 10
+    const diaDeHoy = ("0" + date.getDate()).slice(-2); // Agrega un 0 delante del día si es menor que 10
+    const fechaHoy = anioHoy + mesHoy + diaDeHoy; // entrega fechaHoy global
+    const fechaIng = `${diaDeHoy}/${mesHoy}/${anioHoy}` // en variable global fechaIng
+    return fechaIng;
+}
+
+async function transaccion(data) {
+    // Obtener la fecha y hora actuales
+    const fecha = fechaAhora();
+    const hora = horaAhora()
+    const idTrans = genIdTrans()
+    const transaccion="Actualizacion del articulo "
+
+    // Crear el objeto dataTrans
+    const dataTrans = {
+        idTrans,
+        fecha,
+        hora,
+        transaccion,
+        ...data // Agregar todos los campos del objeto original
+    };
+    // debugger
+
+    // Enviar la solicitud utilizando Fetch
+    const response = await fetch('./graba-transa-articulo.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(dataTrans)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Error en la solicitud');
+        }
+        return response.json();
+    })
+    .then(responseData => {
+        // Manejar la respuesta del servidor si es necesario
+        console.log(responseData);
+    })
+    .catch(error => {
+        // Manejar errores de la solicitud
+        console.error('Error:', error);
+    });
+}
+
 
 
 

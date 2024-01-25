@@ -16,7 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     } else {
         try {
             // Proceder con la inserción
-            $stmt = $conexion->prepare("INSERT INTO articulosV (idArticulo, codigoArticulo, articulo, detalle, stockBodegaCentral, stockBodega, stockVitrina, stockRepo, stockCritico, archivo, idUsuario) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            $stmt = $conexion->prepare("INSERT INTO articulosv (idArticulo, codigoArticulo, articulo, detalle, stockBodegaCentral, stockBodega, stockVitrina, stockRepo, stockCritico, archivo, idUsuario) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             $stmt->bindParam(1, $datos_articulo['idArticulo']);
             $stmt->bindParam(2, $datos_articulo['codigoArticulo']);
             $stmt->bindParam(3, $datos_articulo['articulo']);
