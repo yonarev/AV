@@ -1,0 +1,87 @@
+body {
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(64, 47, 47);
+}
+.camara {
+    margin: 0 auto;
+    text-align: center; 
+    align-content: center;
+    justify-content: center;
+    margin-bottom: 5px;
+} 
+.camara video {
+    max-width: 100vw;
+    width: 100vw;
+    margin-bottom: 5px;
+}
+.camara button {
+    font-size:6vw;
+    border-radius: 1vw;
+    cursor: pointer;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+    color: white;
+}
+form input {
+    margin-bottom: 10px;
+    font-size: 6vw;
+}
+form button {
+    margin-top: 10px;
+    font-size: 1.5em;
+    cursor: pointer;
+    margin-bottom: 10px;
+    font: 13px;
+    border-radius: 7px;
+}
+form label {
+    font-size: 5vw;
+}
+p {
+    text-align: center;
+    color: white;
+}
+/* CONFIG ANCHO INPUTS */
+#codigoArticulo{
+    width: 20vw;
+    background-color: rgb(237, 237, 173);
+}
+#articulo,#detalle{
+    width: 90vw;
+}
+#stockBodegaCentral,#stockBodega,#stockVitrina,#stockRepo,#stockCritico{
+    width: 13vw;
+}
+#stockBodegaCentral,#stockBodega{
+    background-color: rgb(225, 225, 130);
+}
+#stockRepo{
+    background-color: rgb(175, 175, 163);
+}
+#stockCritico{
+    color: white;
+    background-color: rgb(223, 26, 62);
+}
+.resumen{
+    display:flex;
+    flex-direction: row;
+    margin: 0 auto;
+    text-align: center;
+}
+#mensajeCritico p{
+    font-family: arial;
+    font-size: 5vw;
+    color: white;
+}
+.texto-rojo {
+    color: red;
+    font-family: arial;
+    font-size: 5vw;
+    background-color: black;
+}

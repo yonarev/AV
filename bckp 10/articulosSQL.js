@@ -1,7 +1,6 @@
 // presenta
 presentaUsuarioActivo()
 let idUsuario = idUsuarioActivo();
-let transAdd='';
 // Obtener datos desde el servidor
 fetch('./obtener_articulos.php')
     .then(response => response.json())
@@ -172,7 +171,6 @@ function generarResumen(idArticulo) {
 }
 //recalcula datos y los presenta
 function recalculoDatos(idArticulo) {
-    // transAdd=transAdd+' & Recalculo'
     let sBc = parseFloat(document.getElementById(`stockBodegaCentral${idArticulo}`).value) || 0;
     let sBl = parseFloat(document.getElementById(`stockBodega${idArticulo}`).value) || 0;
     let sR = parseFloat(document.getElementById(`stockRepo${idArticulo}`).value) || 0;
@@ -261,7 +259,6 @@ function repoVitrina(idArticulo) {
             // Reponer la cantidad máxima permitida
             document.getElementById(`stockVitrina${idArticulo}`).value = stockV + stockR;
             document.getElementById(`stockRepo${idArticulo}`).value = 0;
-            transAdd=transAdd+' & posible reposicion de vitrina'
         } else {
             return
             // No se hace nada si el usuario cancela la confirmación
@@ -287,8 +284,6 @@ function repoStockVitrina(idArticulo) {
         const nuevoStockBl = stockBl - nuevoStockRepo;
         document.getElementById(`stockRepo${idArticulo}`).value = nuevoStockR;
         document.getElementById(`stockBodega${idArticulo}`).value = nuevoStockBl;
-        transAdd=transAdd+' & posible reposicion de stock de vitrina'
-
     } else {
         // Indicar que no es posible y no hacer nada
         alert('La cantidad a dejar como stock de reposición en vitrina no puede ser mayor al stock en bodega.');
@@ -317,8 +312,6 @@ function repoStockBodegaLocal(idArticulo) {
     // Actualizar los valores en el formulario del artículo
     stockBcElement.value = stockBc;
     stockBlElement.value = stockBl;
-    transAdd=transAdd+' & posible abastecimiento de bodega local'
-
     recalculoDatos(idArticulo)
 }
 //carga solicitud por cada articulo para luego impresion
@@ -336,7 +329,6 @@ function solicitudRepoBodega(idArticulo) {
         let confirma = confirm('desea agregar el articulo a la lista de pedidos') 
         if (confirma===true){
             agregaArticuloPedido(idArticulo,codigoArticulo, nombreArticulo+' '+detalleArticulo , stockBc )
-            transAdd=transAdd+' & solicitud de abastecimiento de bodega local'
         } else {
            
             return
@@ -347,13 +339,10 @@ function solicitudRepoBodega(idArticulo) {
         } else {
             let confirmaIgual=confirm("Aun hay stock en Bodega Local, ?desea pedir igual")
             if (confirmaIgual){agregaArticuloPedido(idArticulo,codigoArticulo, nombreArticulo+' '+detalleArticulo , stockBc )}
-            transAdd=transAdd+' & solicitud de abastecimiento de bodega local'
-
         }
     }
 }
 function agregaArticuloPedido(idArticulo, codigoArticulo, nombreArticulo, stockBc) {
-
     // Obtener la lista actual de pedidos desde el localStorage
     let solicitudPedidoBodega = JSON.parse(localStorage.getItem('solicitudPedidoBodega')) || [];
     // Verificar si el artículo ya está en la lista por idArticulo o codArticulo
@@ -372,7 +361,6 @@ function agregaArticuloPedido(idArticulo, codigoArticulo, nombreArticulo, stockB
         // Guardar la lista actualizada en el localStorage
         localStorage.setItem('solicitudPedidoBodega', JSON.stringify(solicitudPedidoBodega));
         console.log("Artículo agregado exitosamente a la lista de pedidos.");
-        transAdd=transAdd+' & Se agrego articulo a la lista de pedidos'
         alert("Artículo agregado exitosamente a la lista de pedidos.");
     }
 }
@@ -451,7 +439,6 @@ function eliminaListaPedidos() {
 let inputsHabilitados = false;
 //habilita inputs
 function habilitaInputs() {
-    transAdd=transAdd+' & Se editaron los campos'
     // Obtener todos los elementos input en la página
     const inputs = document.querySelectorAll('input');
     // Iterar sobre los inputs y quitar el atributo readonly
@@ -503,9 +490,8 @@ function actualizarDatos(idArticulo) {
     .then(data => {
         // Manejar la respuesta del servidor (puede ser un mensaje de éxito o error)
         if (data.success) {
-            transaccion(articuloActualizado,transAdd)
+            transaccion(articuloActualizado)
             alert('Artículo actualizado en la base de datos');
-
         } else {
             alert('Error al actualizar el artículo en la base de datos');
         }
@@ -537,8 +523,6 @@ function eliminarArticulo(idArticulo) {
         })
         .then(data => {
             alert(data); // Mostrar mensaje de alerta
-            transAdd=transAdd+' & se elimino el articulo con id= '+idArticulo +' por el usuario con id '+idUsuario
-            transaccion(data,transAdd) //se actualiza igual transaccion
             // Recargar la página después de la eliminación
             location.reload();
 
@@ -653,13 +637,13 @@ function fechaAhora() {
     const fechaIng = `${diaDeHoy}/${mesHoy}/${anioHoy}` // en variable global fechaIng
     return fechaIng;
 }
-// actualiza registro de transaccion
-async function transaccion(data,transAdd) {
+
+async function transaccion(data) {
     // Obtener la fecha y hora actuales
     const fecha = fechaAhora();
     const hora = horaAhora()
     const idTrans = genIdTrans()
-    const transaccion="Actualizacion del articulo: "+transAdd
+    const transaccion="Actualizacion del articulo "
 
     // Crear el objeto dataTrans
     const dataTrans = {

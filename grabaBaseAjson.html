@@ -1,0 +1,47 @@
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RESPALDO BASE DE DATOS</title>
+</head>
+<body>
+    <button onclick="grabaArchivoBaseJson()">Grabar Base de Datos</button>
+    <button onclick="cargaBaseEnLocal()">Cargar Base en LocalStorage</button>
+    
+    <script>
+        function grabaArchivoBaseJson() {
+            let idArchivo = genId();
+            // Llamada AJAX para ejecutar el script PHP que graba la base de datos en JSON
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", `./graba-base-json.php?idArchivo=${idArchivo}`, true);
+            xhr.send();
+            xhr.onload = function() {
+                if (xhr.status == 200) {
+                    alert('Base de datos guardada en archivo JSON.');
+                } else {
+                    alert('Error al guardar la base de datos en archivo JSON.');
+                }
+            };
+        }
+        function genId() {
+            const currentDate = new Date();
+            const hora = currentDate.getHours();
+            const minutos = currentDate.getMinutes();
+            const segundos = currentDate.getSeconds();
+            const hor = hora < 10 ? "0" + hora.toString() : hora.toString();
+            const min = minutos < 10 ? "0" + minutos.toString() : minutos.toString();
+            const seg = segundos < 10 ? "0" + segundos.toString() : segundos.toString();
+            const horaTrans = hor + min + seg;
+            const horaIng = hor + ":" + min + ":" + seg;
+            const anioHoy = currentDate.getFullYear();
+            const mesHoy = ("0" + (currentDate.getMonth() + 1)).slice(-2);
+            const diaDeHoy = ("0" + currentDate.getDate()).slice(-2);
+            const fechaIng = `${diaDeHoy}/${mesHoy}/${anioHoy}`;
+            const id = fechaIng.replace(/\//g, '') + horaIng.replace(/:/g, '');
+            return id;
+        }
+
+    </script>
+</body>
+</html>
