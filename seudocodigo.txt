@@ -551,6 +551,23 @@ tabla `trasaarticulosv` campos:
  necesito enviarle el idArchivo a php para que el nombre del 
  archivo de la base de datos se concatene osea 
  se sume y no sea baseDatos.json sino 'baseDatos' + idaArchivo '.json'
+ ---
+ CREATE TABLE tabla_duplicada AS
+SELECT * FROM tabla_original;
+
+ CREATE TABLE usuariosavduplicada AS
+SELECT * FROM usuariosav;
+
+ CREATE TABLE trasaarticulosvduplicada AS
+SELECT * FROM trasaarticulosv;
+
+ CREATE TABLE articulosvduplicada AS
+SELECT * FROM articulosv;
+
+DELETE FROM articulosv;
+DELETE FROM usuariosav;
+DELETE FROM trasaarticulosv;
+
 
 
 

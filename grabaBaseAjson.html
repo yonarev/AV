@@ -7,22 +7,30 @@
 </head>
 <body>
     <button onclick="grabaArchivoBaseJson()">Grabar Base de Datos</button>
+    <button onclick="grabaLocalStorage()">Grabar Base de Datos en localStorage</button>
     <button onclick="cargaBaseEnLocal()">Cargar Base en LocalStorage</button>
+    <button onclick="grabaBaseDesdeLocal()">graba Base desde LocalStorage</button>
+    <button onclick="grabaJsonAbaseSql()">graba en Base sql desde archivo json</button>
     
     <script>
         function grabaArchivoBaseJson() {
             let idArchivo = genId();
             // Llamada AJAX para ejecutar el script PHP que graba la base de datos en JSON
             var xhr = new XMLHttpRequest();
-            xhr.open("GET", `./graba-base-json.php?idArchivo=${idArchivo}`, true);
-            xhr.send();
-            xhr.onload = function() {
-                if (xhr.status == 200) {
-                    alert('Base de datos guardada en archivo JSON.');
-                } else {
-                    alert('Error al guardar la base de datos en archivo JSON.');
+            xhr.open("POST", "./graba-base-json.php", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        alert('Base de datos guardada en archivo JSON.');
+                    } else {
+                        alert('Error al guardar la base de datos en archivo JSON.');
+                    }
                 }
             };
+            // Crear el cuerpo de la solicitud con el parámetro idArchivo
+            var params = 'idArchivo=' + encodeURIComponent(idArchivo);
+            xhr.send(params);
         }
         function genId() {
             const currentDate = new Date();
@@ -41,7 +49,115 @@
             const id = fechaIng.replace(/\//g, '') + horaIng.replace(/:/g, '');
             return id;
         }
+        function grabaLocalStorage() {
+            try {
+                // Obtener datos de las tablas y guardar en localStorage
+                grabarTablaEnLocalStorage('articulosv');
+                grabarTablaEnLocalStorage('usuariosav');
+                grabarTablaEnLocalStorage('trasaarticulosv');
+                
+                alert('Datos guardados en el almacenamiento local.');
+            } catch (error) {
+                console.error('Error al guardar en el almacenamiento local:', error);
+                alert('Error al guardar en el almacenamiento local.');
+            }
+        }
+        function grabarTablaEnLocalStorage(nombreTabla) {
+            // Crear el cuerpo de la solicitud con el nombre de la tabla
+            var params = 'tabla=' + encodeURIComponent(nombreTabla);
+            
+            // Realizar la solicitud POST al servidor
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", `./obtener-datos.php`, false);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.send(params);
+            
+            if (xhr.status === 200) {
+                // Guardar los datos en localStorage con el nombre de la tabla como clave
+                localStorage.setItem(nombreTabla, xhr.responseText);
+            } else {
+                console.error(`Error al obtener datos de la tabla ${nombreTabla}.`);
+            }
+        }
+        
 
+        function grabaBaseDesdeLocal() {
+            let idArchivo=genId()
+            try {
+                // Obtener los datos almacenados en localStorage
+                var articulosv = localStorage.getItem('articulosv');
+                var usuariosav = localStorage.getItem('usuariosav');
+                var trasaarticulosv = localStorage.getItem('trasaarticulosv');
+                
+                // Crear un objeto que contenga todos los datos
+                var baseDatos = {
+                    'articulosv': JSON.parse(articulosv),
+                    'usuariosav': JSON.parse(usuariosav),
+                    'trasaarticulosv': JSON.parse(trasaarticulosv)
+                };
+                
+                // Convertir el objeto a formato JSON
+                var datosJson = JSON.stringify(baseDatos);
+                
+                // Guardar los datos en un archivo JSON
+                var nombreArchivo = 'baseDatosDesdeLocalS-'+idArchivo+ '.json';
+                var blob = new Blob([datosJson], {type: 'application/json'});
+                var url = URL.createObjectURL(blob);
+                
+                // Crear un enlace de descarga y simular un clic en él para descargar el archivo
+                var a = document.createElement('a');
+                a.href = url;
+                a.download = nombreArchivo;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                
+                alert('Base de datos guardada en archivo JSON desde el almacenamiento local.');
+            } catch (error) {
+                console.error('Error al guardar en archivo JSON desde el almacenamiento local:', error);
+                alert('Error al guardar en archivo JSON desde el almacenamiento local.');
+            }
+        }
+    
+        function grabaJsonAbaseSql() {
+            try {
+                // Obtener el archivo JSON seleccionado por el usuario
+                var input = document.createElement('input');
+                input.type = 'file';
+                input.accept = '.json';
+                input.onchange = function(event) {
+                    var file = event.target.files[0];
+                    
+                    // Leer el contenido del archivo JSON
+                    var reader = new FileReader();
+                    reader.onload = function() {
+                        var jsonData = reader.result;
+                        
+                        // Realizar la solicitud POST al archivo PHP
+                        var xhr = new XMLHttpRequest();
+                        xhr.open("POST", "./graba-json-baseSql.php", true);
+                        xhr.setRequestHeader("Content-Type", "application/json");
+                        xhr.onreadystatechange = function() {
+                            if (xhr.readyState === XMLHttpRequest.DONE) {
+                                if (xhr.status === 200) {
+                                    alert('Base de datos guardada en la base SQL.');
+                                } else {
+                                    alert('Error al guardar la base de datos en la base SQL.');
+                                }
+                            }
+                        };
+                        xhr.send(jsonData);
+                    };
+                    reader.readAsText(file);
+                };
+                input.click();
+            } catch (error) {
+                console.error('Error al recuperar base de datos desde archivo JSON:', error);
+                alert('Error al recuperar base de datos desde archivo JSON.');
+            }
+        }
+
+    
     </script>
 </body>
 </html>
