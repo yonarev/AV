@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Local storage de AV</title>
+    <link rel="stylesheet" href="./articulos.css">
+</head>
+<body>
+    <div class="botonesLocal">
+        <button id="eliminarLocalStorage">Eliminar Local Storage</button>
+        <button id="guardaLocalStorage" onclick="guardaLocalStorage()">Grabar Local Storage</button>
+        <button onclick="cargarLocalStorage()">Cargar Local Storage</button>
+        <input type="file" id="fileInput" accept=".json">
+        <button onclick="grabaJsonAsql()">Importar JSON a SQL</button>
+        <button id="btnUsuarios" onclick="window.open('./usuariosAV.html')">admin Usuarios</button>
+        <button id="btnTransacciones" onclick="window.open('./presentaTransacciones.html')">Transacciones</button>
+        <button id="btnGRabaBaseJson" onclick="window.open('./grabaBaseAjson.html')">Respalda Base</button>
+
+
+    </div>
+   <script src="./admin.js"></script>
+</body>
+</html>

@@ -567,11 +567,6 @@ SELECT * FROM articulosv;
 DELETE FROM articulosv;
 DELETE FROM usuariosav;
 DELETE FROM trasaarticulosv;
----
-requiero hacer una sola funcion que agrupe ambas funciones 
-la idea es Grabar Base de Datos en localStorage 'grabaLocalStorage()' y luego 
-grabarla en un archivo fisico en mi disco duro 'grabaBaseDesdeLocal()'
-la funcion debe llamarse grabaDirectoBaseAjson() ..adjunto codigo
 
 
 

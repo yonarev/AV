@@ -4,49 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RESPALDO BASE DE DATOS</title>
-    <style>
-        body {
-            background-color: rgb(52, 51, 50);
-            margin: 0 auto;
-            color: white;
-            text-align: center;
-        }   
-        .botonesGraban{
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .botonesGraban button {
-            font-size: 4vw;
-            cursor: pointer;
-            border-radius: 2vw;
-            width: 90vw;
-
-        }
-    </style>
 </head>
 <body>
-    <h2 >Respaldo Base de datos SQL</h2>
-    <div class="botonesGraban">
-        <button onclick="grabaArchivoBaseJson()">0- Grabar Base de Datos en json en la Raiz</button>
-        <button onclick="grabaLocalStorage()">1-Grabar Base de Datos en localStorage</button>
-        <button onclick="grabaBaseDesdeLocal()">2-Graba Base desde LocalStorage</button>
-        <button onclick="grabaDirectoBaseAjson()">Graba Base SQL a Archivo</button>
-        <button onclick="GrabaJsonAbaseSql()">graba en Base sql desde archivo json</button>
-    </div>
+    <button onclick="grabaArchivoBaseJson()">Grabar Base de Datos</button>
+    <button onclick="grabaLocalStorage()">Grabar Base de Datos en localStorage</button>
+    <button onclick="cargaBaseEnLocal()">Cargar Base en LocalStorage</button>
+    <button onclick="grabaBaseDesdeLocal()">graba Base desde LocalStorage</button>
+    <button onclick="grabaJsonAbaseSql()">graba en Base sql desde archivo json</button>
+    
     <script>
-        //graba archivo json directo en la raiz de la base de datos
         function grabaArchivoBaseJson() {
             let idArchivo = genId();
-            let nombreArchivo='baseDatos_'+ idArchivo
             // Llamada AJAX para ejecutar el script PHP que graba la base de datos en JSON
             var xhr = new XMLHttpRequest();
             xhr.open("POST", "./graba-base-json.php", true);
             xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
             xhr.onreadystatechange = function() {
                 if (xhr.readyState === XMLHttpRequest.DONE) {
-                    alert('Base de datos guardada en archivo JSON: '+nombreArchivo);
                     if (xhr.status === 200) {
+                        alert('Base de datos guardada en archivo JSON.');
                     } else {
                         alert('Error al guardar la base de datos en archivo JSON.');
                     }
@@ -56,7 +32,23 @@
             var params = 'idArchivo=' + encodeURIComponent(idArchivo);
             xhr.send(params);
         }
-        //graba base completa sql en local storage
+        function genId() {
+            const currentDate = new Date();
+            const hora = currentDate.getHours();
+            const minutos = currentDate.getMinutes();
+            const segundos = currentDate.getSeconds();
+            const hor = hora < 10 ? "0" + hora.toString() : hora.toString();
+            const min = minutos < 10 ? "0" + minutos.toString() : minutos.toString();
+            const seg = segundos < 10 ? "0" + segundos.toString() : segundos.toString();
+            const horaTrans = hor + min + seg;
+            const horaIng = hor + ":" + min + ":" + seg;
+            const anioHoy = currentDate.getFullYear();
+            const mesHoy = ("0" + (currentDate.getMonth() + 1)).slice(-2);
+            const diaDeHoy = ("0" + currentDate.getDate()).slice(-2);
+            const fechaIng = `${diaDeHoy}/${mesHoy}/${anioHoy}`;
+            const id = fechaIng.replace(/\//g, '') + horaIng.replace(/:/g, '');
+            return id;
+        }
         function grabaLocalStorage() {
             try {
                 // Obtener datos de las tablas y guardar en localStorage
@@ -70,7 +62,6 @@
                 alert('Error al guardar en el almacenamiento local.');
             }
         }
-        //graba una tabla sql directo en local storage
         function grabarTablaEnLocalStorage(nombreTabla) {
             // Crear el cuerpo de la solicitud con el nombre de la tabla
             var params = 'tabla=' + encodeURIComponent(nombreTabla);
@@ -88,7 +79,8 @@
                 console.error(`Error al obtener datos de la tabla ${nombreTabla}.`);
             }
         }
-        //desde local storage graba en archivo JSON
+        
+
         function grabaBaseDesdeLocal() {
             let idArchivo=genId()
             try {
@@ -126,7 +118,7 @@
                 alert('Error al guardar en archivo JSON desde el almacenamiento local.');
             }
         }
-        //en base a archivo json en disco  graba en base de datos sql
+    
         function grabaJsonAbaseSql() {
             try {
                 // Obtener el archivo JSON seleccionado por el usuario
@@ -164,61 +156,8 @@
                 alert('Error al recuperar base de datos desde archivo JSON.');
             }
         }
-        function grabaDirectoBaseAjson() {
-            try {
-                // Obtener datos de las tablas y guardar en localStorage
-                grabarTablaEnLocalStorage('articulosv');
-                grabarTablaEnLocalStorage('usuariosav');
-                grabarTablaEnLocalStorage('trasaarticulosv');
-                // Obtener los datos almacenados en localStorage
-                var articulosv = localStorage.getItem('articulosv');
-                var usuariosav = localStorage.getItem('usuariosav');
-                var trasaarticulosv = localStorage.getItem('trasaarticulosv');
-                // Crear un objeto que contenga todos los datos
-                var baseDatos = {
-                    'articulosv': JSON.parse(articulosv),
-                    'usuariosav': JSON.parse(usuariosav),
-                    'trasaarticulosv': JSON.parse(trasaarticulosv)
-                };
-                // Convertir el objeto a formato JSON
-                var datosJson = JSON.stringify(baseDatos);
-                // Generar nombre de archivo
-                let idArchivo = genId();
-                var nombreArchivo = 'baseDatosDesdeLocalS-' + idArchivo + '.json';
-                // Guardar los datos en un archivo JSON
-                var blob = new Blob([datosJson], {type: 'application/json'});
-                var url = URL.createObjectURL(blob);
-                // Crear un enlace de descarga y simular un clic en él para descargar el archivo
-                var a = document.createElement('a');
-                a.href = url;
-                a.download = nombreArchivo;
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                alert('Base de datos guardada en archivo JSON desde el almacenamiento local.');
-            } catch (error) {
-                console.error('Error al guardar en archivo JSON desde el almacenamiento local:', error);
-                alert('Error al guardar en archivo JSON desde el almacenamiento local.');
-            }
-        }
-        //genera ID para el nombre del archivo
-        function genId() {
-            const currentDate = new Date();
-            const hora = currentDate.getHours();
-            const minutos = currentDate.getMinutes();
-            const segundos = currentDate.getSeconds();
-            const hor = hora < 10 ? "0" + hora.toString() : hora.toString();
-            const min = minutos < 10 ? "0" + minutos.toString() : minutos.toString();
-            const seg = segundos < 10 ? "0" + segundos.toString() : segundos.toString();
-            const horaTrans = hor + min + seg;
-            const horaIng = hor + ":" + min + ":" + seg;
-            const anioHoy = currentDate.getFullYear();
-            const mesHoy = ("0" + (currentDate.getMonth() + 1)).slice(-2);
-            const diaDeHoy = ("0" + currentDate.getDate()).slice(-2);
-            const fechaIng = `${diaDeHoy}/${mesHoy}/${anioHoy}`;
-            const id = fechaIng.replace(/\//g, '') + horaIng.replace(/:/g, '');
-            return id;
-        }
+
+    
     </script>
 </body>
 </html>

@@ -335,8 +335,8 @@ function solicitudRepoBodega(idArticulo) {
     if (stockBl === 0  && stockBc >= stockC) {
         let confirma = confirm('desea agregar el articulo a la lista de pedidos') 
         if (confirma===true){
-            transAdd=transAdd+' & solicitud de abastecimiento de bodega local'
             agregaArticuloPedido(idArticulo,codigoArticulo, nombreArticulo+' '+detalleArticulo , stockBc )
+            transAdd=transAdd+' & solicitud de abastecimiento de bodega local'
         } else {
            
             return
@@ -346,14 +346,14 @@ function solicitudRepoBodega(idArticulo) {
             alert('No puede solicitar si no hay stock en bodega Central')
         } else {
             let confirmaIgual=confirm("Aun hay stock en Bodega Local, ?desea pedir igual")
-            if (confirmaIgual){
-                transAdd=transAdd+' & solicitud de abastecimiento de bodega local'
-                agregaArticuloPedido(idArticulo,codigoArticulo, nombreArticulo+' '+detalleArticulo , stockBc )
-            }
+            if (confirmaIgual){agregaArticuloPedido(idArticulo,codigoArticulo, nombreArticulo+' '+detalleArticulo , stockBc )}
+            transAdd=transAdd+' & solicitud de abastecimiento de bodega local'
+
         }
     }
 }
 function agregaArticuloPedido(idArticulo, codigoArticulo, nombreArticulo, stockBc) {
+
     // Obtener la lista actual de pedidos desde el localStorage
     let solicitudPedidoBodega = JSON.parse(localStorage.getItem('solicitudPedidoBodega')) || [];
     // Verificar si el artículo ya está en la lista por idArticulo o codArticulo
@@ -445,7 +445,6 @@ function entregaListaPedidos() {
 function eliminaListaPedidos() {
     localStorage.removeItem('solicitudPedidoBodega');
     alert('Lista de pedidos eliminada del localStorage.');
-    transAdd=transAdd+' & Se elimino la lista de pedidos'
     console.log('Lista de pedidos eliminada del localStorage.');
 }
 //HABILITA DESHABILITA
@@ -506,6 +505,7 @@ function actualizarDatos(idArticulo) {
         if (data.success) {
             transaccion(articuloActualizado,transAdd)
             alert('Artículo actualizado en la base de datos');
+
         } else {
             alert('Error al actualizar el artículo en la base de datos');
         }
@@ -513,6 +513,8 @@ function actualizarDatos(idArticulo) {
     .catch(error => {
         console.error('Error en la solicitud al servidor:', error);
     });
+
+    // recalculoDatos(idArticulo);
 }
 function eliminarArticulo(idArticulo) {
     // Pregunta al usuario si realmente desea eliminar el artículo
