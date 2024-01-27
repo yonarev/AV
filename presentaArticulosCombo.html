@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+    <!-- presentaArticulosCombo.html -->
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lista de Artículos</title>
+</head>
+<body>
+    <h1>Lista de Artículos</h1>
+    <select id="articulo">
+        <option value="">Selecciona un artículo</option>
+    </select>
+
+    <script>
+        function presentaArticulos() {
+            fetch("presenta-articulos.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Limpiar el combo box
+                document.getElementById("articulo").innerHTML = '<option value="">Selecciona un artículo</option>';
+                // Llenar el combo box con los nombres de los artículos
+                data.forEach(item => {
+                    var option = document.createElement("option");
+                    option.text = item.articulo;
+                    option.value = item.articulo;
+                    document.getElementById("articulo").appendChild(option);
+                });
+            })
+            .catch(error => console.error("Error al obtener la lista de artículos:", error));
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            presentaArticulos();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<!-- buscaArticulo.html -->
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Buscar y Editar Artículo</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+    }
+    h1 {
+        text-align: center;
+        margin-top: 20px;
+    }
+    #articuloForm {
+        width: 80%;
+        max-width: 600px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    label {
+        display: block;
+        margin-bottom: 5px;
+    }
+    input[type="text"],
+    input[type="number"] {
+        width: calc(100% - 10px);
+        padding: 8px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+    button {
+        padding: 8px 12px;
+        border: none;
+        border-radius: 4px;
+        background-color: #007bff;
+        color: #fff;
+        cursor: pointer;
+    }
+    button:hover {
+        background-color: #0056b3;
+    }
+</style>
+</head>
+<body>
+    <h1>Buscar y Editar Artículo</h1>
+    <form id="articuloForm">
+        <label for="codigoArticulo">Código de Artículo:</label>
+        <input type="text" id="codigoArticulo" name="codigoArticulo">
+        <button type="button" id="btnBuscaXcodigo">Buscar por código</button><br>
+
+        <label for="articulo">Artículo:</label>
+        <!-- <input type="text" id="articulo" name="articulo"> -->
+        <select id="articulo">
+            <option value="">Selecciona un artículo</option>
+        </select>
+        <button type="button" id="btnBuscaXnombre">Buscar por Artículo</button><br>
+
+        <label for="detalle">Detalle:</label>
+        <input type="text" id="detalle" name="detalle"><br>
+
+        <label for="stockBodegaCentral">Stock Bodega Central:</label>
+        <input type="number" id="stockBodegaCentral" name="stockBodegaCentral"><br>
+
+        <label for="stockBodega">Stock Bodega:</label>
+        <input type="number" id="stockBodega" name="stockBodega"><br>
+
+        <label for="stockVitrina">Stock Vitrina:</label>
+        <input type="number" id="stockVitrina" name="stockVitrina"><br>
+
+        <label for="stockRepo">Stock Repo:</label>
+        <input type="number" id="stockRepo" name="stockRepo"><br>
+
+        <label for="stockCritico">Stock Crítico:</label>
+        <input type="number" id="stockCritico" name="stockCritico"><br>
+
+        <label for="archivo">Archivo:</label>
+        <input type="text" id="archivo" name="archivo"><br>
+
+        <label for="idUsuario">ID Usuario:</label>
+        <input type="text" id="idUsuario" name="idUsuario"><br>
+
+        <button type="button" id="btnGrabar">Grabar</button>
+    </form>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            presentaArticulos();
+            document.getElementById("codigoArticulo").focus(); // Pone el foco en el input de código al cargar la página
+            //BUSCA POR CODIGO
+            document.getElementById("btnBuscaXcodigo").addEventListener("click", buscaXcodigo);
+            function buscaXcodigo() {
+                var codigo = parseInt(document.getElementById("codigoArticulo").value);
+                console.log(codigo)
+                fetch("busca-articulo-codigo.php", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded" // Usamos este tipo de contenido
+                    },
+                    body: "codigoArticulo=" + codigo // Enviamos el código directamente en el cuerpo de la solicitud
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Llenar los campos del formulario con los datos del artículo encontrado
+                    document.getElementById("articulo").value = data.articulo;
+                    document.getElementById("detalle").value = data.detalle;
+                    document.getElementById("stockBodegaCentral").value = data.stockBodegaCentral;
+                    document.getElementById("stockBodega").value = data.stockBodega;
+                    document.getElementById("stockVitrina").value = data.stockVitrina;
+                    document.getElementById("stockRepo").value = data.stockRepo;
+                    document.getElementById("stockCritico").value = data.stockCritico;
+                    document.getElementById("archivo").value = data.archivo;
+                    document.getElementById("idUsuario").value = data.idUsuario;
+                })
+                .catch(error => console.error("Error al buscar artículo:", error));
+            }
+
+            //BUSCA POR NOMBRE
+            document.getElementById("btnBuscaXnombre").addEventListener("click", buscaXnombre);
+            function buscaXnombre() {
+                var nombre = document.getElementById("articulo").value;
+
+                fetch("./busca-articulo-nombre.php", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
+                    body: "nombreArticulo=" + nombre
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Llenar los campos del formulario con los datos del artículo encontrado
+                    document.getElementById("codigoArticulo").value = data.codigoArticulo;
+                    document.getElementById("detalle").value = data.detalle;
+                    document.getElementById("stockBodegaCentral").value = data.stockBodegaCentral;
+                    document.getElementById("stockBodega").value = data.stockBodega;
+                    document.getElementById("stockVitrina").value = data.stockVitrina;
+                    document.getElementById("stockRepo").value = data.stockRepo;
+                    document.getElementById("stockCritico").value = data.stockCritico;
+                    document.getElementById("archivo").value = data.archivo;
+                    document.getElementById("idUsuario").value = data.idUsuario;
+                })
+                .catch(error => console.error("Error al buscar artículo por nombre:", error));
+            }
+            function presentaArticulos() {
+                fetch("presenta-articulos.php", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Limpiar el combo box
+                    document.getElementById("articulo").innerHTML = '<option value="">Selecciona un artículo</option>';
+                    // Llenar el combo box con los nombres de los artículos
+                    data.forEach(item => {
+                        var option = document.createElement("option");
+                        option.text = item.articulo;
+                        option.value = item.articulo;
+                        document.getElementById("articulo").appendChild(option);
+                    });
+                })
+                .catch(error => console.error("Error al obtener la lista de artículos:", error));
+            }
+
+            // Implementar la función para grabar los cambios
+            document.getElementById("btnGrabar").addEventListener("click", function() {
+                // Aquí puedes enviar los datos del formulario actualizados al servidor para actualizar el registro en la base de datos
+                // Puedes usar fetch para enviar los datos al archivo PHP correspondiente
+            });
+        });
+    </script>
+</body>
+</html>
