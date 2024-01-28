@@ -7,88 +7,90 @@
     <link rel="stylesheet" href="./index.css">
 </head>
 <body>
-    <div class="top">
-        <p id="usuarioActivo" ></p>
+    <div class="container">
+        <div class="top">
+            <p id="usuarioActivo" ></p>
+        </div>
+        <div class="camara">
+            <div>
+                <label for="cameraSelect">Selecciona cámara:</label>
+                <select id="cameraSelect">
+                    <option value="user">Frontal</option>
+                    <option value="environment" selected>Trasera</option>
+                </select>
+                <br>
+                <video id="videoElement" autoplay="true"></video>
+            </div>
+            <button id="btnFoto" onclick="takePhoto()">Tomar foto</button>
+            <button id="btnBrowser" onclick="window.open('./articulos.html');">Ver Articulos</button>
+            <button onclick="window.open('./localStorage.html')">Admin Base Local</button>
+            <p id="idArticulo">Id Articulo</p>
+        </div>
+        <canvas id="canvasElement" style="display: none;"></canvas>
+        <form id="dataForm">
+            <div>
+                <div>
+                    <label for="codigoArticulo">Código:</label>
+                </div>
+                <input type="text" id="codigoArticulo">
+                <button type="button" onclick="confirmField('articulo')">Confirmar</button>
+            </div>
+            <label for="articulo">Artículo:</label>
+            <input type="text" id="articulo">
+            <button type="button" onclick="confirmField('detalle')">Confirmar</button>
+            <label for="detalle">Descripción:</label>
+            <input type="text" id="detalle">
+            <button type="button" onclick="confirmField('stockBodegaCentral')">Confirmar</button>
+            <div>
+                <div>
+                    <label for="stockBodegaCentral">Stock Bodega Central:</label>
+                </div>
+                <input type="text" id="stockBodegaCentral">
+                <button type="button" onclick="confirmField('stockBodega')">Confirmar</button>
+            </div>
+            <div>
+                <div>
+                    <label for="stockBodega">Stock Bodega:</label>
+                </div>
+                <input type="text" id="stockBodega">
+                <button type="button" onclick="confirmField('stockVitrina')">Confirmar</button>
+            </div>
+            <div>
+                <div>
+                    <label for="stockVitrina">Stock Vitrina:</label>
+                </div>
+                <input type="text" id="stockVitrina">
+                <button type="button" onclick="confirmField('stockRepo')">Confirmar</button>
+            </div>
+            <div>
+                <div>
+                    <label for="stockRepo">Stock Reposicion:</label>
+                </div>
+                <input type="text" id="stockRepo">
+                <button type="button" onclick="confirmField('stockCritico')">Confirmar</button>
+            </div>
+            <div>
+                <div>
+                    <label for="stockCritico">Stock Crítico:</label>
+                </div>
+                <input type="text" id="stockCritico">
+                <button type="button" onclick="confirmField('btnGraba')">Confirmar</button>
+            </div>
+            <button id="btnGraba" type="button" onclick="grabaDatosArticuloSQL(event)">Grabar</button>
+        </form>
+        <div class="resumen">
+                <p id="sBc"></p>
+                <p id="sBl"></p>
+                <p id="sV"></p>
+                <p id="sR"></p>
+                <p id="sT"></p>
+                <p id="sC"></p>
+        </div>
+        <div>
+            <p id="mensajeCritico" class="resumen"> </p>
+        </div>
+        <br>
     </div>
-    <div class="camara">
-        <div>
-            <label for="cameraSelect">Selecciona cámara:</label>
-            <select id="cameraSelect">
-                <option value="user">Frontal</option>
-                <option value="environment" selected>Trasera</option>
-            </select>
-            <br>
-            <video id="videoElement" autoplay="true"></video>
-        </div>
-        <button id="btnFoto" onclick="takePhoto()">Tomar foto</button>
-        <button id="btnBrowser" onclick="window.open('./articulos.html');">Ver Articulos</button>
-        <button onclick="window.open('./localStorage.html')">Admin Base Local</button>
-        <p id="idArticulo">Id Articulo</p>
-    </div>
-    <canvas id="canvasElement" style="display: none;"></canvas>
-    <form id="dataForm">
-        <div>
-            <div>
-                <label for="codigoArticulo">Código:</label>
-            </div>
-            <input type="text" id="codigoArticulo">
-            <button type="button" onclick="confirmField('articulo')">Confirmar</button>
-        </div>
-        <label for="articulo">Artículo:</label>
-        <input type="text" id="articulo">
-        <button type="button" onclick="confirmField('detalle')">Confirmar</button>
-        <label for="detalle">Descripción:</label>
-        <input type="text" id="detalle">
-        <button type="button" onclick="confirmField('stockBodegaCentral')">Confirmar</button>
-        <div>
-            <div>
-                <label for="stockBodegaCentral">Stock Bodega Central:</label>
-            </div>
-            <input type="text" id="stockBodegaCentral">
-            <button type="button" onclick="confirmField('stockBodega')">Confirmar</button>
-        </div>
-        <div>
-            <div>
-                <label for="stockBodega">Stock Bodega:</label>
-            </div>
-            <input type="text" id="stockBodega">
-            <button type="button" onclick="confirmField('stockVitrina')">Confirmar</button>
-        </div>
-        <div>
-            <div>
-                <label for="stockVitrina">Stock Vitrina:</label>
-            </div>
-            <input type="text" id="stockVitrina">
-            <button type="button" onclick="confirmField('stockRepo')">Confirmar</button>
-        </div>
-        <div>
-            <div>
-                <label for="stockRepo">Stock Reposicion:</label>
-            </div>
-            <input type="text" id="stockRepo">
-            <button type="button" onclick="confirmField('stockCritico')">Confirmar</button>
-        </div>
-        <div>
-            <div>
-                <label for="stockCritico">Stock Crítico:</label>
-            </div>
-            <input type="text" id="stockCritico">
-            <button type="button" onclick="confirmField('btnGraba')">Confirmar</button>
-        </div>
-        <button id="btnGraba" type="button" onclick="grabaDatosArticuloSQL(event)">Grabar</button>
-    </form>
-    <div class="resumen">
-            <p id="sBc"></p>
-            <p id="sBl"></p>
-            <p id="sV"></p>
-            <p id="sR"></p>
-            <p id="sT"></p>
-            <p id="sC"></p>
-    </div>
-    <div>
-        <p id="mensajeCritico" class="resumen"> </p>
-    </div>
-    <br>
     <script src="./nuevoArticulo.js"></script>
 </body>
 </html>

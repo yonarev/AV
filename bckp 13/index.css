@@ -1,24 +1,7 @@
 body {
-    right: 0;
-    left: 0;
-    margin: 0;
-    padding: 0;
-    position: absolute;
-    font-family: Arial, sans-serif;
-    background-color: #9e9494;
-    margin-top: 2px;
-    padding-left: 2px;
-    text-align: center;
-}
-.container {
-    position: absolute;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    margin: auto;
-    /* padding: 20px; */
-    max-width: 400px; /* Puedes ajustar este valor según tus preferencias */
-    background-color: #f0f0f0; /* Añade un color de fondo para visualizar mejor el contenido */
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(64, 47, 47);
 }
 .camara {
     margin: 0 auto;
@@ -28,13 +11,13 @@ body {
     margin-bottom: 5px;
 } 
 .camara video {
-    max-width: 350px;
-    width: 350px;
+    max-width: 100vw;
+    width: 100vw;
     margin-bottom: 5px;
 }
 .camara button {
-    font-size: 20px;
-    border-radius: 1px;
+    font-size:6vw;
+    border-radius: 1vw;
     cursor: pointer;
 }
 
@@ -42,26 +25,23 @@ form {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
     margin-top: 20px;
     color: white;
 }
 form input {
-    margin: 0 auto; 
-    align-items: center;
     margin-bottom: 10px;
-    font-size: 20px;
+    font-size: 6vw;
 }
 form button {
     margin-top: 10px;
-    font-size: 20px;
+    font-size: 1.5em;
     cursor: pointer;
     margin-bottom: 10px;
     font: 13px;
     border-radius: 7px;
 }
 form label {
-    font-size: 20px;
+    font-size: 5vw;
 }
 p {
     text-align: center;
@@ -69,14 +49,14 @@ p {
 }
 /* CONFIG ANCHO INPUTS */
 #codigoArticulo{
-    width: 100px;
+    width: 20vw;
     background-color: rgb(237, 237, 173);
 }
 #articulo,#detalle{
-    width: 300px;
+    width: 90vw;
 }
 #stockBodegaCentral,#stockBodega,#stockVitrina,#stockRepo,#stockCritico{
-    width: 300px;
+    width: 13vw;
 }
 #stockBodegaCentral,#stockBodega{
     background-color: rgb(225, 225, 130);
@@ -96,12 +76,12 @@ p {
 }
 #mensajeCritico p{
     font-family: arial;
-    font-size: 5px;
+    font-size: 5vw;
     color: white;
 }
 .texto-rojo {
     color: red;
     font-family: arial;
-    font-size: 5px;
+    font-size: 5vw;
     background-color: black;
 }

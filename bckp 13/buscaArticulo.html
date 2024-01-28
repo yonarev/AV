@@ -7,25 +7,12 @@
     <title>Buscar y Editar Artículo</title>
     <style>
         body {
-            right: 0;
-            left: 0;
+            font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            position: absolute;
-            font-family: Arial, sans-serif;
             background-color: #9e9494;
             margin-top: 2px;
             padding-left: 2px;
-        }
-        .container {
-            position: absolute;
-            right: 0;
-            top: 0;
-            bottom: 0;
-            margin: auto;
-            /* padding: 20px; */
-            max-width: 400px; /* Puedes ajustar este valor según tus preferencias */
-            background-color: #f0f0f0; /* Añade un color de fondo para visualizar mejor el contenido */
         }
         h1 {
             text-align: center;
@@ -77,24 +64,15 @@
             color: #fff;
             cursor: pointer;
         }
-        #btnGrabar{
-            background-color: green;
-            
-        }
-        #btnGrabar:hover{
-            background-color: #49d22a;
-
-        }
-        #btnEliminar{
-            background-color: rgb(107, 7, 35);
-
-        }
-        #btnEliminar:hover{
-            background-color: rgb(200, 35, 81);
-
-        }
         button:hover {
             background-color: #0056b3;
+        }
+        #btnGrabar{
+            background-color: green;
+        }
+        #btnEliminar{
+            background-color: rgb(230, 46, 98);
+
         }
         .botonesRepo{
                 display: flex;
@@ -107,7 +85,7 @@
                 margin-bottom: 1vw;
                 padding-bottom: 1vw;
             }
-        .botonesRepo button{
+            .botonesRepo button{
                 font-size: 20px;
                 width: 350px;
                 margin-bottom: 5px;
@@ -119,10 +97,6 @@
         }
         #articulo{
             width: 75vw;
-        }
-        #articuloList{
-            width: 320px;
-            font-size: 20px;
         }
         #imagenArticulo {
             max-width: 100%; /* Establece un ancho máximo para la imagen */
@@ -146,77 +120,67 @@
 </head>
 </head>
 <body>
-    <div class="container">
-
-        <div class="top">
-            <h1>Buscar y Editar Artículo</h1>
-            <p id="usuarioActivo" ></p>
-            <input type="text" id="idUsuario" name="idUsuario" disabled="true">
-        </div>
-        <div class="camara">
-                <label for="cameraSelect">Selecciona cámara:</label>
-                <select id="cameraSelect">
-                    <option value="user">Frontal</option>
-                    <option value="environment" selected>Trasera</option>
-                </select>
-                <video id="videoElement" autoplay="true"></video>
-                <button id="btnFoto" onclick="takePhoto()">Tomar foto</button>
-        </div>
-        <canvas id="canvasElement" style="display: none;"></canvas>
-        <form id="articuloForm">
-            <p id="idArticulo"></p>
-            <label for="codigoArticulo">Código de Artículo:</label>
-            <input type="text" id="codigoArticulo" name="codigoArticulo">
-            <button type="button" id="btnBuscaXcodigo">Buscar por código</button>
-            <label for="articulo">Artículo:</label>
-            <!-- select  -->
-            <select id="articuloList" >
-                <option value="">Selecciona un artículo</option>
+    <div class="top">
+        <h1>Buscar y Editar Artículo</h1>
+        <p id="usuarioActivo" ></p>
+        <input type="text" id="idUsuario" name="idUsuario" disabled="true">
+    </div>
+    <div class="camara">
+            <label for="cameraSelect">Selecciona cámara:</label>
+            <select id="cameraSelect">
+                <option value="user">Frontal</option>
+                <option value="environment" selected>Trasera</option>
             </select>
-            <button id="btnSeleccion" onclick="selecciona(event)">Seleccion</button>
-    
-            <input type="text" list="articulo" id="articuloInput">
-            <datalist id="articulo"></datalist>
-    
-            <!-- <input type="text" id="articulo" placeholder="Escribe o selecciona un artículo"> -->
-            <button type="button" id="btnBuscaXnombre" onclick="buscaXnombre()">Buscar por Artículo</button>
-    
-    
-            <label for="detalle">Detalle:</label>
-            <input type="text" id="detalle" name="detalle">
-    
-            <img id="imagenArticulo" src="" alt="Foto del artículo">
-            <div>
-                <button type="button" id="btnNuevaFoto" onclick="nuevaFoto()">Nueva foto</button>
-                <input type="text" id="archivo" name="archivo" disabled="true">
-            </div>
-    
-            <label for="stockBodegaCentral">Stock Bodega Central:</label>
-            <input type="number" id="stockBodegaCentral" name="stockBodegaCentral">
-    
-            <label for="stockBodega">Stock Bodega:</label>
-            <input type="number" id="stockBodega" name="stockBodega">
-    
-            <label for="stockVitrina">Stock Vitrina:</label>
-            <input type="number" id="stockVitrina" name="stockVitrina">
-    
-            <label for="stockRepo">Stock Repo:</label>
-            <input type="number" id="stockRepo" name="stockRepo">
-            <label for="stockCritico">Stock Crítico:</label>
-            <input type="number" id="stockCritico" name="stockCritico">
-            <button onclick="window.open('./nuevoArticulo.html')" type="button" id="btnNuevo">Nuevo Articulo</button>
-            <button onclick="actualizarDatos()" type="button" id="btnGrabar">Grabar</button>
-            <button onclick="eliminarArticulo()" type="button" id="btnEliminar">Eliminar</button>
-        </form>
-        <div class="botonesRepo">
-            <button class="btnRepoVitrina" onclick="repoVitrinaArticulo(idArticulo)">Reposición Vitrina</button>
-            <button class="btnRepoStockVitrina" onclick="repoStockVitrinaArticulo(idArticulo)">Abastecer Stock de Reposicion</button>
-            
-            <button class="btnRepoBodega" onclick="repoStockBodegaLocalArticulo(idArticulo)">Abastecer Bodega Local</button>
-            <button class="btnSolicitudRepoBodega" onclick="solicitudRepoBodegaArticulo(idArticulo)">Agrega a lista de pedidos</button>
-            <button class="btnRepoBodegaLocal" onclick="entregaListaPedidos()">Imprime Lista Pedidos</button>
-            <button class="btnEliminaList" onclick="eliminaListaPedidos()">Elimina Lista Pedidos</button>
+            <video id="videoElement" autoplay="true"></video>
+            <button id="btnFoto" onclick="takePhoto()">Tomar foto</button>
+    </div>
+    <canvas id="canvasElement" style="display: none;"></canvas>
+    <form id="articuloForm">
+        <p id="idArticulo"></p>
+        <label for="codigoArticulo">Código de Artículo:</label>
+        <input type="text" id="codigoArticulo" name="codigoArticulo">
+        <button type="button" id="btnBuscaXcodigo">Buscar por código</button>
+        <label for="articulo">Artículo:</label>
+        <select id="articulo" >
+            <option value="">Selecciona un artículo</option>
+        </select>
+        <input type="text" id="articuloInput" placeholder="Escribe o selecciona un artículo">
+        <button type="button" id="btnBuscaXnombre">Buscar por Artículo</button>
+
+        <label for="detalle">Detalle:</label>
+        <input type="text" id="detalle" name="detalle">
+
+        <img id="imagenArticulo" src="" alt="Foto del artículo">
+        <div>
+            <button type="button" id="btnNuevaFoto" onclick="nuevaFoto()">Nueva foto</button>
+            <input type="text" id="archivo" name="archivo" disabled="true">
         </div>
+
+        <label for="stockBodegaCentral">Stock Bodega Central:</label>
+        <input type="number" id="stockBodegaCentral" name="stockBodegaCentral">
+
+        <label for="stockBodega">Stock Bodega:</label>
+        <input type="number" id="stockBodega" name="stockBodega">
+
+        <label for="stockVitrina">Stock Vitrina:</label>
+        <input type="number" id="stockVitrina" name="stockVitrina">
+
+        <label for="stockRepo">Stock Repo:</label>
+        <input type="number" id="stockRepo" name="stockRepo">
+        <label for="stockCritico">Stock Crítico:</label>
+        <input type="number" id="stockCritico" name="stockCritico">
+        <button onclick="window.open('./nuevoArticulo.html')" type="button" id="btnNuevo">Nuevo Articulo</button>
+        <button onclick="actualizarDatos()" type="button" id="btnGrabar">Grabar</button>
+        <button onclick="eliminarArticulo()" type="button" id="btnEliminar">Eliminar</button>
+    </form>
+    <div class="botonesRepo">
+        <button class="btnRepoVitrina" onclick="repoVitrinaArticulo(idArticulo)">Reposición Vitrina</button>
+        <button class="btnRepoStockVitrina" onclick="repoStockVitrinaArticulo(idArticulo)">Abastecer Stock de Reposicion</button>
+        
+        <button class="btnRepoBodega" onclick="repoStockBodegaLocalArticulo(idArticulo)">Abastecer Bodega Local</button>
+        <button class="btnSolicitudRepoBodega" onclick="solicitudRepoBodegaArticulo(idArticulo)">Agrega a lista de pedidos</button>
+        <button class="btnRepoBodegaLocal" onclick="entregaListaPedidos()">Imprime Lista Pedidos</button>
+        <button class="btnEliminaList" onclick="eliminaListaPedidos()">Elimina Lista Pedidos</button>
     </div>
     <script src="./calculos.js"></script>
     <script>
@@ -251,7 +215,6 @@
         //presenta el registro en pantalla    
         document.addEventListener("DOMContentLoaded", function() {
             presentaArticulos();
-            presentaArticulosList();
             document.getElementById("codigoArticulo").focus(); // Pone el foco en el input de código al cargar la página
             //BUSCA POR CODIGO
             document.getElementById("btnBuscaXcodigo").addEventListener("click", buscaXcodigo);
@@ -264,31 +227,8 @@
                 // Puedes usar fetch para enviar los datos al archivo PHP correspondiente
             });
         });
-       
-        // LO HACE CON DATA LIST
         function presentaArticulos() {
-            fetch("./presenta-articulos.php", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                // Limpiar el datalist
-                document.getElementById("articulo").innerHTML = '';
-                // Llenar el datalist con los nombres de los artículos
-                data.forEach(item => {
-                    var option = document.createElement("option");
-                    option.value = item.articulo;
-                    document.getElementById("articulo").appendChild(option);
-                });
-            })
-            .catch(error => console.error("Error al obtener la lista de artículos:", error));
-        }    
-        // LO HACE CON SELECT
-        function presentaArticulosList() {
-                fetch("./presenta-articulos.php", {
+                fetch("presenta-articulos.php", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
@@ -297,18 +237,17 @@
                 .then(response => response.json())
                 .then(data => {
                     // Limpiar el combo box
-                    document.getElementById("articuloList").innerHTML = '<option value="">Selecciona un artículo</option>';
+                    document.getElementById("articulo").innerHTML = '<option value="">Selecciona un artículo</option>';
                     // Llenar el combo box con los nombres de los artículos
                     data.forEach(item => {
                         var option = document.createElement("option");
                         option.text = item.articulo;
                         option.value = item.articulo;
-                        document.getElementById("articuloList").appendChild(option);
+                        document.getElementById("articulo").appendChild(option);
                     });
                 })
                 .catch(error => console.error("Error al obtener la lista de artículos:", error));
-        } 
-
+        }
         //toma la foto
         function takePhoto() {
             const btnFoto = document.getElementById("btnFoto");
@@ -428,8 +367,50 @@
             });
         }
 
+        // async function transaccion(data) {
+        //     // Obtener la fecha y hora actuales
+        //     const fecha = fechaAhora();
+        //     const hora = horaAhora()
+        //     const idTrans = genIdTrans()
+        //     const transaccion="Edicion del articulo"
+
+        //     // Crear el objeto dataTrans
+        //     const dataTrans = {
+        //         idTrans,
+        //         fecha,
+        //         hora,
+        //         transaccion,
+        //         ...data // Agregar todos los campos del objeto original
+        //     };
+        //     // debugger
+
+        //     // Enviar la solicitud utilizando Fetch
+        //     const response = await fetch('./graba-transa-articulo.php', {
+        //         method: 'POST',
+        //         headers: {
+        //             'Content-Type': 'application/json'
+        //         },
+        //         body: JSON.stringify(dataTrans)
+        //     })
+        //     .then(response => {
+        //         if (!response.ok) {
+        //             throw new Error('Error en la solicitud');
+        //         }
+        //         return response.json();
+        //     })
+        //     .then(responseData => {
+        //         // Manejar la respuesta del servidor si es necesario
+        //         console.log(responseData);
+        //     })
+        //     .catch(error => {
+        //         // Manejar errores de la solicitud
+        //         console.error('Error:', error);
+        //     });
+        // }
+  
         function buscaXnombre() {
-                var nombre = document.getElementById("articuloInput").value;
+                var nombre = document.getElementById("articulo").value;
+
                 fetch("./busca-articulo-nombre.php", {
                     method: "POST",
                     headers: {
@@ -455,7 +436,6 @@
                       // Establece la URL de la imagen del artículo
                     let rutaImagen = "./fotos/" + data.archivo; // Ajusta la ruta según la ubicación de las fotos
                     document.getElementById("imagenArticulo").src = rutaImagen;
-                    document.getElementById('articulo')
                 })
                 .catch(error => console.error("Error al buscar artículo por nombre:", error));
         }
@@ -525,25 +505,32 @@
                 .catch(error => console.error('Error al realizar la llamada:', error));
             }
         }
-        //en el select al seleccionar llena campo datalist
-        function selecciona(event){
-            event.preventDefault();
-            let seleccion= document.getElementById('articuloList').value
-            document.getElementById('articuloInput').value=seleccion
-        }
-       
-        // Función para manejar el evento input y filtrar las opciones del datalist
-        document.getElementById("articuloInput").addEventListener("input", function(event) {
-            var inputValue = event.target.value;
-            var options = document.getElementById("articulo").childNodes;
-            options.forEach(function(option) {
-                if (inputValue && option.value.toLowerCase().indexOf(inputValue.toLowerCase()) === -1) {
-                    option.hidden = true;
+    
+
+          // Manejador de eventos para el campo de entrada de texto
+        articuloInput.addEventListener('input', function() {
+            var inputText = this.value.toLowerCase(); // Convertir el texto a minúsculas
+            var options = articuloSelect.options;
+
+            // Iterar sobre las opciones del select y mostrar u ocultar según coincidan con el texto
+            for (var i = 0; i < options.length; i++) {
+                var optionText = options[i].text.toLowerCase();
+                if (optionText.includes(inputText)) {
+                    options[i].style.display = 'block';
                 } else {
-                    option.hidden = false;
+                    // options[i].style.display = 'none';
                 }
-            });
+            }
         });
+
+        // Manejador de eventos para el campo select
+        articuloSelect.addEventListener('change', function() {
+            buscaXnombre()
+            articuloInput.value = this.value;
+            articuloInput.focus()
+            articuloInput.select()
+        });
+    
     </script>
 </body>
 </html>
