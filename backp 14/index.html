@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AV</title>
+    <!-- Agrega estilos CSS para el modal (puedes personalizar según tus necesidades) -->
+    <style>
+       
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: rgb(101, 73, 73);
+            color: white;
+            display: flex;
+            justify-content: center; /* Alinea horizontalmente */
+            align-items: center; /* Alinea verticalmente */
+            min-height: 100vh; /* Asegura que el cuerpo ocupe al menos todo el alto de la ventana */
+        }
+
+        .container {
+            max-width: 500px; /* Puedes ajustar este valor según tus preferencias */
+            background-color: #4b3939; /* Añade un color de fondo para visualizar mejor el contenido */
+            padding: 20px; /* Añade espacio interno para el contenido */
+        }
+
+
+
+                /* Estilos para el modal */
+        .modal {
+            display: block;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content {
+            background-color: #544d4d;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 11em;
+            border-radius: 15px;
+        }
+        .modal-content  input{
+            margin: 0 auto;
+        }
+        .visible {
+            display: block;
+        }
+        .invisible{
+            display: none;
+        }
+        .menu{
+            display: flex;
+            flex-direction: column;
+        }
+        .top {
+            display: flex;
+            margin: 0 auto;
+        }
+        .top p {
+            align-items: center;
+            margin: 0 auto;
+
+        }
+        .menu button {
+            width: 200px;
+            font-size: 20px;
+            cursor: pointer;
+            border-radius: 3vw;
+        }
+        .menu button:hover{
+            background-color: rgb(160, 160, 216);
+        }
+    </style>
+    <script src="./calculos.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>@app</h1>
+        <br>
+        <div class="top">
+                <p id="usuarioActivo" ></p>
+        </div>
+        <br>
+        <div class="menu">
+            <!-- ADMIN -->
+            <button id="btnAdmin" class="invisible" onclick="abrirVentanaIzquierdaArriba('./admin.html',375,250)">Admin</button>
+            <!-- <button id="btnAdmin" class="invisible" onclick="window.open('./admin.html')">Admin</button> -->
+            <!-- <button id="btnAdmin" class="invisible" onclick="abrirVentana('./admin.html',375,250)">Admin</button> -->
+            <!-- <button id="btnAdmin" class="invisible" onclick="abrirVentanaDerechaAbajo('./admin.html',375,250)">Admin</button> -->
+            <!-- <button id="btnAdmin" class="invisible" onclick="abrirVentanaDerechaArriba('./admin.html',375,250)">Admin</button> -->
+            <!-- NUEVO -->
+            <button onclick="abrirVentanaAlCentro('./nuevoArticulo.html',500,1600)">Nuevo Articulo</button>
+            <!-- <button onclick="window.open('./nuevoArticulo.html')">Nuevo Articulo</button> -->
+            <!-- BUSCAR ARTICULOS -->
+            <button id="btnBuscar" onclick="abrirVentanaCentroDerecha('./buscaArticulo.html',500,1600)">Buscar Articulo</button>
+            <!-- <button id="btnBrowser" onclick="window.open('./buscaArticulo.html');">Buscar Articulo</button> -->
+            <!-- VER ARTICULOS -->
+            <button id="btnBrowser" onclick="abrirVentanaDerechaArriba('./articulos.html',500,1600);">Ver Articulos</button>
+            <!-- <button id="btnBrowser" onclick="window.open('./articulos.html');">Ver Articulos</button> -->
+        </div>
+    
+        <!-- Modal -->
+        <div id="modal" class="modal">
+            <div class="modal-content">
+                <form id="formularioAcceso">
+                    <label for="usuario">usuario:</label>
+                    <input type="text" id="usuario" name="usuario" required>
+                    <br>
+                    <label for="psw">Contraseña:</label>
+                    <input type="password" id="psw" name="psw" required>
+                    <br>
+                    <br>
+                    <input type="button" value="Acceder" onclick="acceder()">
+                </form>
+            </div>
+        </div>
+    </div>
+
+<!-- Script para manejar el modal y la petición al servidor -->
+<script>
+    // Función para establecer el foco en el campo "usuario"
+    function establecerFocoEnusuario() {
+        document.getElementById('usuario').focus();
+    }
+    // Llamar a la función después de cargar la página
+    window.onload = establecerFocoEnusuario;
+    function acceder() {
+        // Obtener datos del formulario
+        var usuario = document.getElementById('usuario').value;
+        var psw = document.getElementById('psw').value;
+
+        // Realizar petición POST al servidor
+        fetch('acceso.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ usuario: usuario, psw: psw }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                // Contraseña incorrecta
+                alert('Contraseña incorrecta.');
+                // Si la contraseña es incorrecta, no cerrar el modal
+                // Establecer el foco en el campo "psw"
+                document.getElementById('psw').focus();
+                document.getElementById('psw').select();
+            } else {
+                // Contraseña correcta, cierra el modal
+                document.getElementById('modal').style.display = 'none';
+                setAcceso(data)
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+    function setAcceso(data){
+        // Elimina la contraseña antes de almacenar los datos en sessionStorage
+        delete data.psw;
+        // Almacena los datos en sessionStorage
+        sessionStorage.setItem('av', JSON.stringify(data));
+        // localStorage.setItem('av', JSON.stringify(data));
+
+        //despliega usuario activo
+        document.getElementById('usuarioActivo').innerText="Usuario Activo: "+ data.nombre 
+        //valida accesos
+        if(data.tipo==='admin'){
+            activaAdmin(true) 
+        } else {
+            false
+        }
+    }
+    function activaAdmin(activa) {
+        var btnAdmin = document.getElementById('btnAdmin');
+        // Cambiar la visibilidad del botón
+        if (activa) {
+            btnAdmin.classList.remove('invisible');
+            btnAdmin.classList.add('visible');
+        } else {
+            btnAdmin.classList.add('invisible');
+        }
+    }
+</script>
+
+</body>
+</html>

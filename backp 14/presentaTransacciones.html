@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Presentación de Transacciones</title>
+    <style>
+        body {
+            background-color: rgb(59, 54, 54);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Transacciones</h1>
+
+<table border="1">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Fecha</th>
+            <th>Hora</th>
+            <th>ID Usuario</th>
+            <th>ID Articulo</th>
+            <th>Código Articulo</th>
+            <th>Articulo</th>
+            <th>Detalle</th>
+            <th>Stock Bodega Central</th>
+            <th>Stock Bodega</th>
+            <th>Stock Vitrina</th>
+            <th>Stock Repo</th>
+            <th>Stock Crítico</th>
+            <th>Archivo</th>
+            <th>Transacción</th>
+        </tr>
+    </thead>
+    <tbody id="tablaDatos">
+        <!-- Aquí se mostrarán los datos -->
+    </tbody>
+</table>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Fetch para obtener datos de 'presenta-transacciones.php'
+    fetch('presenta-transacciones.php')
+        .then(response => response.json())
+        .then(data => {
+            // Manipular datos y mostrar en la tabla
+            const tablaDatos = document.getElementById('tablaDatos');
+
+            data.forEach(row => {
+                const tr = document.createElement('tr');
+                Object.values(row).forEach(value => {
+                    const td = document.createElement('td');
+                    td.textContent = value;
+                    tr.appendChild(td);
+                });
+                tablaDatos.appendChild(tr);
+            });
+        })
+        .catch(error => console.error('Error al obtener datos:', error));
+});
+</script>
+
+</body>
+</html>

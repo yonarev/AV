@@ -4,29 +4,26 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Artículos</title>
-        <link rel="icon" href="./articulos.ico" type="image/x-icon">
         <link rel="stylesheet" href="./articulos.css">
-
         <script>
-            // window.onload = function() {
-            //     // Ajustar la posición de la página a la derecha
-            //     // window.moveTo(window.screen.availWidth - window.outerWidth, 0);
-            //     window.moveTo(0);
-            // };
+            debugger
+            window.onload = function() {
+                // Ajustar la posición de la página a la derecha
+                window.moveTo(window.screen.availWidth - window.outerWidth, 0);
+            };
         </script>
         <script src="./calculos.js"></script>
 
     </head>
     <body ondblclick="alternarHabilitarInputs()">
         <div class="top">
-            <img src="./articulos.ico" alt="">
-            <p id="tituloWeb">Editar Artículos</p>
             <p id="usuarioActivo" class="idUsuario"></p>
             <input type="text" id="idUsuario" name="idUsuario" disabled="true">
         </div>
         <div class="container">
             
         </div>
-        <script src="./articulosSQL.js"></script>
+    </body>
+    <script src="./articulosSQL.js"></script>
     </body>
 </html>

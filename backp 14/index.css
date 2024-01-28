@@ -1,0 +1,107 @@
+body {
+    right: 0;
+    left: 0;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    font-family: Arial, sans-serif;
+    background-color: #9e9494;
+    margin-top: 2px;
+    padding-left: 2px;
+    text-align: center;
+}
+.container {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    /* padding: 20px; */
+    max-width: 400px; /* Puedes ajustar este valor según tus preferencias */
+    background-color: #f0f0f0; /* Añade un color de fondo para visualizar mejor el contenido */
+}
+.camara {
+    margin: 0 auto;
+    text-align: center; 
+    align-content: center;
+    justify-content: center;
+    margin-bottom: 5px;
+} 
+.camara video {
+    max-width: 350px;
+    width: 350px;
+    margin-bottom: 5px;
+}
+.camara button {
+    font-size: 20px;
+    border-radius: 1px;
+    cursor: pointer;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+    color: white;
+}
+form input {
+    margin: 0 auto; 
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: 20px;
+}
+form button {
+    margin-top: 10px;
+    font-size: 20px;
+    cursor: pointer;
+    margin-bottom: 10px;
+    font: 13px;
+    border-radius: 7px;
+}
+form label {
+    font-size: 20px;
+}
+p {
+    text-align: center;
+    color: white;
+}
+/* CONFIG ANCHO INPUTS */
+#codigoArticulo{
+    width: 100px;
+    background-color: rgb(237, 237, 173);
+}
+#articulo,#detalle{
+    width: 300px;
+}
+#stockBodegaCentral,#stockBodega,#stockVitrina,#stockRepo,#stockCritico{
+    width: 300px;
+}
+#stockBodegaCentral,#stockBodega{
+    background-color: rgb(225, 225, 130);
+}
+#stockRepo{
+    background-color: rgb(175, 175, 163);
+}
+#stockCritico{
+    color: white;
+    background-color: rgb(223, 26, 62);
+}
+.resumen{
+    display:flex;
+    flex-direction: row;
+    margin: 0 auto;
+    text-align: center;
+}
+#mensajeCritico p{
+    font-family: arial;
+    font-size: 5px;
+    color: white;
+}
+.texto-rojo {
+    color: red;
+    font-family: arial;
+    font-size: 5px;
+    background-color: black;
+}

@@ -4,14 +4,54 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Local storage de AV</title>
-    <link rel="stylesheet" href="./admin.css">
-    <link rel="icon" href="./administrador.ico" type="image/x-icon">
+    <link rel="stylesheet" href="./articulos.css">
+    <style>
+        body {
+            right: 0;
+            left: 0;
+            margin: 0 auto;
+            padding: 0;
+            position: absolute;
+            font-family: Arial, sans-serif;
+            background-color: #9e9494;
+            margin-top: 2px;
+            padding-left: 2px;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            align-content: center;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            margin: auto;
+        }
+        .container button {
+            width: 300px;
+            border-radius: 10px;
+        }
+        .container input {
+            width: 300px;
+            font-size: 15px;
+            border-radius: 10px;
+            background-color: #9e9494;
 
+        }
+        button:hover {
+            background-color: rgb(164, 164, 228);
+        }
+
+        #eliminarLocalStorage{
+            width: 300px;
+
+        }
+    </style>
 </head>
 <body>
     <div class="container">
         <h2>Administracion</h2>
-        <img src="./administrador.ico" alt="">
         <div class="botonesLocal">
             <button id="eliminarLocalStorage">Eliminar Local Storage</button>
             <button id="guardaLocalStorage" onclick="guardaLocalStorage()">Grabar Local Storage</button>

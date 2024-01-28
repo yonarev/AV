@@ -1,0 +1,157 @@
+body {
+            right: 0;
+            left: 0;
+            margin: 0;
+            padding: 0;
+            position: absolute;
+            font-family: Arial, sans-serif;
+            background-color: #9e9494;
+            margin-top: 2px;
+            padding-left: 2px;
+        }
+        .container {
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            margin: auto;
+            /* padding: 20px; */
+            max-width: 400px; /* Puedes ajustar este valor según tus preferencias */
+            background-color: #f0f0f0; /* Añade un color de fondo para visualizar mejor el contenido */
+        }
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+        }
+        #idUsuario{
+            text-align: center;
+            margin-top: 0px;
+            padding-top: 0px;
+            width: calc(100% - 200px); 
+        }
+        #articulo {
+            font-size: 20px;
+            background-color: rgb(120, 138, 138);
+            height: 30px;
+            width: 50px;
+        }
+        #articuloForm {
+            width: 80%;
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #d6bebe;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        #articuloForm input {
+            font-size: 18px;
+
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type="text"],
+        input[type="number"] {
+            width: calc(100% - 10px);
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 4px;
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+        }
+        #btnGrabar{
+            background-color: green;
+            
+        }
+        #btnGrabar:hover{
+            background-color: #49d22a;
+
+        }
+        #btnEliminar{
+            background-color: rgb(107, 7, 35);
+
+        }
+        #btnEliminar:hover{
+            background-color: rgb(200, 35, 81);
+
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .botonesRepo{
+                display: flex;
+                flex-direction: column;
+                margin: 0 auto;
+                background-color: red;
+                align-items: center;
+                margin-top: 1vw;
+                padding-top: 1vw;
+                margin-bottom: 1vw;
+                padding-bottom: 1vw;
+            }
+        .botonesRepo button{
+                font-size: 20px;
+                width: 350px;
+                margin-bottom: 5px;
+                border-radius: 2vw;
+                padding-bottom: 5px;
+            }
+        #archivo {
+            width: calc(100% - 100px);
+        }
+        #articulo{
+            width: 75vw;
+        }
+        #articuloList{
+            width: 320px;
+            font-size: 20px;
+        }
+        #imagenArticulo {
+            max-width: 100%; /* Establece un ancho máximo para la imagen */
+            height: auto; /* Permite que la altura se ajuste automáticamente para mantener la relación de aspecto */
+        }
+        .camara {
+            display: none;
+        }
+        .camaraVisible {
+            display: block;
+        }
+        #articuloForm {
+            margin-top: 0px;
+        }
+        .top {
+            padding-top: 0px;
+            margin-top: 0px;
+            text-align: center;
+        }
+        .texto-rojo {
+            color: red;
+            font-family: arial;
+            font-size: 20px;
+            font-weight: 500;
+            background-color: rgb(4, 4, 4);
+            padding: 1vw;
+            text-align: center;
+        }
+        .texto-verde {
+            color: rgb(194, 185, 27);
+            font-family: arial;
+            font-size: 20px;
+            background-color: rgb(0, 0, 0);
+            padding: 1vw;
+            text-align: center;
+            font-weight: 400;
+        }
+        .resumen{
+            background-color: black;
+        }

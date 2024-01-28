@@ -209,10 +209,9 @@
             const stockR = parseFloat(document.getElementById(`stockRepo${idArticulo}`).value) || 0;
             const stockV = parseFloat(document.getElementById(`stockVitrina${idArticulo}`).value) || 0;
             const stockC = parseFloat(document.getElementById(`stockCritico${idArticulo}`).value) || 0;
-            const stockTotal = stockBc - (stockBl + stockR + stockV);
+            const stockTotal = stockBc + stockBl + stockR + stockV;
             const stockLocal = stockBl + stockR + stockV 
-            // document.getElementById(`sT${idArticulo}`).innerText = `Stock Total: ${stockTotal} Stock Local : ${stockLocal}`;
-            document.getElementById(`sT${idArticulo}`).innerText = 'Stock Total:' + stockTotal + 'Stock Local :'+  stockLocal;
+            document.getElementById(`sT${idArticulo}`).innerText = `Stock Total: ${stockTotal} Stock Local : ${stockLocal}`;
             recalculoDatos(idArticulo)    
         }
         //recalcula datos y los presenta
@@ -277,75 +276,8 @@
             }
             mensajeCritico.innerText = accion;
             // Totales
-            let sL= sBl + sR + sV
-            let sT = sBc - sL;
-            document.getElementById(`sT${idArticulo}`).innerText = 'Stock Total=' + sT +' //  '+'Stock Local=' +sL;
-        }
-        //para busca articulo
-        function recalculoDatosArticulo(idArticulo) {
-            // transAdd=transAdd+' & Recalculo'
-            let sBc = parseFloat(document.getElementById('stockBodegaCentral').value) || 0;
-            let sBl = parseFloat(document.getElementById('stockBodega').value) || 0;
-            let sR = parseFloat(document.getElementById('stockRepo').value) || 0;
-            let sV = parseFloat(document.getElementById('stockVitrina').value) || 0;
-            let sC = parseFloat(document.getElementById('stockCritico').value) || 0;
-            let accion = "Nada que Hacer aún";
-            // Restablecer la clase a su valor predeterminado
-            let mensajeCritico = document.getElementById('mensajeCritico');
-            // mensajeCritico.classList.remove('texto-rojo');
-            mensajeCritico.classList.remove('texto-verde');
-            if (sC >= sV) {
-                accion = "Reponer vitrina";
-                mensajeCritico.classList.add('texto-rojo');
-            }
-            if (sC >= sV && sR === 0 && sBl >= sC) {
-                accion = "Abastecer respaldo reposición y reponer vitrina";
-                mensajeCritico.classList.add('texto-rojo');
-            }
-            if (sC >= sV && sR === 0 && sBl === 0) {
-                accion = "! Pedir a bodega Central abastecer reposición y reponer vitrina !";
-                mensajeCritico.classList.add('texto-rojo');
-            }
-            if (sC >= sV && sR === 0 && sBl === 0 && sBc === 0) {
-                accion = "Ya no hay stock y es lo que queda del producto";
-            }
-            if (sR===0 && sBc>0 ){
-                accion = "! Abastecer stock para reposicion de vitrina !"
-                mensajeCritico.classList.add('texto-rojo');
-            }
-            if (sBl===0){
-                accion = "! Pedir a bodega Central para preveer reposicion del Articulo !";
-                mensajeCritico.classList.add('texto-rojo');
-            }
-            if (sBc===0){
-                if (sR===0 && sBl>0) {
-                    accion = "! Abastecer stock de reposicion en bodega !" ;
-                    mensajeCritico.classList.add('texto-rojo');
-                } else {
-                    accion = "Ya no queda stock para el articulo en Bodega Central";
-                    mensajeCritico.classList.add('texto-verde');
-                    
-                }
-            }
-            if (sBc===0 && sBl===0){
-                accion = "Ya no hay stock del articulo en ambas bodegas";
-            }
-            if (sBc===0 && sBl===0 && sR===0){
-                accion = "Ya no hay stock del articulo en ambas bodegas y en reposicion de vitrina";
-            }
-            if (sR===0 && sBl>0) {
-                accion = "! Abastecer stock de reposicion !" ;
-                mensajeCritico.classList.add('texto-rojo');
-            }
-            if (sR===0 && sBl>0) {
-                accion = "! Abastecer stock de reposicion !" ;
-                mensajeCritico.classList.add('texto-rojo');
-            }
-            mensajeCritico.innerText = accion;
-            // Totales
-            let sL= sBl + sR + sV
-            let sT = sBc - sL;
-            document.getElementById('recalculo').innerText = 'Stock Total=' + sT +' //  '+'Stock Local=' +sL;
+            let sT = sBc + sBl + sR + sV;
+            document.getElementById(`sT${idArticulo}`).innerText = 'Stock Total=' + sT;
         }
         //calcula reposicion de vitrina y presenta
         function repoVitrina(idArticulo) {

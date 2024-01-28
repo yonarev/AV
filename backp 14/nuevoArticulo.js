@@ -25,7 +25,7 @@ navigator.mediaDevices.getUserMedia({ video: { facingMode: selectedCamera, width
 //TOMA LA FOTO
 function takePhoto() {
         const btnFoto = document.getElementById("btnFoto");
-        // btnFoto.disabled = true;
+        btnFoto.disabled = true;
         selectedCamera = document.getElementById("cameraSelect").value;
         navigator.mediaDevices.getUserMedia({ video: { facingMode: selectedCamera, width: 1920, height: 1080, frameRate: 30 } })
             .then(function(stream) {
@@ -64,18 +64,18 @@ function takePhoto() {
                         document.getElementById('codigoArticulo').focus()
                         document.getElementById('codigoArticulo').select()
                         console.log(data);
-                        // btnFoto.disabled = false;
+                        btnFoto.disabled = false;
                     })
                     .catch(error => {
                         console.error("Error al enviar la imagen al servidor:", error);
-                        // btnFoto.disabled = false;
+                        btnFoto.disabled = false;
                     });
 
                 }, 'image/jpeg', 1.0, 'image/jpeg');
             })
             .catch(function(error) {
                 console.error("Error al acceder a la cámara:", error);
-                // btnFoto.disabled = false;
+                btnFoto.disabled = false;
             });
     }
 //CONFIRMA INPUT    
