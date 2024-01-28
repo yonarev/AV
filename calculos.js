@@ -35,7 +35,7 @@
             const id = fechaIng.replace(/\//g, '') + horaIng.replace(/:/g, '');
             return id;
         }
-        
+        //hora actual
         function horaAhora() {
             let currentTime = new Date();
             let hora = currentTime.getHours();
@@ -62,6 +62,7 @@
             const fechaIng = `${diaDeHoy}/${mesHoy}/${anioHoy}` // en variable global fechaIng
             return fechaIng;
         }
+        //graba en tabla sql transaccion
         async function transaccion(data,transAdd) {
             // Obtener la fecha y hora actuales
             const fecha = fechaAhora();
@@ -77,8 +78,6 @@
                 transaccion,
                 ...data // Agregar todos los campos del objeto original
             };
-            // debugger
-        
             // Enviar la solicitud utilizando Fetch
             const response = await fetch('./graba-transa-articulo.php', {
                 method: 'POST',
@@ -121,6 +120,7 @@
             })
             .catch(error => console.error('Error:', error));
         }
+        //retorna id usuario activo en session
         function idUsuarioActivo() {
             // Obtener el valor almacenado en sessionStorage con la clave 'av'
             let avValue = sessionStorage.getItem('av');
@@ -142,7 +142,7 @@
             // En caso de error o si no se encuentra el valor esperado, devolver null
             return null;
         }
-
+        //agrega a lista de pedidos en local storage en busca articulo.html
         function agregaArticuloPedidoArticulo(idArticulo, codigoArticulo, nombreArticulo, stockBc) {
             // Obtener la lista actual de pedidos desde el localStorage
             let solicitudPedidoBodega = JSON.parse(localStorage.getItem('solicitudPedidoBodega')) || [];
@@ -169,7 +169,7 @@
                 alert("Artículo agregado exitosamente a la lista de pedidos.");
             }
         }
-        //agrega en local storage a lista de pedidos
+        //agrega en local storage a lista de pedidos en articulos.html
         function agregaArticuloPedido(idArticulo, codigoArticulo, nombreArticulo, stockBc) {
             // Obtener la lista actual de pedidos desde el localStorage
             let solicitudPedidoBodega = JSON.parse(localStorage.getItem('solicitudPedidoBodega')) || [];
@@ -204,15 +204,19 @@
         }
         // ** genera resumen
         function generarResumen(idArticulo) {
-            const stockBc = parseFloat(document.getElementById(`stockBodegaCentral${idArticulo}`).value) || 0;
-            const stockBl = parseFloat(document.getElementById(`stockBodega${idArticulo}`).value) || 0;
-            const stockR = parseFloat(document.getElementById(`stockRepo${idArticulo}`).value) || 0;
-            const stockV = parseFloat(document.getElementById(`stockVitrina${idArticulo}`).value) || 0;
-            const stockC = parseFloat(document.getElementById(`stockCritico${idArticulo}`).value) || 0;
-            const stockTotal = stockBc - (stockBl + stockR + stockV);
-            const stockLocal = stockBl + stockR + stockV 
+            let stockBc = parseFloat(document.getElementById(`stockBodegaCentral${idArticulo}`).value) || 0;
+            let stockBl = parseFloat(document.getElementById(`stockBodega${idArticulo}`).value) || 0;
+            let stockR = parseFloat(document.getElementById(`stockRepo${idArticulo}`).value) || 0;
+            let stockV = parseFloat(document.getElementById(`stockVitrina${idArticulo}`).value) || 0;
+            let stockC = parseFloat(document.getElementById(`stockCritico${idArticulo}`).value) || 0;
+            let stockTotal = stockBc - (stockBl + stockR + stockV);
+            // es el stock real en la bodega central
+            if(stockTotal<0){
+                stockTotal =0 //no hay stock en bodega central solo en local
+            }
+            let stockLocal = stockBl + stockR + stockV 
             // document.getElementById(`sT${idArticulo}`).innerText = `Stock Total: ${stockTotal} Stock Local : ${stockLocal}`;
-            document.getElementById(`sT${idArticulo}`).innerText = 'Stock Total:' + stockTotal + 'Stock Local :'+  stockLocal;
+            document.getElementById(`sT${idArticulo}`).innerText = 'Stock Real B.C:' + stockTotal + 'Stock Local :'+  stockLocal;
             recalculoDatos(idArticulo)    
         }
         //recalcula datos y los presenta
@@ -279,7 +283,11 @@
             // Totales
             let sL= sBl + sR + sV
             let sT = sBc - sL;
-            document.getElementById(`sT${idArticulo}`).innerText = 'Stock Total=' + sT +' //  '+'Stock Local=' +sL;
+             // es el stock real en la bodega central
+             if(sT<0){
+                sT =0 //no hay stock en bodega central solo en local
+            }
+            document.getElementById(`sT${idArticulo}`).innerText = 'Stock Real B.C=' + sT +' //  '+'Stock Local=' +sL;
         }
         //para busca articulo
         function recalculoDatosArticulo(idArticulo) {
@@ -345,7 +353,11 @@
             // Totales
             let sL= sBl + sR + sV
             let sT = sBc - sL;
-            document.getElementById('recalculo').innerText = 'Stock Total=' + sT +' //  '+'Stock Local=' +sL;
+             // es el stock real en la bodega central
+             if(sT<0){
+                sT =0 //no hay stock en bodega central solo en local
+            }
+            document.getElementById('recalculo').innerText = 'Stock Real B.C=' + sT +' //  '+'Stock Local=' +sL;
         }
         //calcula reposicion de vitrina y presenta
         function repoVitrina(idArticulo) {
