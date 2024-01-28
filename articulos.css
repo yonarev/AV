@@ -1,31 +1,44 @@
             body {
-                display: flex;
-                flex-wrap: wrap;
+                right: 0;
+                left: 0;
+                margin: 0;
+                padding: 0;
+                position: absolute;
                 justify-content: space-around;
                 background-color: rgb(84, 56, 56);
             }
+            .container {
+                position: absolute;
+                right: 0;
+                top: 0;
+                bottom: 0;
+                margin: auto;
+                max-width: 400px; /* Puedes ajustar este valor según tus preferencias */
+                background-color: #f0f0f0; /* Añade un color de fondo para visualizar mejor el contenido */
+            }
             .item {
-                margin: 10px;
-                padding: 10px;
+                align-items: center;
+                margin: 1px;
+                padding: 1px;
                 background-color: #fff;
                 border-radius: 8px;
                 box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             }
             .campos{
-                /* display: flex;
-                justify-content: center;
-                align-content: center; */
                 text-align: center;
                 background-color: rgb(49, 23, 23);
                 color: rgb(208, 188, 188);
-                
+                width: 390px;
             }
             .item campos input {
                 justify-content: center;
+                align-items: center;
+                align-content: center;
+                width: 300px;
             }
-            img {
+            .item img {
                 margin: 0 auto;
-                max-width: 100%;
+                max-width: 370px;
                 border-radius: 8px;
                 margin-bottom: 10px;
             }
@@ -37,8 +50,7 @@
                 display: block;
             }
             input {
-            
-                font-size: 6vw;
+                font-size: 20px;
                 margin-bottom: 10px;
                 box-sizing: border-box; /* Evita que el padding afecte al ancho */
             }
@@ -52,50 +64,67 @@
             }
 
             .codigo{
-                width: 25vw;
+                width: 100px;
             }
             .stockBc  {
-                width: 20vw;
+                width: 100px;
                 background-color: yellow;
                 margin: 0 auto;
             }
             .stockR  {
                 background-color: rgb(133, 133, 126);
-                width: 20vw;
+                width: 100px;
             }
             .stockB {
                 background-color: rgb(212, 212, 117);
-                width: 20vw;
+                width: 100px;
             }
             .stockV {
-                width: 20vw;
+                width: 100px;
             }
             .stockC{
                 background-color: red;
                 color: white;
-                width: 20vw;
+                width: 100px;
 
             }
-            .botones{
-                margin: auto;
-            }
-            .botones button{
-                width: 32vw;
-                flex-wrap: wrap;
-                flex-direction: column;
-                border-radius: 6px;
-                font-size: 6vw;
-                text-align: center;
-            }
-            .btnElimina{
-                color: rgb(255, 255, 255);
-                background-color: rgb(192, 54, 54);
-            }
             .btnEdita{
+                font-size: 20px;
                 text-align: center;
+                margin: 0 auto;
+                width: 200px;
                 color: rgb(255, 255, 255);
                 background-color: rgb(74, 176, 27);
+                border-radius: 7px;
+
+              
             }
+            .btnEdita:hover{
+                background-color: rgb(111, 249, 60);  
+            }
+            .btnElimina:hover{
+                background-color: rgb(248, 185, 193);  
+            }
+            
+            .btnRecalculo:hover{
+                background-color: rgb(91, 121, 121);  
+            }
+            
+            .btnElimina {
+                font-size: 20px;
+                text-align: center;
+                width: 200px;
+                color: rgb(255, 255, 255);
+                background-color: rgb(192, 54, 54);
+                border-radius: 7px;
+
+            }
+            .btnRecalculo{
+                font-size: 20px;
+                width: 200px;
+                border-radius: 7px;
+            }
+
             .resumen{
                 display:flex;
                 flex-direction: row;
@@ -104,13 +133,13 @@
             }
             #mensajeCritico p{
                 font-family: arial;
-                font-size: 5vw;
+                font-size: 20px;
                 color: white;
             }
             .texto-rojo {
                 color: red;
                 font-family: arial;
-                font-size: 5vw;
+                font-size: 20px;
                 font-weight: 500;
                 background-color: rgb(255, 255, 255);
                 padding: 1vw;
@@ -119,14 +148,14 @@
             .texto-verde {
                 color: rgb(194, 185, 27);
                 font-family: arial;
-                font-size: 5vw;
+                font-size: 20px;
                 background-color: rgb(255, 255, 255);
                 padding: 1vw;
                 text-align: center;
             }
             input[type="file"] {
                 text-align: center;
-                font-size: 2vw;
+                font-size: 20px;
                 font-weight: bold;
                 display: block;
                 width: auto;
@@ -142,7 +171,7 @@
                 margin: 0 auto;
             }
             .botonesLocal button input {
-               width: 15vw;
+               width: 300px;
                border-radius: 17px; 
             }
             .botonesRepo{
@@ -157,8 +186,8 @@
                 padding-bottom: 1vw;
             }
             .botonesRepo button{
-                font-size: 5vw;
-                width: 85vw;
+                font-size: 20px;
+                width: 300px;
                 border-radius: 2vw;
             }
                     /* Estilo para simular readonly */
@@ -166,7 +195,6 @@
                 pointer-events: none;
                 background-color: #f0f0f0; /* Puedes ajustar el color de fondo según tus preferencias */
             }
-            
             /* Estilo para habilitar interacción */
             .input-habilitado {
                 pointer-events: auto;
@@ -184,7 +212,48 @@
             .btnRepoBodegaLocal{
                 background-color: cadetblue;
             }
+            .btnRepoVitrina:hover{
+                background-color: rgb(22, 157, 214);
+            }
+            .btnRepoStockVitrina:hover{
+                background-color: rgb(22, 157, 214);
+            }
+            .btnRepoBodega:hover{
+                background-color: rgb(22, 157, 214);
+            }
+            .btnSolicitudRepoBodega:hover {
+                background-color: rgb(22, 157, 214);
+            }
+            .btnRepoBodegaLocal:hover {
+                background-color: rgb(22, 157, 214);
+            }
+            .btnEliminaList:hover {
+                background-color: rgb(22, 157, 214);
+            }
             .idUsuario{
                 color: white;
                 cursor: pointer;
+            }
+            div .articulo {
+                margin-left: 0px;
+                width: 320px;
+
+            }
+            .descripcion {
+                align-items: center;
+                align-content: center;
+                width: 380px;
+            }
+            .top {
+                padding-top: 5px;
+               text-align: center;
+               margin: 0 auto;
+               align-items: center;
+            }
+            #idUsuario {
+                text-align: center;
+                width: 180px;
+            }
+            button :hover {
+                background-color: rgb(86, 73, 239); 
             }

@@ -21,7 +21,7 @@ fetch('./obtener_articulos.php')
             crearElemento("label", "Código del Artículo:", datos);
             crearElemento("input", "", datos, articulo.codigoArticulo, false, `codigoArticulo${articulo.idArticulo}`, 'codigo');
             crearElemento("label", "Nombre del Artículo:", datos);
-            crearElemento("input", "", datos, articulo.articulo, false, `articulo${articulo.idArticulo}`, 'idArticulo');
+            crearElemento("input", "", datos, articulo.articulo, false, `articulo${articulo.idArticulo}`, 'articulo');
             crearElemento("label", "Descripción del Artículo:", datos);
             crearElemento("input", "", datos, articulo.detalle, false, `detalle${articulo.idArticulo}`, 'descripcion');
             crearElemento("label", "Stock Bodega Central:", datos);

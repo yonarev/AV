@@ -455,7 +455,6 @@
                       // Establece la URL de la imagen del artículo
                     let rutaImagen = "./fotos/" + data.archivo; // Ajusta la ruta según la ubicación de las fotos
                     document.getElementById("imagenArticulo").src = rutaImagen;
-                    document.getElementById('articulo')
                 })
                 .catch(error => console.error("Error al buscar artículo por nombre:", error));
         }
@@ -487,6 +486,8 @@
                      // Establece la URL de la imagen del artículo y la actualiza
                     let rutaImagen = "./fotos/" + data.archivo; // Ajusta la ruta según la ubicación de las fotos
                     document.getElementById("imagenArticulo").src = rutaImagen;
+                    document.getElementById('articuloInput').value=data.articulo
+                    document.getElementById('articuloList').innerText=data.articulo
 
                 })
                 .catch(error => console.error("Error al buscar artículo:", error));

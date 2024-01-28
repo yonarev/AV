@@ -605,5 +605,60 @@
             // console.log(jsonData); 
         }
 
+        function abrirVentanaAlCentro(pagina,width,height) {
+            // Calcular la posición X e Y para centrar la ventana
+            var left = (window.screen.availWidth - width) / 4;
+            var top = 0;
         
+            // Abrir una nueva ventana con las propiedades especificadas
+            window.open(pagina, '_blank', 'width=' + width + ', height=' + height + ', left=' + left + ', top=' + top);
+        }
+        function abrirVentanaCentroDerecha(pagina,width,height) {
+            // Calcular la posición X e Y para centrar la ventana
+            var left = (window.screen.availWidth - width) / 2 +120;
+            var top = 0;
         
+            // Abrir una nueva ventana con las propiedades especificadas
+            window.open(pagina, '_blank', 'width=' + width + ', height=' + height + ', left=' + left + ', top=' + top);
+        }
+        function abrirVentanaDerechaAbajo(pagina,width,height){
+             // Calcular la posición X e Y para centrar la ventana
+            // var left = (window.screen.availWidth - width) / 2;
+            var left = (window.screen.availWidth - width)
+            // var top = (window.screen.availHeight - height) / 2;
+            var top = (window.screen.availHeight - height)
+        
+            // Abrir una nueva ventana con las propiedades especificadas
+            window.open(pagina, '_blank', 'width=' + width + ', height=' + height + ', left=' + left + ', top=' + top);
+
+        }
+        function abrirVentanaDerechaArriba(pagina,width,height){
+             // Calcular la posición X e Y para centrar la ventana
+            // var left = (window.screen.availWidth - width) / 2;
+            var left = (window.screen.availWidth - width)
+            // var top = (window.screen.availHeight - height) / 2;
+            var top = 0
+            // Abrir una nueva ventana con las propiedades especificadas
+            window.open(pagina, '_blank', 'width=' + width + ', height=' + height + ', left=' + left + ', top=' + top);
+
+        }
+        function abrirVentanaDerechaArriba(pagina,width,height){
+             // Calcular la posición X e Y para centrar la ventana
+            // var left = (window.screen.availWidth - width) / 2;
+            var left = (window.screen.availWidth - width)
+            // var top = (window.screen.availHeight - height) / 2;
+            var top = 0
+            // Abrir una nueva ventana con las propiedades especificadas
+            window.open(pagina, '_blank', 'width=' + width + ', height=' + height + ', left=' + left + ', top=' + top);
+
+        }
+        function abrirVentanaIzquierdaArriba(pagina,width,height){
+             // Calcular la posición X e Y para centrar la ventana
+            // var left = (window.screen.availWidth - width) / 2;
+            var left = 0
+            // var top = (window.screen.availHeight - height) / 2;
+            var top = 0
+            // Abrir una nueva ventana con las propiedades especificadas
+            window.open(pagina, '_blank', 'width=' + width + ', height=' + height + ', left=' + left + ', top=' + top);
+
+        }
